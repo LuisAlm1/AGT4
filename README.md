@@ -149,12 +149,12 @@ POST /viralpost/api/pagos/checkout    # Crear checkout
 
 | Paquete | Precio | Por Generación |
 |---------|--------|----------------|
-| 10 créditos | $30 | $3.00 |
-| 25 créditos | $70 | $2.80 |
-| 50 créditos | $130 | $2.60 |
-| 100 créditos | $250 | $2.50 |
+| 10 créditos | $90 | $9.00 |
+| 25 créditos | $215 | $8.60 |
+| 50 créditos | $425 | $8.50 |
+| 100 créditos | $829 | $8.29 |
 
-*Margen: 3x el costo de API*
+*Margen: 3x el costo de API (~$0.164 USD = GPT-4o $0.03 + Nano Banana Pro $0.134)*
 
 ## Comandos Útiles
 
@@ -178,7 +178,7 @@ uvicorn app.main:app --reload --port 5001
 - **Backend**: FastAPI + SQLAlchemy (async)
 - **Frontend**: HTML + Tailwind CSS + JavaScript vanilla
 - **Base de datos**: SQLite (puede migrar a PostgreSQL)
-- **IA**: OpenAI GPT-4 + Google Gemini
+- **IA**: OpenAI GPT-4o + Google Gemini 3 Pro Image (Nano Banana Pro)
 - **Pagos**: Stripe Checkout
 - **Servidor**: Uvicorn + nginx + systemd
 

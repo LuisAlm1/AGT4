@@ -37,9 +37,9 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = ""
     OPENAI_MODEL: str = "gpt-4o"
 
-    # Google Gemini (para generación de imágenes)
+    # Google Gemini - Nano Banana Pro (para generación de imágenes)
     GEMINI_API_KEY: str = ""
-    GEMINI_MODEL: str = "gemini-2.0-flash-exp"
+    GEMINI_MODEL: str = "gemini-3-pro-image-preview"  # Nano Banana Pro
 
     # Dominio
     DOMAIN: str = "agathoscreative.com"
@@ -53,31 +53,33 @@ class Settings(BaseSettings):
     # SISTEMA DE CRÉDITOS Y PRECIOS
     # ===========================================
 
-    # Costos de API (aproximados en USD)
-    OPENAI_COST_PER_REQUEST: float = 0.02      # ~$0.02 por prompt con GPT-4
-    GEMINI_COST_PER_IMAGE: float = 0.03        # ~$0.03 por imagen generada
-    TOTAL_COST_PER_GENERATION: float = 0.05    # Costo total por generación
+    # Costos de API (en USD) - Actualizados para Nano Banana Pro
+    OPENAI_COST_PER_REQUEST: float = 0.03      # ~$0.03 por prompt con GPT-4o
+    GEMINI_COST_PER_IMAGE: float = 0.134       # $0.134 por imagen (Nano Banana Pro 1K-2K)
+    TOTAL_COST_PER_GENERATION: float = 0.164   # Costo total por generación
 
     # Margen de ganancia (3x el costo)
     PROFIT_MARGIN: float = 3.0
 
     # Precio por crédito en USD (costo * margen)
-    CREDIT_PRICE_USD: float = 0.15  # $0.05 * 3 = $0.15 por crédito
+    # $0.164 * 3 = $0.492 ≈ $0.50 por crédito
+    CREDIT_PRICE_USD: float = 0.50
 
     # Tasa de cambio MXN/USD (aproximada)
     MXN_USD_RATE: float = 17.50
 
     # Paquetes de créditos disponibles (en MXN)
-    # Precio = créditos * CREDIT_PRICE_USD * MXN_USD_RATE
+    # Base: $0.50 USD × 17.5 = $8.75 MXN por crédito
+    # Con descuentos por volumen
     CREDIT_PACKAGES: list = [
-        {"credits": 10, "price_mxn": 30, "stripe_price_id": "price_10_creditos"},
-        {"credits": 25, "price_mxn": 70, "stripe_price_id": "price_25_creditos", "popular": True},
-        {"credits": 50, "price_mxn": 130, "stripe_price_id": "price_50_creditos"},
-        {"credits": 100, "price_mxn": 250, "stripe_price_id": "price_100_creditos", "best_value": True},
+        {"credits": 10, "price_mxn": 90, "stripe_price_id": "price_10_creditos"},        # $9.00/crédito
+        {"credits": 25, "price_mxn": 215, "stripe_price_id": "price_25_creditos", "popular": True},  # $8.60/crédito
+        {"credits": 50, "price_mxn": 425, "stripe_price_id": "price_50_creditos"},       # $8.50/crédito
+        {"credits": 100, "price_mxn": 829, "stripe_price_id": "price_100_creditos", "best_value": True},  # $8.29/crédito
     ]
 
     # Créditos gratis al registrarse
-    FREE_CREDITS_ON_SIGNUP: int = 3
+    FREE_CREDITS_ON_SIGNUP: int = 1
 
     class Config:
         env_file = ".env"
