@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}¡Pago Exitoso!{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
+        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-check text-4xl text-green-600"></i>
+        </div>
+
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">¡Pago Exitoso!</h1>
+
+        <p class="text-gray-600 mb-6">
+            Tus créditos han sido agregados a tu cuenta.
+            Ya puedes comenzar a generar imágenes virales.
+        </p>
+
+        <div class="bg-purple-50 rounded-xl p-4 mb-6">
+            <p class="text-sm text-gray-600">Tu nuevo saldo</p>
+            <p class="text-3xl font-bold text-purple-600">
+                <span id="newCredits">-</span> créditos
+            </p>
+        </div>
+
+        <a href="/viralpost/app" class="block w-full gradient-bg text-white py-3 rounded-xl font-semibold hover:opacity-90 transition">
+            <i class="fas fa-magic mr-2"></i>
+            Ir a Generar
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Verificar autenticación
+    if (!Auth.isLoggedIn()) {
+        window.location.href = '/viralpost/login';
+    }
+
+    // Cargar créditos actualizados
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const response = await apiFetch('/auth/me');
+            if (response.ok) {
+                const user = await response.json();
+                document.getElementById('newCredits').textContent = user.creditos;
+                Auth.setUser(user);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+</script>
+{% endblock %}

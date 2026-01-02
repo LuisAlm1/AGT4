@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block title %}ViralPost AI - Genera Imágenes Virales para Redes Sociales{% endblock %}
+
+{% block content %}
+<!-- Navbar -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <a href="/viralpost" class="flex items-center space-x-2">
+                <span class="text-2xl">🚀</span>
+                <span class="font-bold text-xl gradient-text">ViralPost AI</span>
+            </a>
+            <div class="flex items-center space-x-4">
+                <a href="/viralpost/login" class="text-gray-600 hover:text-gray-900 font-medium">Iniciar Sesión</a>
+                <a href="/viralpost/registro" class="gradient-bg text-white px-5 py-2 rounded-full font-medium hover:opacity-90 transition">
+                    Comenzar Gratis
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="pt-32 pb-20 px-4 gradient-bg text-white">
+    <div class="max-w-6xl mx-auto text-center">
+        <div class="inline-flex items-center bg-white/20 rounded-full px-4 py-2 mb-8">
+            <span class="text-yellow-300 mr-2">✨</span>
+            <span class="text-sm font-medium">Potenciado por IA - GPT-4 & Gemini</span>
+        </div>
+
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+            Transforma tus productos en<br>
+            <span class="text-yellow-300">imágenes virales</span> para redes
+        </h1>
+
+        <p class="text-xl md:text-2xl text-white/80 mb-10 max-w-3xl mx-auto">
+            Sube la foto de tu producto, elige un estilo viral y obtén imágenes profesionales
+            con copy listo para Facebook e Instagram. <strong>En segundos.</strong>
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="/viralpost/registro" class="bg-white text-purple-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition shadow-xl">
+                <i class="fas fa-magic mr-2"></i>
+                Probar Gratis (3 Créditos)
+            </a>
+            <a href="#como-funciona" class="border-2 border-white/50 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-white/10 transition">
+                <i class="fas fa-play-circle mr-2"></i>
+                Ver Cómo Funciona
+            </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto">
+            <div class="text-center">
+                <div class="text-3xl font-bold">8</div>
+                <div class="text-white/70 text-sm">Estilos Virales</div>
+            </div>
+            <div class="text-center">
+                <div class="text-3xl font-bold">~30s</div>
+                <div class="text-white/70 text-sm">Por Generación</div>
+            </div>
+            <div class="text-center">
+                <div class="text-3xl font-bold">2</div>
+                <div class="text-white/70 text-sm">Redes Sociales</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Estilos Preview -->
+<section class="py-20 px-4 bg-white" id="estilos">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">8 Estilos Virales Únicos</h2>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                Cada estilo está diseñado para detener el scroll y generar engagement.
+                Desde explosiones macro hasta lujo oscuro.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <!-- Estilo 1 -->
+            <div class="style-card bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl p-6 text-white cursor-pointer">
+                <div class="text-4xl mb-3">💥</div>
+                <h3 class="font-bold text-lg">Explosión Macro</h3>
+                <p class="text-white/80 text-sm mt-1">Componentes volando</p>
+            </div>
+
+            <!-- Estilo 2 -->
+            <div class="style-card bg-gradient-to-br from-gray-400 to-gray-600 rounded-2xl p-6 text-white cursor-pointer">
+                <div class="text-4xl mb-3">🪞</div>
+                <h3 class="font-bold text-lg">Metal Líquido</h3>
+                <p class="text-white/80 text-sm mt-1">Reflejos cromados</p>
+            </div>
+
+            <!-- Estilo 3 -->
+            <div class="style-card bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl p-6 text-white cursor-pointer">
+                <div class="text-4xl mb-3">🌃</div>
+                <h3 class="font-bold text-lg">Neon Noir</h3>
+                <p class="text-white/80 text-sm mt-1">Cyberpunk urbano</p>
+            </div>
+
+            <!-- Estilo 4 -->
+            <div class="style-card bg-gradient-to-br from-green-400 to-emerald-600 rounded-2xl p-6 text-white cursor-pointer">
+                <div class="text-4xl mb-3">🌺</div>
+                <h3 class="font-bold text-lg">Jardín Surrealista</h3>
+                <p class="text-white/80 text-sm mt-1">Naturaleza fantástica</p>
+            </div>
+
+            <!-- Estilo 5 -->
+            <div class="style-card bg-gradient-to-br from-blue-400 to-indigo-600 rounded-2xl p-6 text-white cursor-pointer">
+                <div class="text-4xl mb-3">🚀</div>
+                <h3 class="font-bold text-lg">Gravedad Cero</h3>
+                <p class="text-white/80 text-sm mt-1">Todo flotando</p>
+            </div>
+
+            <!-- Estilo 6 -->
+            <div class="style-card bg-gradient-to-br from-yellow-400 to-amber-500 rounded-2xl p-6 text-white cursor-pointer">
+                <div class="text-4xl mb-3">🏙️</div>
+                <h3 class="font-bold text-lg">Mundo Miniatura</h3>
+                <p class="text-white/80 text-sm mt-1">Diorama gigante</p>
+            </div>
+
+            <!-- Estilo 7 -->
+            <div class="style-card bg-gradient-to-br from-cyan-400 to-teal-500 rounded-2xl p-6 text-white cursor-pointer">
+                <div class="text-4xl mb-3">⏱️</div>
+                <h3 class="font-bold text-lg">Tiempo Congelado</h3>
+                <p class="text-white/80 text-sm mt-1">Acción suspendida</p>
+            </div>
+
+            <!-- Estilo 8 -->
+            <div class="style-card bg-gradient-to-br from-gray-800 to-black rounded-2xl p-6 text-white cursor-pointer border border-yellow-500/30">
+                <div class="text-4xl mb-3">✨</div>
+                <h3 class="font-bold text-lg">Lujo Oscuro</h3>
+                <p class="text-white/80 text-sm mt-1">Elegancia premium</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Cómo Funciona -->
+<section class="py-20 px-4 bg-gray-50" id="como-funciona">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">3 Pasos Simples</h2>
+            <p class="text-gray-600 text-lg">De foto a contenido viral en menos de un minuto</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Paso 1 -->
+            <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition">
+                <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center text-white text-2xl font-bold mb-6">
+                    1
+                </div>
+                <h3 class="text-xl font-bold mb-3">Sube tu producto</h3>
+                <p class="text-gray-600">
+                    Toma una foto de tu producto con tu celular.
+                    También puedes subir tu logo para integrarlo.
+                </p>
+            </div>
+
+            <!-- Paso 2 -->
+            <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition">
+                <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center text-white text-2xl font-bold mb-6">
+                    2
+                </div>
+                <h3 class="text-xl font-bold mb-3">Elige un estilo</h3>
+                <p class="text-gray-600">
+                    Selecciona entre 8 estilos virales diseñados
+                    para maximizar el engagement en redes sociales.
+                </p>
+            </div>
+
+            <!-- Paso 3 -->
+            <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition">
+                <div class="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center text-white text-2xl font-bold mb-6">
+                    3
+                </div>
+                <h3 class="text-xl font-bold mb-3">Descarga y publica</h3>
+                <p class="text-gray-600">
+                    Obtén tu imagen generada + copy para Facebook e Instagram
+                    con hashtags optimizados. ¡Listo para publicar!
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Precios -->
+<section class="py-20 px-4 bg-white" id="precios">
+    <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Precios Simples</h2>
+            <p class="text-gray-600 text-lg">Sin suscripciones. Compra créditos y úsalos cuando quieras.</p>
+            <p class="text-purple-600 font-medium mt-2">1 crédito = 1 generación completa (imagen + copy)</p>
+        </div>
+
+        <div class="grid md:grid-cols-4 gap-6">
+            <!-- Pack 10 -->
+            <div class="bg-gray-50 rounded-2xl p-6 border border-gray-200 hover:border-purple-300 transition">
+                <h3 class="font-bold text-lg mb-2">10 Créditos</h3>
+                <div class="text-3xl font-bold mb-1">$30 <span class="text-lg font-normal text-gray-500">MXN</span></div>
+                <p class="text-gray-500 text-sm mb-4">$3 por generación</p>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>10 imágenes</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Copy para redes</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sin expiración</li>
+                </ul>
+            </div>
+
+            <!-- Pack 25 - Popular -->
+            <div class="bg-purple-50 rounded-2xl p-6 border-2 border-purple-400 relative">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                    POPULAR
+                </div>
+                <h3 class="font-bold text-lg mb-2">25 Créditos</h3>
+                <div class="text-3xl font-bold mb-1">$70 <span class="text-lg font-normal text-gray-500">MXN</span></div>
+                <p class="text-gray-500 text-sm mb-4">$2.80 por generación</p>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>25 imágenes</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Copy para redes</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sin expiración</li>
+                </ul>
+            </div>
+
+            <!-- Pack 50 -->
+            <div class="bg-gray-50 rounded-2xl p-6 border border-gray-200 hover:border-purple-300 transition">
+                <h3 class="font-bold text-lg mb-2">50 Créditos</h3>
+                <div class="text-3xl font-bold mb-1">$130 <span class="text-lg font-normal text-gray-500">MXN</span></div>
+                <p class="text-gray-500 text-sm mb-4">$2.60 por generación</p>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>50 imágenes</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Copy para redes</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sin expiración</li>
+                </ul>
+            </div>
+
+            <!-- Pack 100 - Mejor Valor -->
+            <div class="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl p-6 border-2 border-yellow-400 relative">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                    MEJOR VALOR
+                </div>
+                <h3 class="font-bold text-lg mb-2">100 Créditos</h3>
+                <div class="text-3xl font-bold mb-1">$250 <span class="text-lg font-normal text-gray-500">MXN</span></div>
+                <p class="text-gray-500 text-sm mb-4">$2.50 por generación</p>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>100 imágenes</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Copy para redes</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sin expiración</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="text-center mt-10">
+            <a href="/viralpost/registro" class="gradient-bg text-white px-8 py-4 rounded-full font-bold text-lg hover:opacity-90 transition inline-block">
+                Comenzar con 3 Créditos Gratis
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Final -->
+<section class="py-20 px-4 gradient-bg text-white">
+    <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">
+            ¿Listo para crear contenido viral?
+        </h2>
+        <p class="text-xl text-white/80 mb-8">
+            Únete ahora y recibe 3 créditos gratis para probar la plataforma.
+        </p>
+        <a href="/viralpost/registro" class="bg-white text-purple-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition shadow-xl inline-block">
+            <i class="fas fa-rocket mr-2"></i>
+            Crear Cuenta Gratis
+        </a>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-gray-400 py-12 px-4">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                <span class="text-2xl">🚀</span>
+                <span class="font-bold text-xl text-white">ViralPost AI</span>
+            </div>
+            <div class="flex space-x-6">
+                <a href="#" class="hover:text-white transition">Términos</a>
+                <a href="#" class="hover:text-white transition">Privacidad</a>
+                <a href="#" class="hover:text-white transition">Contacto</a>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
+            <p>© 2024 ViralPost AI - Agathoscreative.com. Todos los derechos reservados.</p>
+            <p class="mt-2">Pagos seguros con <i class="fab fa-stripe text-white"></i> Stripe</p>
+        </div>
+    </div>
+</footer>
+{% endblock %}
