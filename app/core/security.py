@@ -34,6 +34,11 @@ def hashear_password(password: str) -> str:
 def crear_token_acceso(data: dict, expires_delta: Optional[timedelta] = None) -> str:
     """Crea un JWT token de acceso"""
     to_encode = data.copy()
+
+    # Asegurar que sub sea string (estándar JWT)
+    if "sub" in to_encode:
+        to_encode["sub"] = str(to_encode["sub"])
+
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
@@ -78,8 +83,14 @@ async def obtener_usuario_actual(
     if payload is None:
         raise credentials_exception
 
-    user_id: int = payload.get("sub")
-    if user_id is None:
+    # Obtener user_id y convertir a int (JWT puede devolverlo como string)
+    user_id_raw = payload.get("sub")
+    if user_id_raw is None:
+        raise credentials_exception
+
+    try:
+        user_id = int(user_id_raw)
+    except (ValueError, TypeError):
         raise credentials_exception
 
     # Buscar usuario en DB

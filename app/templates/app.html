@@ -324,13 +324,22 @@
     function renderStyles(styles) {
         const grid = document.getElementById('stylesGrid');
         grid.innerHTML = styles.map(style => `
-            <div class="style-card cursor-pointer border-2 border-gray-200 rounded-xl p-4 hover:border-purple-400 transition"
+            <div class="style-card cursor-pointer border-2 border-gray-200 rounded-xl overflow-hidden hover:border-purple-400 hover:shadow-lg transition"
                  data-style="${style.id}"
                  onclick="selectStyle('${style.id}')">
-                <div class="flex items-center space-x-3">
-                    <span class="text-2xl">${style.icono}</span>
-                    <div>
+                <div class="aspect-square relative">
+                    <img src="${style.imagen_ejemplo}"
+                         alt="${style.nombre}"
+                         class="w-full h-full object-cover"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="absolute inset-0 items-center justify-center text-4xl hidden"
+                         style="background: ${style.preview_color}20;">
+                        ${style.icono}
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-3 text-white">
                         <h4 class="font-semibold text-sm">${style.nombre}</h4>
+                        <p class="text-xs text-white/80 line-clamp-2">${style.descripcion}</p>
                     </div>
                 </div>
             </div>
