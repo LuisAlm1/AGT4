@@ -14,22 +14,26 @@ class StripeService:
     """Servicio para manejar pagos con Stripe"""
 
     # Paquetes de créditos disponibles
-    # Precios con margen 3x sobre Nano Banana Pro ($0.134) + GPT-4o ($0.03)
-    # Costo real: ~$0.164 USD → Precio: ~$0.50 USD → ~$8.75 MXN/crédito
+    # Costo por generación:
+    # - Nano Banana Pro (imagen): $0.24 USD
+    # - GPT-4o (prompts/copy): ~$0.03 USD
+    # - Total costo: ~$0.27 USD
+    # - Con margen 3x: ~$0.81 USD
+    # - En MXN (~17.5): ~$14.18 MXN/crédito
     PAQUETES = [
         {
             "id": "pack_10",
             "creditos": 10,
-            "precio_mxn": 90,
-            "precio_centavos": 9000,
+            "precio_mxn": 150,
+            "precio_centavos": 15000,
             "nombre": "10 Créditos",
             "descripcion": "Paquete básico - 10 generaciones"
         },
         {
             "id": "pack_25",
             "creditos": 25,
-            "precio_mxn": 215,
-            "precio_centavos": 21500,
+            "precio_mxn": 350,
+            "precio_centavos": 35000,
             "nombre": "25 Créditos",
             "descripcion": "Paquete popular - 25 generaciones",
             "popular": True
@@ -37,16 +41,16 @@ class StripeService:
         {
             "id": "pack_50",
             "creditos": 50,
-            "precio_mxn": 425,
-            "precio_centavos": 42500,
+            "precio_mxn": 680,
+            "precio_centavos": 68000,
             "nombre": "50 Créditos",
             "descripcion": "Paquete profesional - 50 generaciones"
         },
         {
             "id": "pack_100",
             "creditos": 100,
-            "precio_mxn": 829,
-            "precio_centavos": 82900,
+            "precio_mxn": 1290,
+            "precio_centavos": 129000,
             "nombre": "100 Créditos",
             "descripcion": "Mejor valor - 100 generaciones",
             "mejor_valor": True
