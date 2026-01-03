@@ -127,6 +127,24 @@ async def pagina_historial(request: Request):
     return templates.TemplateResponse("historial.html", {"request": request})
 
 
+@app.get("/viralpost/terminos", response_class=HTMLResponse)
+async def pagina_terminos(request: Request):
+    """Página de términos de servicio"""
+    return templates.TemplateResponse("terminos.html", {"request": request})
+
+
+@app.get("/viralpost/privacidad", response_class=HTMLResponse)
+async def pagina_privacidad(request: Request):
+    """Página de política de privacidad"""
+    return templates.TemplateResponse("privacidad.html", {"request": request})
+
+
+@app.get("/viralpost/contacto", response_class=HTMLResponse)
+async def pagina_contacto(request: Request):
+    """Página de contacto"""
+    return templates.TemplateResponse("contacto.html", {"request": request})
+
+
 # ============ RUTA DE IMÁGENES GENERADAS ============
 
 @app.get("/viralpost/imagenes/{filename}")

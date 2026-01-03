@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Contacto{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-4">
+        <a href="/viralpost" class="flex items-center space-x-2">
+            <span class="text-2xl">🚀</span>
+            <span class="font-bold text-xl gradient-text">ViralPost AI</span>
+        </a>
+    </div>
+</nav>
+
+<main class="pt-24 pb-16 px-4 min-h-screen bg-gray-50">
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12 text-center">
+            <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-envelope text-3xl text-purple-600"></i>
+            </div>
+
+            <h1 class="text-3xl md:text-4xl font-bold gradient-text mb-4">Contáctanos</h1>
+
+            <p class="text-gray-600 text-lg mb-8">
+                ¿Tienes preguntas, sugerencias o necesitas ayuda?<br>
+                Estamos aquí para ayudarte.
+            </p>
+
+            <div class="bg-gray-50 rounded-xl p-6 mb-8">
+                <p class="text-gray-500 text-sm mb-2">Escríbenos a:</p>
+                <a href="mailto:agathoscreativehouse@gmail.com" class="text-2xl font-semibold text-purple-600 hover:text-purple-800 transition">
+                    agathoscreativehouse@gmail.com
+                </a>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 text-left">
+                <div class="bg-gray-50 rounded-xl p-5">
+                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fas fa-question-circle text-blue-600"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-1">Soporte</h3>
+                    <p class="text-gray-500 text-sm">Problemas técnicos o con tu cuenta</p>
+                </div>
+
+                <div class="bg-gray-50 rounded-xl p-5">
+                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fas fa-credit-card text-green-600"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-1">Pagos</h3>
+                    <p class="text-gray-500 text-sm">Facturación y transacciones</p>
+                </div>
+
+                <div class="bg-gray-50 rounded-xl p-5">
+                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fas fa-lightbulb text-purple-600"></i>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 mb-1">Sugerencias</h3>
+                    <p class="text-gray-500 text-sm">Ideas para mejorar el servicio</p>
+                </div>
+            </div>
+
+            <div class="mt-10 pt-8 border-t border-gray-200">
+                <p class="text-gray-500 text-sm mb-4">Tiempo de respuesta promedio: 24-48 horas</p>
+                <a href="/viralpost" class="inline-flex items-center text-purple-600 hover:text-purple-800 font-medium">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    Volver al inicio
+                </a>
+            </div>
+        </div>
+
+        <!-- FAQ rápido -->
+        <div class="mt-8 bg-white rounded-2xl shadow-lg p-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-6">Preguntas Frecuentes</h2>
+
+            <div class="space-y-4">
+                <details class="group">
+                    <summary class="flex justify-between items-center cursor-pointer p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
+                        <span class="font-medium text-gray-700">¿Cómo funcionan los créditos?</span>
+                        <i class="fas fa-chevron-down text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="p-4 text-gray-600">
+                        Cada generación de imagen consume 1 crédito. Puedes comprar paquetes de créditos desde la sección "Comprar Créditos" en tu cuenta. Los créditos no expiran.
+                    </div>
+                </details>
+
+                <details class="group">
+                    <summary class="flex justify-between items-center cursor-pointer p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
+                        <span class="font-medium text-gray-700">¿Puedo usar las imágenes comercialmente?</span>
+                        <i class="fas fa-chevron-down text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="p-4 text-gray-600">
+                        Sí, todas las imágenes generadas son tuyas y puedes usarlas para fines comerciales, en redes sociales, publicidad, etc.
+                    </div>
+                </details>
+
+                <details class="group">
+                    <summary class="flex justify-between items-center cursor-pointer p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
+                        <span class="font-medium text-gray-700">¿Qué métodos de pago aceptan?</span>
+                        <i class="fas fa-chevron-down text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="p-4 text-gray-600">
+                        Aceptamos todas las tarjetas de crédito y débito a través de Stripe (Visa, Mastercard, American Express). Los pagos son 100% seguros.
+                    </div>
+                </details>
+
+                <details class="group">
+                    <summary class="flex justify-between items-center cursor-pointer p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
+                        <span class="font-medium text-gray-700">¿Hay reembolsos?</span>
+                        <i class="fas fa-chevron-down text-gray-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="p-4 text-gray-600">
+                        Los créditos no son reembolsables una vez comprados. Por eso ofrecemos 1 crédito gratis al registrarte para que pruebes el servicio antes de comprar.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-gray-400 py-8 px-4">
+    <div class="max-w-6xl mx-auto text-center">
+        <p class="text-sm">© 2024 ViralPost AI - Agathoscreative.com. Todos los derechos reservados.</p>
+    </div>
+</footer>
+{% endblock %}
