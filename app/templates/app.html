@@ -420,6 +420,14 @@
             // Usar imagen dinámica si existe, sino usar imagen de ejemplo
             const imageUrl = dynamicImages[style.id] || style.imagen_ejemplo;
             const isDynamic = !!dynamicImages[style.id];
+            // Usar traducciones para nombre y descripción
+            const styleName = I18n.t(`style.${style.id}`) !== `style.${style.id}`
+                ? I18n.t(`style.${style.id}`)
+                : style.nombre;
+            const styleDesc = I18n.t(`style.${style.id}_desc`) !== `style.${style.id}_desc`
+                ? I18n.t(`style.${style.id}_desc`)
+                : style.descripcion;
+            const realText = I18n.t('style.real_example');
 
             return `
             <div class="style-card cursor-pointer border-2 border-gray-200 rounded-xl overflow-hidden hover:border-purple-400 hover:shadow-lg transition"
@@ -427,7 +435,7 @@
                  onclick="selectStyle('${style.id}')">
                 <div class="aspect-square relative">
                     <img src="${imageUrl}"
-                         alt="${style.nombre}"
+                         alt="${styleName}"
                          class="w-full h-full object-cover"
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                     <div class="absolute inset-0 items-center justify-center text-4xl hidden"
@@ -436,10 +444,10 @@
                     </div>
                     <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                     <div class="absolute bottom-0 left-0 right-0 p-3 text-white">
-                        <h4 class="font-semibold text-sm">${style.nombre}</h4>
-                        <p class="text-xs text-white/80 line-clamp-2">${style.descripcion}</p>
+                        <h4 class="font-semibold text-sm">${styleName}</h4>
+                        <p class="text-xs text-white/80 line-clamp-2">${styleDesc}</p>
                     </div>
-                    ${isDynamic ? '<div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-0.5 rounded-full"><i class="fas fa-check mr-1"></i>Real</div>' : ''}
+                    ${isDynamic ? `<div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-0.5 rounded-full"><i class="fas fa-check mr-1"></i>${realText}</div>` : ''}
                 </div>
             </div>
         `}).join('');
