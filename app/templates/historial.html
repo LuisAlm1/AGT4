@@ -105,9 +105,9 @@
             </div>
 
             <div class="mt-6 flex space-x-4">
-                <a id="modalDownload" download class="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-200 transition text-center">
+                <button id="modalDownloadBtn" onclick="downloadModalImage()" class="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-200 transition text-center">
                     <i class="fas fa-download mr-2"></i>Descargar
-                </a>
+                </button>
                 <button onclick="closeDetailModal()" class="flex-1 gradient-bg text-white py-3 rounded-xl font-medium hover:opacity-90 transition">
                     Cerrar
                 </button>
@@ -261,9 +261,11 @@
 
         if (generation.imagen_url) {
             document.getElementById('modalImage').src = generation.imagen_url;
-            const downloadLink = document.getElementById('modalDownload');
-            downloadLink.href = generation.imagen_url;
-            downloadLink.download = `viralpost_${generation.id}_${generation.estilo}.png`;
+            // Guardar info para descarga del modal
+            currentModalImage = {
+                url: generation.imagen_url,
+                filename: `viralpost_${generation.id}_${generation.estilo}.png`
+            };
         }
 
         document.getElementById('modalFacebookCopy').textContent = generation.copy_facebook || 'No disponible';
@@ -274,24 +276,113 @@
         modal.classList.remove('hidden');
     }
 
-    // Descargar imagen directamente
+    // Variable para guardar info del modal actual
+    let currentModalImage = { url: '', filename: '' };
+
+    // Detectar iOS
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+    // Descargar imagen (optimizado para iOS)
     async function downloadImage(url, filename, event) {
         event.stopPropagation();
-        try {
-            const response = await fetch(url);
-            const blob = await response.blob();
-            const blobUrl = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = blobUrl;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(blobUrl);
-            showNotification('¡Imagen descargada!', 'success');
-        } catch (error) {
-            showNotification('Error al descargar', 'error');
+
+        if (isIOS && navigator.share) {
+            // iOS con Web Share API
+            try {
+                const response = await fetch(url);
+                const blob = await response.blob();
+                const file = new File([blob], filename, { type: 'image/png' });
+                await navigator.share({
+                    files: [file],
+                    title: 'ViralPost AI'
+                });
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    openImageInNewTab(url);
+                }
+            }
+        } else if (isIOS) {
+            // iOS sin Web Share API
+            openImageInNewTab(url);
+        } else {
+            // Desktop/Android - descarga directa
+            try {
+                const response = await fetch(url);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(blobUrl);
+                showNotification('¡Imagen descargada!', 'success');
+            } catch (error) {
+                showNotification('Error al descargar', 'error');
+            }
         }
+    }
+
+    // Descargar imagen del modal
+    function downloadModalImage() {
+        downloadImage(currentModalImage.url, currentModalImage.filename, { stopPropagation: () => {} });
+    }
+
+    // Abrir imagen en nueva pestaña con instrucciones para iOS
+    function openImageInNewTab(imageSrc) {
+        const newWindow = window.open('', '_blank');
+        newWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <title>Guardar Imagen - ViralPost AI</title>
+                <style>
+                    body {
+                        margin: 0;
+                        padding: 20px;
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                        background: #f5f5f5;
+                        text-align: center;
+                    }
+                    .instructions {
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        padding: 16px 20px;
+                        border-radius: 12px;
+                        margin-bottom: 20px;
+                        font-size: 15px;
+                        line-height: 1.5;
+                    }
+                    .instructions strong {
+                        display: block;
+                        font-size: 17px;
+                        margin-bottom: 8px;
+                    }
+                    img {
+                        max-width: 100%;
+                        border-radius: 12px;
+                        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+                    }
+                    .tip {
+                        margin-top: 16px;
+                        color: #666;
+                        font-size: 13px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="instructions">
+                    <strong>📱 Para guardar en Fotos:</strong>
+                    Mantén presionada la imagen y selecciona<br>"Guardar en Fotos" o "Añadir a Fotos"
+                </div>
+                <img src="${imageSrc}" alt="ViralPost AI">
+                <p class="tip">Después de guardar, puedes cerrar esta pestaña</p>
+            </body>
+            </html>
+        `);
+        newWindow.document.close();
     }
 
     // Copiar texto al portapapeles

@@ -214,9 +214,9 @@
                     <!-- Imagen -->
                     <div class="relative">
                         <img id="generatedImage" class="w-full rounded-xl shadow-lg">
-                        <a id="downloadBtn" download="viralpost.png" class="absolute top-3 right-3 bg-white/90 hover:bg-white text-gray-700 px-4 py-2 rounded-lg shadow-lg font-medium">
+                        <button onclick="downloadImage()" class="absolute top-3 right-3 bg-white/90 hover:bg-white text-gray-700 px-4 py-2 rounded-lg shadow-lg font-medium">
                             <i class="fas fa-download mr-2"></i>Descargar
-                        </a>
+                        </button>
                     </div>
 
                     <!-- Tabs para copy -->
@@ -710,6 +710,104 @@
     // Modal sin créditos
     function closeNoCreditsModal() {
         document.getElementById('noCreditsModal').classList.add('hidden');
+    }
+
+    // Descargar imagen (optimizado para iOS)
+    async function downloadImage() {
+        const img = document.getElementById('generatedImage');
+        const imageSrc = img.src;
+
+        // Detectar iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+        if (isIOS && navigator.share) {
+            // iOS con Web Share API - permite guardar en Fotos
+            try {
+                // Convertir base64 a blob
+                const response = await fetch(imageSrc);
+                const blob = await response.blob();
+                const file = new File([blob], 'viralpost.png', { type: 'image/png' });
+
+                await navigator.share({
+                    files: [file],
+                    title: 'ViralPost AI',
+                    text: 'Imagen generada con ViralPost AI'
+                });
+            } catch (err) {
+                // Si el usuario cancela o hay error, abrir en nueva pestaña
+                if (err.name !== 'AbortError') {
+                    openImageInNewTab(imageSrc);
+                }
+            }
+        } else if (isIOS) {
+            // iOS sin Web Share API - abrir imagen con instrucciones
+            openImageInNewTab(imageSrc);
+        } else {
+            // Desktop/Android - descarga directa
+            const link = document.createElement('a');
+            link.href = imageSrc;
+            link.download = 'viralpost.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showNotification('¡Imagen descargada!', 'success');
+        }
+    }
+
+    // Abrir imagen en nueva pestaña con instrucciones para iOS
+    function openImageInNewTab(imageSrc) {
+        const newWindow = window.open('', '_blank');
+        newWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <title>Guardar Imagen - ViralPost AI</title>
+                <style>
+                    body {
+                        margin: 0;
+                        padding: 20px;
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                        background: #f5f5f5;
+                        text-align: center;
+                    }
+                    .instructions {
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                        padding: 16px 20px;
+                        border-radius: 12px;
+                        margin-bottom: 20px;
+                        font-size: 15px;
+                        line-height: 1.5;
+                    }
+                    .instructions strong {
+                        display: block;
+                        font-size: 17px;
+                        margin-bottom: 8px;
+                    }
+                    img {
+                        max-width: 100%;
+                        border-radius: 12px;
+                        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+                    }
+                    .tip {
+                        margin-top: 16px;
+                        color: #666;
+                        font-size: 13px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="instructions">
+                    <strong>📱 Para guardar en Fotos:</strong>
+                    Mantén presionada la imagen y selecciona<br>"Guardar en Fotos" o "Añadir a Fotos"
+                </div>
+                <img src="${imageSrc}" alt="ViralPost AI">
+                <p class="tip">Después de guardar, puedes cerrar esta pestaña</p>
+            </body>
+            </html>
+        `);
+        newWindow.document.close();
     }
 </script>
 {% endblock %}
