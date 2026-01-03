@@ -79,62 +79,16 @@
             </p>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <!-- Estilo 1 -->
-            <div class="style-card bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl p-6 text-white cursor-pointer">
-                <div class="text-4xl mb-3">💥</div>
-                <h3 class="font-bold text-lg">Explosión Macro</h3>
-                <p class="text-white/80 text-sm mt-1">Componentes volando</p>
-            </div>
-
-            <!-- Estilo 2 -->
-            <div class="style-card bg-gradient-to-br from-gray-400 to-gray-600 rounded-2xl p-6 text-white cursor-pointer">
-                <div class="text-4xl mb-3">🪞</div>
-                <h3 class="font-bold text-lg">Metal Líquido</h3>
-                <p class="text-white/80 text-sm mt-1">Reflejos cromados</p>
-            </div>
-
-            <!-- Estilo 3 -->
-            <div class="style-card bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl p-6 text-white cursor-pointer">
-                <div class="text-4xl mb-3">🌃</div>
-                <h3 class="font-bold text-lg">Neon Noir</h3>
-                <p class="text-white/80 text-sm mt-1">Cyberpunk urbano</p>
-            </div>
-
-            <!-- Estilo 4 -->
-            <div class="style-card bg-gradient-to-br from-green-400 to-emerald-600 rounded-2xl p-6 text-white cursor-pointer">
-                <div class="text-4xl mb-3">🌺</div>
-                <h3 class="font-bold text-lg">Jardín Surrealista</h3>
-                <p class="text-white/80 text-sm mt-1">Naturaleza fantástica</p>
-            </div>
-
-            <!-- Estilo 5 -->
-            <div class="style-card bg-gradient-to-br from-blue-400 to-indigo-600 rounded-2xl p-6 text-white cursor-pointer">
-                <div class="text-4xl mb-3">🚀</div>
-                <h3 class="font-bold text-lg">Gravedad Cero</h3>
-                <p class="text-white/80 text-sm mt-1">Todo flotando</p>
-            </div>
-
-            <!-- Estilo 6 -->
-            <div class="style-card bg-gradient-to-br from-yellow-400 to-amber-500 rounded-2xl p-6 text-white cursor-pointer">
-                <div class="text-4xl mb-3">🏙️</div>
-                <h3 class="font-bold text-lg">Mundo Miniatura</h3>
-                <p class="text-white/80 text-sm mt-1">Diorama gigante</p>
-            </div>
-
-            <!-- Estilo 7 -->
-            <div class="style-card bg-gradient-to-br from-cyan-400 to-teal-500 rounded-2xl p-6 text-white cursor-pointer">
-                <div class="text-4xl mb-3">⏱️</div>
-                <h3 class="font-bold text-lg">Tiempo Congelado</h3>
-                <p class="text-white/80 text-sm mt-1">Acción suspendida</p>
-            </div>
-
-            <!-- Estilo 8 -->
-            <div class="style-card bg-gradient-to-br from-gray-800 to-black rounded-2xl p-6 text-white cursor-pointer border border-yellow-500/30">
-                <div class="text-4xl mb-3">✨</div>
-                <h3 class="font-bold text-lg">Lujo Oscuro</h3>
-                <p class="text-white/80 text-sm mt-1">Elegancia premium</p>
-            </div>
+        <div id="stylesGrid" class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <!-- Se cargan dinámicamente con JavaScript -->
+            <div class="style-card bg-gray-200 rounded-2xl p-6 text-white cursor-pointer animate-pulse aspect-square"></div>
+            <div class="style-card bg-gray-200 rounded-2xl p-6 text-white cursor-pointer animate-pulse aspect-square"></div>
+            <div class="style-card bg-gray-200 rounded-2xl p-6 text-white cursor-pointer animate-pulse aspect-square"></div>
+            <div class="style-card bg-gray-200 rounded-2xl p-6 text-white cursor-pointer animate-pulse aspect-square"></div>
+            <div class="style-card bg-gray-200 rounded-2xl p-6 text-white cursor-pointer animate-pulse aspect-square"></div>
+            <div class="style-card bg-gray-200 rounded-2xl p-6 text-white cursor-pointer animate-pulse aspect-square"></div>
+            <div class="style-card bg-gray-200 rounded-2xl p-6 text-white cursor-pointer animate-pulse aspect-square"></div>
+            <div class="style-card bg-gray-200 rounded-2xl p-6 text-white cursor-pointer animate-pulse aspect-square"></div>
         </div>
     </div>
 </section>
@@ -275,6 +229,59 @@
         </a>
     </div>
 </section>
+
+<!-- Script para cargar estilos con imágenes -->
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            // Cargar estilos e imágenes dinámicas en paralelo
+            const [stylesResponse, dynamicResponse] = await Promise.all([
+                fetch('/viralpost/api/generacion/estilos'),
+                fetch('/viralpost/api/generacion/estilos/imagenes-dinamicas')
+            ]);
+
+            let dynamicImages = {};
+            if (dynamicResponse.ok) {
+                const dynamicData = await dynamicResponse.json();
+                dynamicImages = dynamicData.imagenes || {};
+            }
+
+            if (stylesResponse.ok) {
+                const styles = await stylesResponse.json();
+                renderLandingStyles(styles, dynamicImages);
+            }
+        } catch (error) {
+            console.error('Error cargando estilos:', error);
+        }
+    });
+
+    function renderLandingStyles(styles, dynamicImages) {
+        const grid = document.getElementById('stylesGrid');
+        grid.innerHTML = styles.map(style => {
+            const imageUrl = dynamicImages[style.id] || style.imagen_ejemplo;
+            const isDynamic = !!dynamicImages[style.id];
+
+            return `
+            <a href="/viralpost/registro" class="style-card rounded-2xl overflow-hidden cursor-pointer group relative aspect-square block">
+                <img src="${imageUrl}"
+                     alt="${style.nombre}"
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="absolute inset-0 items-center justify-center text-6xl hidden"
+                     style="background: ${style.preview_color};">
+                    ${style.icono}
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-4 text-white">
+                    <div class="text-2xl mb-1">${style.icono}</div>
+                    <h3 class="font-bold text-lg">${style.nombre}</h3>
+                    <p class="text-white/80 text-sm mt-1 line-clamp-2">${style.descripcion}</p>
+                </div>
+                ${isDynamic ? '<div class="absolute top-3 right-3 bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium"><i class="fas fa-check mr-1"></i>Ejemplo Real</div>' : ''}
+            </a>
+        `}).join('');
+    }
+</script>
 
 <!-- Footer -->
 <footer class="bg-gray-900 text-gray-400 py-12 px-4">
