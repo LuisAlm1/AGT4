@@ -145,15 +145,20 @@
 
         // Cambiar idioma
         function changeLang(lang, currency) {
+            // Guardar preferencia
+            localStorage.setItem('viralpost_lang', lang);
+            localStorage.setItem('viralpost_currency', currency);
+
+            // Actualizar I18n si existe
             if (window.I18n) {
-                I18n.setLanguage(lang, currency);
-            } else {
-                // Fallback: guardar en localStorage y recargar
-                localStorage.setItem('viralpost_lang', lang);
-                localStorage.setItem('viralpost_currency', currency);
-                window.location.reload();
+                I18n.currentLang = lang;
+                I18n.currentCurrency = currency;
             }
+
             toggleLangMenu();
+
+            // Recargar para aplicar cambios en toda la página
+            window.location.reload();
         }
 
         // Cerrar menú al hacer clic fuera
