@@ -2,7 +2,7 @@
 Rutas de pagos con Stripe
 """
 from datetime import datetime
-from fastapi import APIRouter, Depends, HTTPException, status, Request
+from fastapi import APIRouter, Depends, HTTPException, status, Request, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from app.core.database import get_db
@@ -22,23 +22,39 @@ router = APIRouter(prefix="/pagos", tags=["Pagos"])
 
 
 @router.get("/paquetes", response_model=list[PaqueteResponse])
-async def listar_paquetes():
+async def listar_paquetes(
+    currency: str = Query(default="MXN", pattern="^(MXN|USD)$", description="Moneda: MXN o USD"),
+    lang: str = Query(default="es", pattern="^(es|en)$", description="Idioma: es o en")
+):
     """
     Lista todos los paquetes de créditos disponibles.
+    Soporta MXN (México) y USD (USA/Internacional).
     """
-    paquetes = stripe_service.obtener_paquetes()
-    return [
-        PaqueteResponse(
+    paquetes = stripe_service.obtener_paquetes(currency)
+
+    result = []
+    for p in paquetes:
+        # Traducir nombres si es inglés
+        if lang == "en":
+            nombre = f"{p['creditos']} Credits"
+            descripcion = f"Credit package - {p['creditos']} generations"
+        else:
+            nombre = p.get("nombre", f"{p['creditos']} Créditos")
+            descripcion = p.get("descripcion", f"Paquete de {p['creditos']} generaciones")
+
+        result.append(PaqueteResponse(
             id=p["id"],
             creditos=p["creditos"],
             precio_mxn=p["precio_mxn"],
-            nombre=p["nombre"],
-            descripcion=p["descripcion"],
+            precio=p.get("precio", p["precio_mxn"]),
+            moneda=p.get("moneda", "MXN"),
+            nombre=nombre,
+            descripcion=descripcion,
             popular=p.get("popular", False),
             mejor_valor=p.get("mejor_valor", False)
-        )
-        for p in paquetes
-    ]
+        ))
+
+    return result
 
 
 @router.post("/checkout", response_model=CheckoutResponse)
@@ -49,14 +65,15 @@ async def crear_checkout(
 ):
     """
     Crea una sesión de checkout de Stripe para comprar créditos.
+    Soporta pagos en MXN (con OXXO) y USD (solo tarjeta).
 
     Retorna la URL de Stripe Checkout donde el usuario debe ser redirigido.
     """
-    paquete = stripe_service.obtener_paquete(datos.paquete_id)
+    paquete = stripe_service.obtener_paquete(datos.paquete_id, datos.currency)
     if not paquete:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Paquete no encontrado"
+            detail="Paquete no encontrado" if datos.lang == "es" else "Package not found"
         )
 
     try:
@@ -71,17 +88,20 @@ async def crear_checkout(
             user=usuario,
             paquete_id=datos.paquete_id,
             success_url=f"{settings.BASE_URL}/pago-exitoso?session_id={{CHECKOUT_SESSION_ID}}",
-            cancel_url=f"{settings.BASE_URL}/creditos"
+            cancel_url=f"{settings.BASE_URL}/creditos",
+            currency=datos.currency,
+            lang=datos.lang
         )
 
         # Crear registro de transacción pendiente
+        # Siempre guardamos el monto en MXN para consistencia en reportes
         transaccion = Transaction(
             user_id=usuario.id,
             stripe_checkout_session_id=resultado["session_id"],
             creditos=paquete["creditos"],
-            monto_mxn=paquete["precio_mxn"],
+            monto_mxn=paquete["precio_mxn"],  # Siempre en MXN
             estado=EstadoTransaccion.PENDIENTE.value,
-            descripcion=f"Compra: {paquete['nombre']}"
+            descripcion=f"Compra: {paquete['creditos']} créditos ({datos.currency})"
         )
         db.add(transaccion)
         await db.commit()

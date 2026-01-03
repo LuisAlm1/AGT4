@@ -13,6 +13,9 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 class StripeService:
     """Servicio para manejar pagos con Stripe"""
 
+    # Tasa de cambio MXN a USD (actualizar periódicamente)
+    EXCHANGE_RATE = 17.5
+
     # Paquetes de créditos disponibles
     # Costo por generación:
     # - Nano Banana Pro (imagen): $0.24 USD
@@ -57,15 +60,36 @@ class StripeService:
         }
     ]
 
-    def obtener_paquetes(self) -> list:
-        """Retorna los paquetes disponibles"""
-        return self.PAQUETES
+    def obtener_paquetes(self, currency: str = "MXN") -> list:
+        """Retorna los paquetes disponibles con precios en la moneda especificada"""
+        paquetes = []
+        for p in self.PAQUETES:
+            paquete = p.copy()
+            if currency.upper() == "USD":
+                paquete["precio"] = round(p["precio_mxn"] / self.EXCHANGE_RATE, 2)
+                paquete["precio_centavos"] = int(paquete["precio"] * 100)
+                paquete["moneda"] = "USD"
+            else:
+                paquete["precio"] = p["precio_mxn"]
+                paquete["precio_centavos"] = p["precio_centavos"]
+                paquete["moneda"] = "MXN"
+            paquetes.append(paquete)
+        return paquetes
 
-    def obtener_paquete(self, paquete_id: str) -> Optional[dict]:
-        """Obtiene un paquete por ID"""
+    def obtener_paquete(self, paquete_id: str, currency: str = "MXN") -> Optional[dict]:
+        """Obtiene un paquete por ID con precio en la moneda especificada"""
         for paquete in self.PAQUETES:
             if paquete["id"] == paquete_id:
-                return paquete
+                p = paquete.copy()
+                if currency.upper() == "USD":
+                    p["precio"] = round(paquete["precio_mxn"] / self.EXCHANGE_RATE, 2)
+                    p["precio_centavos"] = int(p["precio"] * 100)
+                    p["moneda"] = "USD"
+                else:
+                    p["precio"] = paquete["precio_mxn"]
+                    p["precio_centavos"] = paquete["precio_centavos"]
+                    p["moneda"] = "MXN"
+                return p
         return None
 
     async def crear_o_obtener_customer(self, user: User) -> str:
@@ -99,7 +123,9 @@ class StripeService:
         user: User,
         paquete_id: str,
         success_url: str,
-        cancel_url: str
+        cancel_url: str,
+        currency: str = "MXN",
+        lang: str = "es"
     ) -> dict:
         """
         Crea una sesión de checkout de Stripe
@@ -110,43 +136,69 @@ class StripeService:
             "session_id": str
         }
         """
-        paquete = self.obtener_paquete(paquete_id)
+        paquete = self.obtener_paquete(paquete_id, currency)
         if not paquete:
             raise ValueError(f"Paquete no encontrado: {paquete_id}")
 
         customer_id = await self.crear_o_obtener_customer(user)
 
-        session = stripe.checkout.Session.create(
-            customer=customer_id,
-            payment_method_types=["card", "oxxo"],
-            line_items=[
+        # Determinar métodos de pago según moneda
+        # OXXO solo disponible para MXN
+        currency_lower = currency.lower()
+        if currency_lower == "mxn":
+            payment_methods = ["card", "oxxo"]
+            locale = "es-419"  # Español latinoamericano
+        else:
+            payment_methods = ["card"]
+            locale = "en" if lang == "en" else "es-419"
+
+        # Nombres en el idioma correcto
+        if lang == "en":
+            product_name = f"{paquete['creditos']} Credits"
+            product_desc = f"Credit package - {paquete['creditos']} generations"
+        else:
+            product_name = paquete["nombre"]
+            product_desc = paquete["descripcion"]
+
+        # Configurar sesión
+        session_params = {
+            "customer": customer_id,
+            "payment_method_types": payment_methods,
+            "line_items": [
                 {
                     "price_data": {
-                        "currency": "mxn",
+                        "currency": currency_lower,
                         "unit_amount": paquete["precio_centavos"],
                         "product_data": {
-                            "name": paquete["nombre"],
-                            "description": paquete["descripcion"],
+                            "name": product_name,
+                            "description": product_desc,
                         },
                     },
                     "quantity": 1,
                 }
             ],
-            mode="payment",
-            success_url=success_url,
-            cancel_url=cancel_url,
-            metadata={
+            "mode": "payment",
+            "success_url": success_url,
+            "cancel_url": cancel_url,
+            "metadata": {
                 "user_id": str(user.id),
                 "paquete_id": paquete_id,
-                "creditos": str(paquete["creditos"])
+                "creditos": str(paquete["creditos"]),
+                "currency": currency_lower,
+                "precio_original_mxn": str(self.PAQUETES[0]["precio_mxn"])  # Para referencia
             },
-            locale="es-419",  # Español latinoamericano
-            payment_method_options={
+            "locale": locale
+        }
+
+        # Agregar opciones de OXXO solo si está disponible
+        if "oxxo" in payment_methods:
+            session_params["payment_method_options"] = {
                 "oxxo": {
-                    "expires_after_days": 3  # El voucher expira en 3 días
+                    "expires_after_days": 3
                 }
             }
-        )
+
+        session = stripe.checkout.Session.create(**session_params)
 
         return {
             "checkout_url": session.url,

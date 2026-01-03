@@ -117,6 +117,8 @@ class PaqueteResponse(BaseModel):
     id: str
     creditos: int
     precio_mxn: int
+    precio: Optional[float] = None  # Precio en la moneda solicitada
+    moneda: str = "MXN"
     nombre: str
     descripcion: str
     popular: bool = False
@@ -126,6 +128,8 @@ class PaqueteResponse(BaseModel):
 class CheckoutRequest(BaseModel):
     """Solicitud de checkout"""
     paquete_id: str
+    currency: str = Field(default="MXN", pattern="^(MXN|USD)$", description="Moneda: MXN o USD")
+    lang: str = Field(default="es", pattern="^(es|en)$", description="Idioma: es o en")
 
 
 class CheckoutResponse(BaseModel):
