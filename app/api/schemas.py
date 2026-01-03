@@ -51,6 +51,12 @@ class EstiloResponse(BaseModel):
     descripcion: str
     icono: str
     preview_color: str
+    imagen_ejemplo: Optional[str] = None
+
+
+class ImagenesEstilosResponse(BaseModel):
+    """Respuesta con imágenes dinámicas por estilo"""
+    imagenes: dict  # {estilo_id: imagen_url}
 
 
 # ============ GENERACIÓN ============

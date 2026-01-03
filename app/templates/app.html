@@ -307,12 +307,27 @@
         }
     }
 
+    // Variables para imágenes dinámicas
+    let dynamicImages = {};
+
     // Cargar estilos
     async function loadStyles() {
         try {
-            const response = await apiFetch('/generacion/estilos');
-            if (response.ok) {
-                const styles = await response.json();
+            // Cargar estilos e imágenes dinámicas en paralelo
+            const [stylesResponse, dynamicResponse] = await Promise.all([
+                apiFetch('/generacion/estilos'),
+                fetch('/viralpost/api/generacion/estilos/imagenes-dinamicas')
+            ]);
+
+            if (stylesResponse.ok) {
+                const styles = await stylesResponse.json();
+
+                // Intentar cargar imágenes dinámicas
+                if (dynamicResponse.ok) {
+                    const dynamicData = await dynamicResponse.json();
+                    dynamicImages = dynamicData.imagenes || {};
+                }
+
                 renderStyles(styles);
             }
         } catch (error) {
@@ -320,15 +335,20 @@
         }
     }
 
-    // Renderizar estilos
+    // Renderizar estilos con imágenes dinámicas (fallback a imagen de ejemplo)
     function renderStyles(styles) {
         const grid = document.getElementById('stylesGrid');
-        grid.innerHTML = styles.map(style => `
+        grid.innerHTML = styles.map(style => {
+            // Usar imagen dinámica si existe, sino usar imagen de ejemplo
+            const imageUrl = dynamicImages[style.id] || style.imagen_ejemplo;
+            const isDynamic = !!dynamicImages[style.id];
+
+            return `
             <div class="style-card cursor-pointer border-2 border-gray-200 rounded-xl overflow-hidden hover:border-purple-400 hover:shadow-lg transition"
                  data-style="${style.id}"
                  onclick="selectStyle('${style.id}')">
                 <div class="aspect-square relative">
-                    <img src="${style.imagen_ejemplo}"
+                    <img src="${imageUrl}"
                          alt="${style.nombre}"
                          class="w-full h-full object-cover"
                          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -341,9 +361,10 @@
                         <h4 class="font-semibold text-sm">${style.nombre}</h4>
                         <p class="text-xs text-white/80 line-clamp-2">${style.descripcion}</p>
                     </div>
+                    ${isDynamic ? '<div class="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-0.5 rounded-full"><i class="fas fa-check mr-1"></i>Real</div>' : ''}
                 </div>
             </div>
-        `).join('');
+        `}).join('');
     }
 
     // Seleccionar estilo
