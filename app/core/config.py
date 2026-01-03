@@ -33,6 +33,10 @@ class Settings(BaseSettings):
     STRIPE_PUBLISHABLE_KEY: str = ""
     STRIPE_WEBHOOK_SECRET: str = ""
 
+    # Google OAuth
+    GOOGLE_CLIENT_ID: str = ""
+    GOOGLE_CLIENT_SECRET: str = ""
+
     # OpenAI (para generación de prompts)
     OPENAI_API_KEY: str = ""
     OPENAI_MODEL: str = "gpt-4o"
