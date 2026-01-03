@@ -74,10 +74,16 @@ app.include_router(payments_router, prefix="/viralpost/api")
 
 # ============ RUTAS DE FRONTEND ============
 
+@app.get("/", response_class=HTMLResponse)
+async def pagina_agathoscreative(request: Request):
+    """Landing page principal de Agathos Creative"""
+    return templates.TemplateResponse("agathoscreative.html", {"request": request})
+
+
 @app.get("/viralpost", response_class=HTMLResponse)
 @app.get("/viralpost/", response_class=HTMLResponse)
 async def pagina_principal(request: Request):
-    """Página principal / Landing page"""
+    """Página principal / Landing page de ViralPost"""
     return templates.TemplateResponse("index.html", {
         "request": request,
         "stripe_key": settings.STRIPE_PUBLISHABLE_KEY
