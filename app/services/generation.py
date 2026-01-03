@@ -102,22 +102,45 @@ Create artistic text in the composition using the product's own materials, ingre
 - Materials forming letters should match the product's essence (food ingredients for food, metal particles for tech, etc.)
 """
 
+            # Obtener campos cinematográficos avanzados
+            color_grade = estilo.get('color_grade', 'Professional commercial color science with vibrant product colors')
+            composition = estilo.get('composition', 'Product-centered composition optimized for social media engagement')
+
             prompt_completo = f"""
-Create a professional viral product photo with these specifications:
+## PROFESSIONAL CINEMATOGRAPHIC PRODUCT PHOTOGRAPHY
 
-STYLE: {estilo['nombre']} - {estilo['mood']}
-CAMERA: {estilo['camera']}
-LIGHTING: {estilo['lighting']}
-ENVIRONMENT: {estilo['environment']}
-VFX: {estilo['vfx']}
+### VISUAL STYLE: {estilo['nombre']} - {estilo['mood']}
 
-PRODUCT DETAILS:
+### CAMERA & LENS SPECIFICATIONS
+{estilo['camera']}
+
+### LIGHTING SETUP (Professional Film Set)
+{estilo['lighting']}
+
+### ENVIRONMENT & SET DESIGN
+{estilo['environment']}
+
+### PRACTICAL & VISUAL EFFECTS
+{estilo['vfx']}
+
+### COLOR GRADING & FILM LOOK
+{color_grade}
+
+### COMPOSITION & FRAMING
+{composition}
+
+### PRODUCT SPECIFICATIONS
 {prompt_imagen}
 
-The product shown in the FIRST reference image must be replicated EXACTLY with perfect fidelity to colors, shape, labels and proportions.
+## CRITICAL REQUIREMENTS:
+1. The product shown in the FIRST reference image must be replicated with PHOTOGRAPHIC ACCURACY - exact colors, shape, labels, textures, and proportions as if shot on a real film set
+2. Apply all cinematographic specifications above - this should look like it was shot by a professional DP (Director of Photography) with a $100K+ camera package
+3. Lighting must be physically accurate and motivated - every shadow, reflection, and highlight should make sense
+4. The final image should be INDISTINGUISHABLE from a real high-end commercial photograph
 {logo_instructions}
 {texto_creativo}
-Create a stunning, scroll-stopping image optimized for social media (1:1 aspect ratio).
+
+Create a stunning, scroll-stopping 1:1 aspect ratio image that looks like it belongs in a Super Bowl commercial or Vogue magazine spread.
 """
 
             imagen_generada_b64 = await self._llamar_gemini(
