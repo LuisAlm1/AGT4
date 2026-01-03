@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.sessions import SessionMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, FileResponse
@@ -43,6 +44,9 @@ app = FastAPI(
     redoc_url="/viralpost/redoc",
     openapi_url="/viralpost/openapi.json"
 )
+
+# Session middleware (necesario para Google OAuth)
+app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY)
 
 # CORS
 app.add_middleware(

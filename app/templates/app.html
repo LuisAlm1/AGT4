@@ -266,6 +266,15 @@
 
 {% block extra_scripts %}
 <script>
+    // Manejar token de Google OAuth desde URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenFromUrl = urlParams.get('token');
+    if (tokenFromUrl) {
+        Auth.setToken(tokenFromUrl);
+        // Limpiar URL para quitar el token
+        window.history.replaceState({}, document.title, '/viralpost/app');
+    }
+
     // Verificar autenticación
     if (!Auth.isLoggedIn()) {
         window.location.href = '/viralpost/login';
