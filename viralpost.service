@@ -4,21 +4,12 @@ After=network.target
 
 [Service]
 Type=exec
-User=www-data
-Group=www-data
 WorkingDirectory=/home/user/AGT4
 Environment="PATH=/home/user/AGT4/venv/bin"
 EnvironmentFile=/home/user/AGT4/.env
 ExecStart=/home/user/AGT4/venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 5001 --workers 2
 Restart=always
 RestartSec=5
-
-# Hardening
-NoNewPrivileges=true
-ProtectSystem=strict
-ProtectHome=read-only
-ReadWritePaths=/var/www/agathoscreative/viralpost
-ReadWritePaths=/home/user/AGT4
 
 # Logs
 StandardOutput=journal
