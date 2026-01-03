@@ -65,10 +65,21 @@ class StripeService:
         return None
 
     async def crear_o_obtener_customer(self, user: User) -> str:
-        """Crea o obtiene el Stripe Customer ID para un usuario"""
+        """
+        Crea o obtiene el Stripe Customer ID para un usuario.
+        Maneja el caso de cambio entre test/live mode creando un nuevo customer si es necesario.
+        """
         if user.stripe_customer_id:
-            return user.stripe_customer_id
+            # Verificar si el customer existe en el modo actual (test/live)
+            try:
+                stripe.Customer.retrieve(user.stripe_customer_id)
+                return user.stripe_customer_id
+            except stripe.error.InvalidRequestError:
+                # El customer no existe en este modo (probablemente cambió de test a live)
+                # Crear uno nuevo
+                pass
 
+        # Crear nuevo customer
         customer = stripe.Customer.create(
             email=user.email,
             name=user.nombre or user.email,
