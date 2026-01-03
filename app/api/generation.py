@@ -97,6 +97,47 @@ async def obtener_imagenes_dinamicas(db: AsyncSession = Depends(get_db)):
     return ImagenesEstilosResponse(imagenes=imagenes)
 
 
+@router.get("/ejemplos-landing")
+async def obtener_ejemplos_landing(db: AsyncSession = Depends(get_db)):
+    """
+    Obtiene ejemplos reales de antes/después para mostrar en el landing page.
+    Retorna las últimas generaciones completadas con sus imágenes originales y generadas.
+    """
+    from app.services.viral_styles import VIRAL_STYLES
+
+    # Estilos que queremos mostrar en el landing (3 ejemplos)
+    estilos_destacados = ["macro_explosion", "liquid_metal", "dark_luxury"]
+    ejemplos = []
+
+    for estilo_id in estilos_destacados:
+        result = await db.execute(
+            select(Generation)
+            .where(
+                Generation.estilo == estilo_id,
+                Generation.estado == EstadoGeneracion.COMPLETADA.value,
+                Generation.imagen_generada_path.isnot(None),
+                Generation.imagen_producto_path.isnot(None)
+            )
+            .order_by(desc(Generation.completed_at))
+            .limit(1)
+        )
+        generacion = result.scalar_one_or_none()
+
+        if generacion:
+            estilo_info = VIRAL_STYLES.get(estilo_id, {})
+            ejemplos.append({
+                "estilo_id": estilo_id,
+                "estilo_nombre": estilo_info.get("nombre", estilo_id),
+                "estilo_icono": estilo_info.get("icono", "✨"),
+                "imagen_antes": f"/viralpost/imagenes/{Path(generacion.imagen_producto_path).name}",
+                "imagen_despues": f"/viralpost/imagenes/{Path(generacion.imagen_generada_path).name}",
+                "nombre_producto": generacion.nombre_producto,
+                "categoria": estilo_info.get("categoria", "general")
+            })
+
+    return {"ejemplos": ejemplos, "total": len(ejemplos)}
+
+
 @router.get("/estilo/{estilo_id}", response_model=EstiloResponse)
 async def obtener_detalle_estilo(estilo_id: str):
     """

@@ -93,92 +93,28 @@
             <p class="text-gray-400 text-lg" data-i18n="landing.before_after_subtitle">Mira la transformación con nuestros estilos de IA</p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-8">
-            <!-- Example 1 -->
-            <div class="bg-gray-800 rounded-2xl overflow-hidden">
+        <div id="beforeAfterGrid" class="grid md:grid-cols-3 gap-8">
+            <!-- Los ejemplos se cargan dinámicamente -->
+            <div class="bg-gray-800 rounded-2xl overflow-hidden animate-pulse">
                 <div class="grid grid-cols-2">
-                    <div class="relative">
-                        <div class="aspect-square bg-gray-700 flex items-center justify-center">
-                            <div class="text-center p-4">
-                                <i class="fas fa-camera text-4xl text-gray-500 mb-2"></i>
-                                <p class="text-gray-400 text-sm" data-i18n="landing.before_label">ANTES</p>
-                                <p class="text-gray-500 text-xs" data-i18n="landing.before_desc">Foto con celular</p>
-                            </div>
-                        </div>
-                        <div class="absolute top-2 left-2 bg-gray-600 text-white text-xs px-2 py-1 rounded">ANTES</div>
-                    </div>
-                    <div class="relative">
-                        <div class="aspect-square bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
-                            <div class="text-center p-4">
-                                <i class="fas fa-sparkles text-4xl text-white mb-2"></i>
-                                <p class="text-white text-sm font-bold" data-i18n="landing.after_label">DESPUÉS</p>
-                                <p class="text-white/70 text-xs" data-i18n="landing.after_desc">Explosión Macro</p>
-                            </div>
-                        </div>
-                        <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded">DESPUÉS</div>
-                    </div>
+                    <div class="aspect-square bg-gray-700"></div>
+                    <div class="aspect-square bg-gray-600"></div>
                 </div>
-                <div class="p-4 text-center">
-                    <p class="text-white font-medium" data-i18n="landing.example_food">🍕 Comida y Bebidas</p>
-                </div>
+                <div class="p-4 h-12 bg-gray-700"></div>
             </div>
-
-            <!-- Example 2 -->
-            <div class="bg-gray-800 rounded-2xl overflow-hidden">
+            <div class="bg-gray-800 rounded-2xl overflow-hidden animate-pulse">
                 <div class="grid grid-cols-2">
-                    <div class="relative">
-                        <div class="aspect-square bg-gray-700 flex items-center justify-center">
-                            <div class="text-center p-4">
-                                <i class="fas fa-camera text-4xl text-gray-500 mb-2"></i>
-                                <p class="text-gray-400 text-sm">ANTES</p>
-                                <p class="text-gray-500 text-xs" data-i18n="landing.before_desc">Foto con celular</p>
-                            </div>
-                        </div>
-                        <div class="absolute top-2 left-2 bg-gray-600 text-white text-xs px-2 py-1 rounded">ANTES</div>
-                    </div>
-                    <div class="relative">
-                        <div class="aspect-square bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
-                            <div class="text-center p-4">
-                                <i class="fas fa-sparkles text-4xl text-white mb-2"></i>
-                                <p class="text-white text-sm font-bold">DESPUÉS</p>
-                                <p class="text-white/70 text-xs" data-i18n="landing.after_metal">Metal Líquido</p>
-                            </div>
-                        </div>
-                        <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded">DESPUÉS</div>
-                    </div>
+                    <div class="aspect-square bg-gray-700"></div>
+                    <div class="aspect-square bg-gray-600"></div>
                 </div>
-                <div class="p-4 text-center">
-                    <p class="text-white font-medium" data-i18n="landing.example_tech">📱 Tecnología</p>
-                </div>
+                <div class="p-4 h-12 bg-gray-700"></div>
             </div>
-
-            <!-- Example 3 -->
-            <div class="bg-gray-800 rounded-2xl overflow-hidden">
+            <div class="bg-gray-800 rounded-2xl overflow-hidden animate-pulse">
                 <div class="grid grid-cols-2">
-                    <div class="relative">
-                        <div class="aspect-square bg-gray-700 flex items-center justify-center">
-                            <div class="text-center p-4">
-                                <i class="fas fa-camera text-4xl text-gray-500 mb-2"></i>
-                                <p class="text-gray-400 text-sm">ANTES</p>
-                                <p class="text-gray-500 text-xs" data-i18n="landing.before_desc">Foto con celular</p>
-                            </div>
-                        </div>
-                        <div class="absolute top-2 left-2 bg-gray-600 text-white text-xs px-2 py-1 rounded">ANTES</div>
-                    </div>
-                    <div class="relative">
-                        <div class="aspect-square bg-gradient-to-br from-yellow-500 to-amber-600 flex items-center justify-center">
-                            <div class="text-center p-4">
-                                <i class="fas fa-sparkles text-4xl text-white mb-2"></i>
-                                <p class="text-white text-sm font-bold">DESPUÉS</p>
-                                <p class="text-white/70 text-xs" data-i18n="landing.after_luxury">Lujo Oscuro</p>
-                            </div>
-                        </div>
-                        <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded">DESPUÉS</div>
-                    </div>
+                    <div class="aspect-square bg-gray-700"></div>
+                    <div class="aspect-square bg-gray-600"></div>
                 </div>
-                <div class="p-4 text-center">
-                    <p class="text-white font-medium" data-i18n="landing.example_beauty">💄 Belleza</p>
-                </div>
+                <div class="p-4 h-12 bg-gray-700"></div>
             </div>
         </div>
 
@@ -441,10 +377,11 @@
 <script>
     document.addEventListener('DOMContentLoaded', async () => {
         try {
-            // Cargar estilos e imágenes dinámicas en paralelo
-            const [stylesResponse, dynamicResponse] = await Promise.all([
+            // Cargar estilos, imágenes dinámicas y ejemplos antes/después en paralelo
+            const [stylesResponse, dynamicResponse, ejemplosResponse] = await Promise.all([
                 fetch('/viralpost/api/generacion/estilos'),
-                fetch('/viralpost/api/generacion/estilos/imagenes-dinamicas')
+                fetch('/viralpost/api/generacion/estilos/imagenes-dinamicas'),
+                fetch('/viralpost/api/generacion/ejemplos-landing')
             ]);
 
             let dynamicImages = {};
@@ -457,10 +394,93 @@
                 const styles = await stylesResponse.json();
                 renderLandingStyles(styles, dynamicImages);
             }
+
+            // Renderizar ejemplos antes/después
+            if (ejemplosResponse.ok) {
+                const ejemplosData = await ejemplosResponse.json();
+                renderBeforeAfterExamples(ejemplosData.ejemplos);
+            }
         } catch (error) {
-            console.error('Error cargando estilos:', error);
+            console.error('Error cargando contenido:', error);
         }
     });
+
+    // Renderizar ejemplos antes/después con imágenes reales
+    function renderBeforeAfterExamples(ejemplos) {
+        const grid = document.getElementById('beforeAfterGrid');
+        if (!ejemplos || ejemplos.length === 0) {
+            // Mostrar placeholders si no hay ejemplos
+            grid.innerHTML = getPlaceholderExamples();
+            return;
+        }
+
+        const beforeText = I18n.t('landing.before_label');
+        const afterText = I18n.t('landing.after_label');
+
+        grid.innerHTML = ejemplos.map(ejemplo => `
+            <div class="bg-gray-800 rounded-2xl overflow-hidden group cursor-pointer" onclick="window.location.href='/viralpost/registro'">
+                <div class="grid grid-cols-2">
+                    <div class="relative">
+                        <img src="${ejemplo.imagen_antes}"
+                             alt="Antes"
+                             class="aspect-square w-full object-cover">
+                        <div class="absolute top-2 left-2 bg-gray-600/90 text-white text-xs px-2 py-1 rounded font-medium">${beforeText}</div>
+                    </div>
+                    <div class="relative">
+                        <img src="${ejemplo.imagen_despues}"
+                             alt="Después"
+                             class="aspect-square w-full object-cover group-hover:scale-105 transition duration-300">
+                        <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded font-medium">${afterText}</div>
+                    </div>
+                </div>
+                <div class="p-4 text-center">
+                    <p class="text-white font-medium">${ejemplo.estilo_icono} ${ejemplo.estilo_nombre}</p>
+                    <p class="text-gray-400 text-sm truncate">${ejemplo.nombre_producto}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Placeholders si no hay ejemplos reales
+    function getPlaceholderExamples() {
+        const estilos = [
+            { nombre: I18n.t('style.macro_explosion'), icono: '💥', gradient: 'from-purple-600 to-pink-600' },
+            { nombre: I18n.t('style.liquid_metal'), icono: '🪞', gradient: 'from-cyan-500 to-blue-600' },
+            { nombre: I18n.t('style.dark_luxury'), icono: '✨', gradient: 'from-yellow-500 to-amber-600' }
+        ];
+        const beforeText = I18n.t('landing.before_label');
+        const afterText = I18n.t('landing.after_label');
+        const beforeDesc = I18n.t('landing.before_desc');
+
+        return estilos.map(estilo => `
+            <div class="bg-gray-800 rounded-2xl overflow-hidden">
+                <div class="grid grid-cols-2">
+                    <div class="relative">
+                        <div class="aspect-square bg-gray-700 flex items-center justify-center">
+                            <div class="text-center p-4">
+                                <i class="fas fa-camera text-4xl text-gray-500 mb-2"></i>
+                                <p class="text-gray-400 text-sm">${beforeText}</p>
+                                <p class="text-gray-500 text-xs">${beforeDesc}</p>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 left-2 bg-gray-600 text-white text-xs px-2 py-1 rounded">${beforeText}</div>
+                    </div>
+                    <div class="relative">
+                        <div class="aspect-square bg-gradient-to-br ${estilo.gradient} flex items-center justify-center">
+                            <div class="text-center p-4">
+                                <span class="text-4xl">${estilo.icono}</span>
+                                <p class="text-white text-sm font-bold mt-2">${afterText}</p>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded">${afterText}</div>
+                    </div>
+                </div>
+                <div class="p-4 text-center">
+                    <p class="text-white font-medium">${estilo.icono} ${estilo.nombre}</p>
+                </div>
+            </div>
+        `).join('');
+    }
 
     function renderLandingStyles(styles, dynamicImages) {
         const grid = document.getElementById('stylesGrid');
