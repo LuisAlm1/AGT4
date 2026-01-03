@@ -97,6 +97,14 @@ const I18n = {
             'app.no_credits_desc': 'Compra más créditos para seguir generando imágenes virales.',
             'app.cancel': 'Cancelar',
 
+            // Categorías (IDs del API: comida, moda, tecnologia, belleza, hogar, todos)
+            'category.comida': 'Comida y Bebidas',
+            'category.moda': 'Moda y Accesorios',
+            'category.tecnologia': 'Tecnología y Gadgets',
+            'category.belleza': 'Belleza y Cosmética',
+            'category.hogar': 'Hogar y Decoración',
+            'category.todos': 'Ver Todos',
+
             // Estilos - Nombres (IDs del API: macro_explosion, liquid_metal, etc.)
             'style.macro_explosion': 'Explosión Macro',
             'style.liquid_metal': 'Metal Líquido',
@@ -310,6 +318,14 @@ const I18n = {
             'app.no_credits_title': 'You ran out of credits!',
             'app.no_credits_desc': 'Buy more credits to keep generating viral images.',
             'app.cancel': 'Cancel',
+
+            // Categories (API IDs: comida, moda, tecnologia, belleza, hogar, todos)
+            'category.comida': 'Food & Drinks',
+            'category.moda': 'Fashion & Accessories',
+            'category.tecnologia': 'Tech & Gadgets',
+            'category.belleza': 'Beauty & Cosmetics',
+            'category.hogar': 'Home & Decor',
+            'category.todos': 'View All',
 
             // Styles - Names (API IDs: macro_explosion, liquid_metal, etc.)
             'style.macro_explosion': 'Macro Explosion',
