@@ -399,10 +399,20 @@ const I18n = {
     }
 };
 
-// Inicializar cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', () => {
-    I18n.init();
-});
-
-// Exportar para uso global
+// Exportar para uso global inmediatamente
 window.I18n = I18n;
+
+// Inicializar cuando el DOM esté listo
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        I18n.init();
+    });
+} else {
+    // DOM ya está listo
+    I18n.init();
+}
+
+// También asegurarse de que funcione con clicks
+window.setLanguage = function(lang, currency) {
+    I18n.setLanguage(lang, currency);
+};

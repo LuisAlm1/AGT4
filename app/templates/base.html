@@ -105,7 +105,7 @@
 </head>
 <body class="bg-gray-50 min-h-screen">
     <!-- Selector de Idioma/País (flotante) -->
-    <div id="langSelectorContainer" class="fixed top-4 right-4 z-40">
+    <div id="langSelectorContainer" class="fixed top-20 right-4 z-50">
         <div class="relative">
             <button onclick="toggleLangMenu()" id="langToggle"
                     class="flex items-center space-x-2 bg-white shadow-lg rounded-full px-4 py-2 hover:shadow-xl transition text-sm font-medium text-gray-700">
@@ -113,12 +113,12 @@
                 <i class="fas fa-chevron-down text-xs"></i>
             </button>
             <div id="langMenu" class="hidden absolute right-0 mt-2 bg-white rounded-xl shadow-xl overflow-hidden min-w-[160px]">
-                <button onclick="I18n.setLanguage('es', 'MXN'); toggleLangMenu();"
+                <button onclick="changeLang('es', 'MXN')"
                         class="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 text-sm">
                     <span>🇲🇽</span>
                     <span>Español (MXN)</span>
                 </button>
-                <button onclick="I18n.setLanguage('en', 'USD'); toggleLangMenu();"
+                <button onclick="changeLang('en', 'USD')"
                         class="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 text-sm border-t">
                     <span>🇺🇸</span>
                     <span>English (USD)</span>
@@ -141,6 +141,19 @@
         function toggleLangMenu() {
             const menu = document.getElementById('langMenu');
             menu.classList.toggle('hidden');
+        }
+
+        // Cambiar idioma
+        function changeLang(lang, currency) {
+            if (window.I18n) {
+                I18n.setLanguage(lang, currency);
+            } else {
+                // Fallback: guardar en localStorage y recargar
+                localStorage.setItem('viralpost_lang', lang);
+                localStorage.setItem('viralpost_currency', currency);
+                window.location.reload();
+            }
+            toggleLangMenu();
         }
 
         // Cerrar menú al hacer clic fuera
