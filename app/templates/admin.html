@@ -1,0 +1,324 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Panel{% endblock %}
+
+{% block content %}
+<!-- Login Form -->
+<div id="loginSection" class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
+        <h1 class="text-2xl font-bold text-center mb-6">
+            <span class="gradient-text">ViralPost AI</span> Admin
+        </h1>
+        <form onsubmit="adminLogin(event)">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-medium mb-2">Password de Admin</label>
+                <input type="password" id="adminPassword"
+                       class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                       placeholder="Ingresa el password" required>
+            </div>
+            <button type="submit"
+                    class="w-full gradient-bg text-white py-3 rounded-xl font-medium hover:opacity-90 transition">
+                Acceder
+            </button>
+        </form>
+        <p id="loginError" class="hidden text-red-500 text-sm text-center mt-4"></p>
+    </div>
+</div>
+
+<!-- Dashboard -->
+<div id="dashboardSection" class="hidden min-h-screen bg-gray-50">
+    <!-- Header -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <span class="text-2xl">📊</span>
+                    <span class="font-bold text-xl gradient-text">Admin Panel</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="loadStats()" class="text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-sync-alt mr-2"></i>Actualizar
+                    </button>
+                    <button onclick="adminLogout()" class="text-gray-600 hover:text-red-600">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Salir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Loading -->
+        <div id="loadingStats" class="text-center py-12">
+            <div class="loading-spinner mx-auto mb-4"></div>
+            <p class="text-gray-500">Cargando estadísticas...</p>
+        </div>
+
+        <!-- Stats Content -->
+        <div id="statsContent" class="hidden">
+            <!-- Cards de resumen -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Usuarios -->
+                <div class="bg-white rounded-2xl shadow p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="bg-blue-100 text-blue-600 p-3 rounded-xl">
+                            <i class="fas fa-users text-xl"></i>
+                        </div>
+                        <span class="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-full" id="usuariosHoy">+0 hoy</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800" id="totalUsuarios">0</h3>
+                    <p class="text-gray-500 text-sm">Usuarios registrados</p>
+                    <p class="text-xs text-gray-400 mt-1"><span id="usuarios7dias">0</span> últimos 7 días</p>
+                </div>
+
+                <!-- Ingresos Totales -->
+                <div class="bg-white rounded-2xl shadow p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="bg-green-100 text-green-600 p-3 rounded-xl">
+                            <i class="fas fa-dollar-sign text-xl"></i>
+                        </div>
+                        <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full" id="ingresosHoy">$0 hoy</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800" id="ingresosTotales">$0</h3>
+                    <p class="text-gray-500 text-sm">Ingresos totales MXN</p>
+                    <p class="text-xs text-gray-400 mt-1"><span id="ingresos30dias">$0</span> últimos 30 días</p>
+                </div>
+
+                <!-- Créditos Vendidos -->
+                <div class="bg-white rounded-2xl shadow p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="bg-purple-100 text-purple-600 p-3 rounded-xl">
+                            <i class="fas fa-coins text-xl"></i>
+                        </div>
+                        <span class="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded-full" id="totalTransacciones">0 ventas</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800" id="creditosVendidos">0</h3>
+                    <p class="text-gray-500 text-sm">Créditos vendidos</p>
+                    <p class="text-xs text-gray-400 mt-1"><span id="ingresos7dias">$0</span> últimos 7 días</p>
+                </div>
+
+                <!-- Generaciones -->
+                <div class="bg-white rounded-2xl shadow p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="bg-orange-100 text-orange-600 p-3 rounded-xl">
+                            <i class="fas fa-image text-xl"></i>
+                        </div>
+                        <span class="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded-full" id="generacionesHoy">+0 hoy</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800" id="totalGeneraciones">0</h3>
+                    <p class="text-gray-500 text-sm">Imágenes generadas</p>
+                    <p class="text-xs text-gray-400 mt-1"><span id="tasaExito">0%</span> tasa de éxito</p>
+                </div>
+            </div>
+
+            <!-- Segunda fila -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Top Usuarios -->
+                <div class="bg-white rounded-2xl shadow p-6">
+                    <h3 class="font-bold text-lg mb-4 flex items-center">
+                        <i class="fas fa-trophy text-yellow-500 mr-2"></i>
+                        Top Usuarios
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="text-left text-xs text-gray-500 border-b">
+                                    <th class="pb-3">#</th>
+                                    <th class="pb-3">Usuario</th>
+                                    <th class="pb-3 text-right">Usados</th>
+                                    <th class="pb-3 text-right">Disponibles</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topUsuariosBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Estilos Populares -->
+                <div class="bg-white rounded-2xl shadow p-6">
+                    <h3 class="font-bold text-lg mb-4 flex items-center">
+                        <i class="fas fa-star text-purple-500 mr-2"></i>
+                        Estilos Populares
+                    </h3>
+                    <div id="estilosPopulares" class="space-y-3">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transacciones recientes -->
+            <div class="bg-white rounded-2xl shadow p-6">
+                <h3 class="font-bold text-lg mb-4 flex items-center">
+                    <i class="fas fa-history text-green-500 mr-2"></i>
+                    Transacciones Recientes
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="text-left text-xs text-gray-500 border-b">
+                                <th class="pb-3">ID</th>
+                                <th class="pb-3">Usuario</th>
+                                <th class="pb-3 text-right">Créditos</th>
+                                <th class="pb-3 text-right">Monto MXN</th>
+                                <th class="pb-3 text-right">Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transaccionesBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <p class="text-center text-gray-400 text-sm mt-8">
+                Última actualización: <span id="ultimaActualizacion">-</span>
+            </p>
+        </div>
+    </main>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    let adminPassword = '';
+
+    async function adminLogin(e) {
+        e.preventDefault();
+        adminPassword = document.getElementById('adminPassword').value;
+
+        try {
+            const response = await fetch(`/viralpost/api/admin/stats?password=${encodeURIComponent(adminPassword)}`);
+
+            if (response.ok) {
+                // Login exitoso
+                sessionStorage.setItem('admin_password', adminPassword);
+                document.getElementById('loginSection').classList.add('hidden');
+                document.getElementById('dashboardSection').classList.remove('hidden');
+                await loadStats();
+            } else {
+                document.getElementById('loginError').textContent = 'Password incorrecto';
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+        } catch (error) {
+            document.getElementById('loginError').textContent = 'Error de conexión';
+            document.getElementById('loginError').classList.remove('hidden');
+        }
+    }
+
+    function adminLogout() {
+        sessionStorage.removeItem('admin_password');
+        window.location.reload();
+    }
+
+    async function loadStats() {
+        const password = sessionStorage.getItem('admin_password') || adminPassword;
+        if (!password) return;
+
+        document.getElementById('loadingStats').classList.remove('hidden');
+        document.getElementById('statsContent').classList.add('hidden');
+
+        try {
+            const response = await fetch(`/viralpost/api/admin/stats?password=${encodeURIComponent(password)}`);
+
+            if (!response.ok) {
+                adminLogout();
+                return;
+            }
+
+            const data = await response.json();
+            renderStats(data);
+
+        } catch (error) {
+            console.error('Error loading stats:', error);
+        } finally {
+            document.getElementById('loadingStats').classList.add('hidden');
+            document.getElementById('statsContent').classList.remove('hidden');
+        }
+    }
+
+    function renderStats(data) {
+        // Usuarios
+        document.getElementById('totalUsuarios').textContent = formatNumber(data.usuarios.total);
+        document.getElementById('usuariosHoy').textContent = `+${data.usuarios.hoy} hoy`;
+        document.getElementById('usuarios7dias').textContent = `${data.usuarios.ultimos_7_dias} últimos 7 días`;
+
+        // Ingresos
+        document.getElementById('ingresosTotales').textContent = formatPrice(data.ingresos.total_mxn);
+        document.getElementById('ingresosHoy').textContent = formatPrice(data.ingresos.hoy_mxn) + ' hoy';
+        document.getElementById('ingresos30dias').textContent = formatPrice(data.ingresos.ultimos_30_dias_mxn);
+        document.getElementById('ingresos7dias').textContent = formatPrice(data.ingresos.ultimos_7_dias_mxn);
+        document.getElementById('creditosVendidos').textContent = formatNumber(data.ingresos.creditos_vendidos);
+        document.getElementById('totalTransacciones').textContent = `${data.ingresos.total_transacciones} ventas`;
+
+        // Generaciones
+        document.getElementById('totalGeneraciones').textContent = formatNumber(data.generaciones.total);
+        document.getElementById('generacionesHoy').textContent = `+${data.generaciones.hoy} hoy`;
+        document.getElementById('tasaExito').textContent = `${data.generaciones.tasa_exito}%`;
+
+        // Top usuarios
+        const topBody = document.getElementById('topUsuariosBody');
+        topBody.innerHTML = data.top_usuarios.map((u, i) => `
+            <tr class="border-b border-gray-50">
+                <td class="py-3 text-gray-400">${i + 1}</td>
+                <td class="py-3">
+                    <p class="font-medium text-gray-800 truncate max-w-[180px]">${u.email}</p>
+                    <p class="text-xs text-gray-400">${u.nombre}</p>
+                </td>
+                <td class="py-3 text-right font-semibold text-purple-600">${u.creditos_usados}</td>
+                <td class="py-3 text-right text-gray-500">${u.creditos_disponibles}</td>
+            </tr>
+        `).join('');
+
+        // Estilos populares
+        const maxEstilo = Math.max(...data.estilos_populares.map(e => e.count), 1);
+        document.getElementById('estilosPopulares').innerHTML = data.estilos_populares.slice(0, 8).map(e => `
+            <div class="flex items-center">
+                <div class="w-32 text-sm text-gray-600 capitalize truncate">${e.estilo.replace(/_/g, ' ')}</div>
+                <div class="flex-1 mx-3 bg-gray-100 rounded-full h-4">
+                    <div class="gradient-bg h-4 rounded-full" style="width: ${(e.count / maxEstilo) * 100}%"></div>
+                </div>
+                <div class="text-sm font-medium text-gray-800 w-10 text-right">${e.count}</div>
+            </div>
+        `).join('');
+
+        // Transacciones recientes
+        const transBody = document.getElementById('transaccionesBody');
+        transBody.innerHTML = data.transacciones_recientes.map(t => `
+            <tr class="border-b border-gray-50">
+                <td class="py-3 text-gray-400">#${t.id}</td>
+                <td class="py-3 truncate max-w-[200px]">${t.email}</td>
+                <td class="py-3 text-right font-semibold text-purple-600">${t.creditos}</td>
+                <td class="py-3 text-right text-green-600">${formatPrice(t.monto_mxn)}</td>
+                <td class="py-3 text-right text-gray-500 text-sm">${formatDate(t.fecha)}</td>
+            </tr>
+        `).join('');
+
+        // Última actualización
+        document.getElementById('ultimaActualizacion').textContent = formatDate(data.generado_en);
+    }
+
+    function formatDate(isoDate) {
+        if (!isoDate) return '-';
+        const date = new Date(isoDate);
+        return date.toLocaleDateString('es-MX', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
+    // Check if already logged in
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedPassword = sessionStorage.getItem('admin_password');
+        if (savedPassword) {
+            adminPassword = savedPassword;
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('dashboardSection').classList.remove('hidden');
+            loadStats();
+        }
+    });
+</script>
+{% endblock %}

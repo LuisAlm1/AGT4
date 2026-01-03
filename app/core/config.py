@@ -85,6 +85,9 @@ class Settings(BaseSettings):
     # Créditos gratis al registrarse
     FREE_CREDITS_ON_SIGNUP: int = 1
 
+    # Admin Panel
+    ADMIN_PASSWORD: str = "viralpost2024admin"
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
