@@ -11,6 +11,7 @@ VIRAL_STYLES = {
         "descripcion": "Fotografía macro extrema donde el producto explota mostrando sus componentes",
         "icono": "💥",
         "preview_color": "#FF6B35",
+        "imagen_ejemplo": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop",
         "camera": "Extreme macro lens 100mm, f/1.4, focus stacking",
         "lighting": "Multiple rim lights creating product halo, dramatic shadows",
         "environment": "El producto EXPLOTA en sus componentes/ingredientes suspendidos en el aire como big bang culinario",
@@ -24,6 +25,7 @@ VIRAL_STYLES = {
         "descripcion": "Estética futurista con superficies cromadas y reflejos metálicos",
         "icono": "🪞",
         "preview_color": "#C0C0C0",
+        "imagen_ejemplo": "https://images.unsplash.com/photo-1635322966219-b75ed372eb01?w=400&h=400&fit=crop",
         "camera": "Medium shot, 50mm anamorphic, shallow DOF with lens flares",
         "lighting": "Single hard light source creating mercury-like reflections",
         "environment": "El producto emerge de un charco de metal líquido cromado que refleja un cielo dramático",
@@ -37,6 +39,7 @@ VIRAL_STYLES = {
         "descripcion": "Atmósfera urbana nocturna con luces neón y lluvia",
         "icono": "🌃",
         "preview_color": "#FF00FF",
+        "imagen_ejemplo": "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=400&h=400&fit=crop",
         "camera": "Dutch angle 15°, 35mm wide, deep shadows",
         "lighting": "Neon rosa/cyan como únicas fuentes, lluvia cayendo",
         "environment": "Callejón de Blade Runner con el producto como elemento central iluminado",
@@ -50,6 +53,7 @@ VIRAL_STYLES = {
         "descripcion": "Naturaleza exuberante y flores exóticas en un entorno de lujo orgánico",
         "icono": "🌺",
         "preview_color": "#228B22",
+        "imagen_ejemplo": "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=400&h=400&fit=crop",
         "camera": "Overhead 45°, 85mm portrait lens, creamy bokeh",
         "lighting": "Golden hour natural light filtering through leaves",
         "environment": "El producto crece orgánicamente de plantas exóticas, flores imposibles, naturaleza fantástica",
@@ -63,6 +67,7 @@ VIRAL_STYLES = {
         "descripcion": "Todo flota en un ambiente espacial de microgravedad",
         "icono": "🚀",
         "preview_color": "#1E90FF",
+        "imagen_ejemplo": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=400&h=400&fit=crop",
         "camera": "Low angle heroic shot, 24mm wide, everything floating",
         "lighting": "Soft wraparound light como estación espacial, rim light azul",
         "environment": "Interior de nave espacial con el producto y sus elementos flotando en microgravedad",
@@ -76,6 +81,7 @@ VIRAL_STYLES = {
         "descripcion": "Perspectiva de diorama donde el producto es gigante",
         "icono": "🏙️",
         "preview_color": "#FFD700",
+        "imagen_ejemplo": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop",
         "camera": "Tilt-shift lens effect, producto gigante, perspectiva forzada",
         "lighting": "Soft diffused daylight, sombras suaves de escala real",
         "environment": "El producto es GIGANTE en una ciudad miniatura donde personas diminutas interactúan con él",
@@ -89,6 +95,7 @@ VIRAL_STYLES = {
         "descripcion": "Captura el momento exacto de una acción congelada en el tiempo",
         "icono": "⏱️",
         "preview_color": "#00CED1",
+        "imagen_ejemplo": "https://images.unsplash.com/photo-1509773896068-7fd415d91e2e?w=400&h=400&fit=crop",
         "camera": "Bullet-time multi-angle, 200mm telephoto compression",
         "lighting": "Flash de alta velocidad, todo perfectamente nítido",
         "environment": "Momento exacto de acción CONGELADO: splash, impacto, derrame, caída",
@@ -102,6 +109,7 @@ VIRAL_STYLES = {
         "descripcion": "Elegancia minimalista sobre fondo negro con acentos dorados",
         "icono": "✨",
         "preview_color": "#1a1a1a",
+        "imagen_ejemplo": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=400&fit=crop",
         "camera": "Straight-on symmetrical, 90mm macro, razor thin DOF",
         "lighting": "Single dramatic spotlight from above, rest in pure black",
         "environment": "Fondo negro absoluto, el producto flota en terciopelo de oscuridad con acentos dorados",
@@ -125,7 +133,8 @@ def obtener_todos_estilos() -> list:
             "nombre": style["nombre"],
             "descripcion": style["descripcion"],
             "icono": style["icono"],
-            "preview_color": style["preview_color"]
+            "preview_color": style["preview_color"],
+            "imagen_ejemplo": style.get("imagen_ejemplo", "")
         }
         for style in VIRAL_STYLES.values()
     ]
