@@ -13,9 +13,12 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-# Directorio del proyecto
-PROJECT_DIR="/home/user/AGT4"
+# Directorio del proyecto (detectar automáticamente)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 VENV_DIR="$PROJECT_DIR/venv"
+
+echo "Directorio del proyecto: $PROJECT_DIR"
 
 # 1. Crear directorios necesarios
 echo -e "${YELLOW}[1/7] Creando directorios...${NC}"
