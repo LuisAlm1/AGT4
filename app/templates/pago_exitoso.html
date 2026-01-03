@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}¡Pago Exitoso!{% endblock %}
+{% block title %}Confirmación de Pago{% endblock %}
 
 {% block content %}
 <div class="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-    <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
+    <!-- Pago completado (Tarjeta) -->
+    <div id="pagoCompletado" class="hidden bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
         <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <i class="fas fa-check text-4xl text-green-600"></i>
         </div>
@@ -28,6 +29,50 @@
             Ir a Generar
         </a>
     </div>
+
+    <!-- Pago OXXO pendiente -->
+    <div id="pagoOxxoPendiente" class="hidden bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
+        <div class="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <i class="fas fa-store text-4xl text-orange-600"></i>
+        </div>
+
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">¡Voucher OXXO Generado!</h1>
+
+        <p class="text-gray-600 mb-6">
+            Tu voucher de pago ha sido generado. Tienes <strong>3 días</strong> para realizar el pago en cualquier tienda OXXO.
+        </p>
+
+        <div class="bg-orange-50 rounded-xl p-4 mb-4">
+            <p class="text-sm text-orange-800 mb-2">
+                <i class="fas fa-info-circle mr-1"></i>
+                Instrucciones:
+            </p>
+            <ol class="text-left text-sm text-gray-600 space-y-2">
+                <li>1. Revisa tu correo electrónico para obtener el voucher</li>
+                <li>2. Ve a cualquier tienda OXXO</li>
+                <li>3. Muestra el código de barras al cajero</li>
+                <li>4. Realiza el pago en efectivo</li>
+            </ol>
+        </div>
+
+        <div class="bg-blue-50 rounded-xl p-4 mb-6">
+            <p class="text-sm text-blue-800">
+                <i class="fas fa-clock mr-1"></i>
+                Una vez que pagues, tus créditos se agregarán automáticamente en unos minutos.
+            </p>
+        </div>
+
+        <a href="/viralpost/app" class="block w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200 transition">
+            <i class="fas fa-arrow-left mr-2"></i>
+            Volver a la App
+        </a>
+    </div>
+
+    <!-- Loading -->
+    <div id="loadingState" class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
+        <div class="loading-spinner mx-auto mb-4"></div>
+        <p class="text-gray-500">Verificando pago...</p>
+    </div>
 </div>
 {% endblock %}
 
@@ -38,17 +83,42 @@
         window.location.href = '/viralpost/login';
     }
 
-    // Cargar créditos actualizados
+    // Cargar créditos y verificar tipo de pago
     document.addEventListener('DOMContentLoaded', async () => {
         try {
+            // Obtener el session_id de la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionId = urlParams.get('session_id');
+
+            // Obtener créditos anteriores del usuario guardado
+            const previousUser = Auth.getUser();
+            const previousCredits = previousUser ? previousUser.creditos : 0;
+
+            // Cargar créditos actualizados
             const response = await apiFetch('/auth/me');
             if (response.ok) {
                 const user = await response.json();
-                document.getElementById('newCredits').textContent = user.creditos;
                 Auth.setUser(user);
+
+                document.getElementById('loadingState').classList.add('hidden');
+
+                // Si los créditos aumentaron, el pago fue inmediato (tarjeta)
+                if (user.creditos > previousCredits) {
+                    document.getElementById('newCredits').textContent = user.creditos;
+                    document.getElementById('pagoCompletado').classList.remove('hidden');
+                } else {
+                    // Si los créditos no cambiaron, probablemente es OXXO pendiente
+                    document.getElementById('pagoOxxoPendiente').classList.remove('hidden');
+                }
+            } else {
+                // Error - mostrar página de OXXO por defecto
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('pagoOxxoPendiente').classList.remove('hidden');
             }
         } catch (error) {
             console.error('Error:', error);
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('pagoOxxoPendiente').classList.remove('hidden');
         }
     });
 </script>

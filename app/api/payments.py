@@ -120,8 +120,22 @@ async def stripe_webhook(
         )
 
     # Procesar evento
-    if event["type"] == "checkout.session.completed":
-        session = event["data"]["object"]
+    event_type = event["type"]
+    session = event["data"]["object"]
+
+    # checkout.session.completed - pago con tarjeta completado inmediatamente
+    # checkout.session.async_payment_succeeded - pago OXXO confirmado (después de pagar en tienda)
+    if event_type in ["checkout.session.completed", "checkout.session.async_payment_succeeded"]:
+
+        # Para checkout.session.completed, verificar si el pago ya está completo
+        # (tarjeta = completo inmediatamente, OXXO = pendiente hasta pagar en tienda)
+        if event_type == "checkout.session.completed":
+            payment_status = session.get("payment_status", "")
+            # Si es OXXO, el payment_status será "unpaid" hasta que paguen en tienda
+            if payment_status != "paid":
+                # Es OXXO - esperar al evento async_payment_succeeded
+                return {"received": True, "note": "Esperando pago OXXO"}
+
         datos = stripe_service.procesar_checkout_completado(session)
 
         # Buscar transacción
@@ -148,6 +162,22 @@ async def stripe_webhook(
                 transaccion.completed_at = datetime.utcnow()
 
                 await db.commit()
+
+    # checkout.session.async_payment_failed - pago OXXO falló (voucher expiró)
+    elif event_type == "checkout.session.async_payment_failed":
+        datos = stripe_service.procesar_checkout_completado(session)
+
+        # Marcar transacción como fallida
+        result = await db.execute(
+            select(Transaction).where(
+                Transaction.stripe_checkout_session_id == datos["session_id"]
+            )
+        )
+        transaccion = result.scalar_one_or_none()
+
+        if transaccion and transaccion.estado == EstadoTransaccion.PENDIENTE.value:
+            transaccion.estado = EstadoTransaccion.FALLIDA.value
+            await db.commit()
 
     return {"received": True}
 
