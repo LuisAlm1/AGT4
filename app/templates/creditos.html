@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Comprar Créditos{% endblock %}
+{% block title %}{{ "Comprar Créditos" }}{% endblock %}
 
 {% block extra_head %}
 <script src="https://js.stripe.com/v3/"></script>
@@ -17,7 +17,7 @@
             </a>
             <div class="flex items-center space-x-4">
                 <a href="/viralpost/app" class="text-gray-600 hover:text-gray-900">
-                    <i class="fas fa-arrow-left mr-2"></i>Volver al Generador
+                    <i class="fas fa-arrow-left mr-2"></i><span data-i18n="nav.app">Volver</span>
                 </a>
             </div>
         </div>
@@ -31,82 +31,18 @@
         <div class="text-center mb-12">
             <div class="inline-flex items-center bg-purple-100 text-purple-600 px-4 py-2 rounded-full mb-4">
                 <i class="fas fa-coins mr-2"></i>
-                <span>Tu saldo: <strong id="currentCredits">0</strong> créditos</span>
+                <span><span data-i18n="credits.balance">Tu saldo</span>: <strong id="currentCredits">0</strong> <span data-i18n="credits.pack">créditos</span></span>
             </div>
-            <h1 class="text-3xl md:text-4xl font-bold mb-4">Comprar Créditos</h1>
-            <p class="text-gray-600 text-lg">1 crédito = 1 imagen viral + copy para redes sociales</p>
+            <h1 class="text-3xl md:text-4xl font-bold mb-4" data-i18n="credits.title">Comprar Créditos</h1>
+            <p class="text-gray-600 text-lg" id="creditsSubtitle">1 crédito = 1 imagen viral + copy para redes sociales</p>
         </div>
 
-        <!-- Paquetes -->
-        <div class="grid md:grid-cols-4 gap-6 mb-12">
-            <!-- Pack 10 -->
-            <div class="package-card bg-white rounded-2xl p-6 border-2 border-gray-200 hover:border-purple-300 transition cursor-pointer"
-                 data-package="pack_10">
-                <h3 class="font-bold text-lg mb-2">10 Créditos</h3>
-                <div class="text-3xl font-bold mb-1">$150 <span class="text-lg font-normal text-gray-500">MXN</span></div>
-                <p class="text-gray-500 text-sm mb-4">$15.00 por imagen</p>
-                <ul class="text-sm text-gray-600 space-y-2 mb-6">
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>10 generaciones</li>
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Copy incluido</li>
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sin expiración</li>
-                </ul>
-                <button class="w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-200 transition buy-btn">
-                    Seleccionar
-                </button>
-            </div>
-
-            <!-- Pack 25 - Popular -->
-            <div class="package-card bg-white rounded-2xl p-6 border-2 border-purple-400 relative cursor-pointer"
-                 data-package="pack_25">
-                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-                    POPULAR
-                </div>
-                <h3 class="font-bold text-lg mb-2">25 Créditos</h3>
-                <div class="text-3xl font-bold mb-1">$350 <span class="text-lg font-normal text-gray-500">MXN</span></div>
-                <p class="text-gray-500 text-sm mb-4">$14.00 por imagen</p>
-                <ul class="text-sm text-gray-600 space-y-2 mb-6">
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>25 generaciones</li>
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Copy incluido</li>
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sin expiración</li>
-                </ul>
-                <button class="w-full gradient-bg text-white py-3 rounded-xl font-medium hover:opacity-90 transition buy-btn">
-                    Seleccionar
-                </button>
-            </div>
-
-            <!-- Pack 50 -->
-            <div class="package-card bg-white rounded-2xl p-6 border-2 border-gray-200 hover:border-purple-300 transition cursor-pointer"
-                 data-package="pack_50">
-                <h3 class="font-bold text-lg mb-2">50 Créditos</h3>
-                <div class="text-3xl font-bold mb-1">$680 <span class="text-lg font-normal text-gray-500">MXN</span></div>
-                <p class="text-gray-500 text-sm mb-4">$13.60 por imagen</p>
-                <ul class="text-sm text-gray-600 space-y-2 mb-6">
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>50 generaciones</li>
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Copy incluido</li>
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sin expiración</li>
-                </ul>
-                <button class="w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-200 transition buy-btn">
-                    Seleccionar
-                </button>
-            </div>
-
-            <!-- Pack 100 - Mejor Valor -->
-            <div class="package-card bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl p-6 border-2 border-yellow-400 relative cursor-pointer"
-                 data-package="pack_100">
-                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-                    MEJOR VALOR
-                </div>
-                <h3 class="font-bold text-lg mb-2">100 Créditos</h3>
-                <div class="text-3xl font-bold mb-1">$1,290 <span class="text-lg font-normal text-gray-500">MXN</span></div>
-                <p class="text-gray-500 text-sm mb-4">$12.90 por imagen</p>
-                <ul class="text-sm text-gray-600 space-y-2 mb-6">
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>100 generaciones</li>
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Copy incluido</li>
-                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sin expiración</li>
-                </ul>
-                <button class="w-full bg-yellow-500 text-white py-3 rounded-xl font-medium hover:bg-yellow-600 transition buy-btn">
-                    Seleccionar
-                </button>
+        <!-- Paquetes (dinámico) -->
+        <div id="packagesGrid" class="grid md:grid-cols-4 gap-6 mb-12">
+            <!-- Loading state -->
+            <div class="col-span-4 text-center py-8">
+                <div class="loading-spinner mx-auto mb-4"></div>
+                <p class="text-gray-500" data-i18n="loading">Cargando paquetes...</p>
             </div>
         </div>
 
@@ -117,41 +53,49 @@
                     <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <i class="fas fa-shield-alt text-green-600 text-xl"></i>
                     </div>
-                    <h3 class="font-bold mb-2">Pago Seguro</h3>
-                    <p class="text-gray-600 text-sm">Procesado con Stripe, el estándar de seguridad en pagos</p>
+                    <h3 class="font-bold mb-2" data-i18n="credits.secure">Pago Seguro</h3>
+                    <p class="text-gray-600 text-sm" data-i18n="credits.secure_desc">Procesado con Stripe, el estándar de seguridad en pagos</p>
                 </div>
                 <div class="text-center">
                     <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <i class="fas fa-infinity text-blue-600 text-xl"></i>
                     </div>
-                    <h3 class="font-bold mb-2">Sin Expiración</h3>
-                    <p class="text-gray-600 text-sm">Tus créditos nunca expiran, úsalos cuando quieras</p>
+                    <h3 class="font-bold mb-2" data-i18n="credits.no_expiry">Sin Expiración</h3>
+                    <p class="text-gray-600 text-sm" data-i18n="credits.no_expiry_desc">Tus créditos nunca expiran, úsalos cuando quieras</p>
                 </div>
                 <div class="text-center">
                     <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <i class="fas fa-bolt text-purple-600 text-xl"></i>
                     </div>
-                    <h3 class="font-bold mb-2">Créditos Inmediatos</h3>
-                    <p class="text-gray-600 text-sm">Tus créditos se agregan automáticamente al pagar</p>
+                    <h3 class="font-bold mb-2" data-i18n="credits.instant">Créditos Inmediatos</h3>
+                    <p class="text-gray-600 text-sm" data-i18n="credits.instant_desc">Tus créditos se agregan automáticamente al pagar</p>
                 </div>
             </div>
         </div>
 
+        <!-- Nota sobre OXXO (solo MXN) -->
+        <div id="oxxoNote" class="mt-6 bg-orange-50 rounded-xl p-4 text-center hidden">
+            <p class="text-orange-800 text-sm">
+                <i class="fas fa-store mr-2"></i>
+                <span data-i18n="credits.oxxo_note">También puedes pagar en OXXO (solo disponible en México)</span>
+            </p>
+        </div>
+
         <!-- Historial de compras -->
         <div class="mt-12">
-            <h2 class="text-xl font-bold mb-4">Historial de Compras</h2>
+            <h2 class="text-xl font-bold mb-4" data-i18n="history.purchases">Historial de Compras</h2>
             <div id="transactionHistory" class="bg-white rounded-2xl shadow-lg overflow-hidden">
                 <div class="p-8 text-center text-gray-500" id="noTransactions">
                     <i class="fas fa-receipt text-4xl mb-4"></i>
-                    <p>Aún no tienes compras</p>
+                    <p data-i18n="history.no_purchases">Aún no tienes compras</p>
                 </div>
                 <table id="transactionsTable" class="hidden w-full">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fecha</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Créditos</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Monto</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase" data-i18n="history.date">Fecha</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase" data-i18n="credits.pack">Créditos</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase" data-i18n="history.amount">Monto</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase" data-i18n="history.status">Estado</th>
                         </tr>
                     </thead>
                     <tbody id="transactionsBody" class="divide-y divide-gray-200">
@@ -166,7 +110,7 @@
 <div id="loadingModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
     <div class="bg-white rounded-2xl p-8 text-center">
         <div class="loading-spinner mx-auto mb-4"></div>
-        <p class="text-gray-600">Redirigiendo a Stripe...</p>
+        <p class="text-gray-600" data-i18n="payment.redirecting">Redirigiendo a Stripe...</p>
     </div>
 </div>
 {% endblock %}
@@ -178,12 +122,38 @@
         window.location.href = '/viralpost/login';
     }
 
+    let packagesData = [];
+
     // Cargar datos
     document.addEventListener('DOMContentLoaded', async () => {
         await loadUserData();
+        await loadPackages();
         await loadTransactions();
-        setupPackageCards();
+
+        // Actualizar cuando cambie el idioma
+        window.addEventListener('languageChanged', async () => {
+            await loadPackages();
+            updateUIText();
+        });
     });
+
+    function updateUIText() {
+        // Actualizar subtítulo
+        const subtitle = document.getElementById('creditsSubtitle');
+        if (window.I18n) {
+            subtitle.textContent = I18n.currentLang === 'en'
+                ? '1 credit = 1 viral image + social media copy'
+                : '1 crédito = 1 imagen viral + copy para redes sociales';
+        }
+
+        // Mostrar/ocultar nota de OXXO según moneda
+        const oxxoNote = document.getElementById('oxxoNote');
+        if (window.I18n && I18n.currentCurrency === 'MXN') {
+            oxxoNote.classList.remove('hidden');
+        } else {
+            oxxoNote.classList.add('hidden');
+        }
+    }
 
     async function loadUserData() {
         try {
@@ -195,6 +165,80 @@
         } catch (error) {
             console.error('Error:', error);
         }
+    }
+
+    async function loadPackages() {
+        try {
+            const currency = window.I18n ? I18n.currentCurrency : 'MXN';
+            const lang = window.I18n ? I18n.currentLang : 'es';
+
+            const response = await apiFetch(`/pagos/paquetes?currency=${currency}&lang=${lang}`);
+            if (response.ok) {
+                packagesData = await response.json();
+                renderPackages(packagesData);
+                updateUIText();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    function renderPackages(packages) {
+        const grid = document.getElementById('packagesGrid');
+        const lang = window.I18n ? I18n.currentLang : 'es';
+
+        grid.innerHTML = packages.map(p => {
+            const isPopular = p.popular;
+            const isBestValue = p.mejor_valor;
+            const pricePerCredit = (p.precio / p.creditos).toFixed(2);
+
+            let borderClass = 'border-gray-200 hover:border-purple-300';
+            let bgClass = 'bg-white';
+            let badgeHtml = '';
+            let buttonClass = 'bg-gray-100 text-gray-700 hover:bg-gray-200';
+
+            if (isPopular) {
+                borderClass = 'border-purple-400';
+                badgeHtml = `<div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full">${lang === 'en' ? 'POPULAR' : 'POPULAR'}</div>`;
+                buttonClass = 'gradient-bg text-white hover:opacity-90';
+            } else if (isBestValue) {
+                borderClass = 'border-yellow-400';
+                bgClass = 'bg-gradient-to-br from-yellow-50 to-amber-50';
+                badgeHtml = `<div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-full">${lang === 'en' ? 'BEST VALUE' : 'MEJOR VALOR'}</div>`;
+                buttonClass = 'bg-yellow-500 text-white hover:bg-yellow-600';
+            }
+
+            const currencySymbol = p.moneda === 'USD' ? '$' : '$';
+            const priceFormatted = p.moneda === 'USD'
+                ? `${currencySymbol}${p.precio.toFixed(2)}`
+                : `${currencySymbol}${Math.round(p.precio).toLocaleString('es-MX')}`;
+
+            const perImageText = lang === 'en' ? 'per image' : 'por imagen';
+            const generationsText = lang === 'en' ? 'generations' : 'generaciones';
+            const copyText = lang === 'en' ? 'Copy included' : 'Copy incluido';
+            const noExpiryText = lang === 'en' ? 'No expiration' : 'Sin expiración';
+            const selectText = lang === 'en' ? 'Select' : 'Seleccionar';
+
+            return `
+                <div class="package-card ${bgClass} rounded-2xl p-6 border-2 ${borderClass} relative cursor-pointer transition"
+                     data-package="${p.id}">
+                    ${badgeHtml}
+                    <h3 class="font-bold text-lg mb-2">${p.nombre}</h3>
+                    <div class="text-3xl font-bold mb-1">${priceFormatted} <span class="text-lg font-normal text-gray-500">${p.moneda}</span></div>
+                    <p class="text-gray-500 text-sm mb-4">${currencySymbol}${pricePerCredit} ${perImageText}</p>
+                    <ul class="text-sm text-gray-600 space-y-2 mb-6">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>${p.creditos} ${generationsText}</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>${copyText}</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>${noExpiryText}</li>
+                    </ul>
+                    <button class="w-full ${buttonClass} py-3 rounded-xl font-medium transition buy-btn">
+                        ${selectText}
+                    </button>
+                </div>
+            `;
+        }).join('');
+
+        setupPackageCards();
     }
 
     async function loadTransactions() {
@@ -215,9 +259,12 @@
         document.getElementById('noTransactions').classList.add('hidden');
         document.getElementById('transactionsTable').classList.remove('hidden');
 
+        const lang = window.I18n ? I18n.currentLang : 'es';
+        const locale = lang === 'en' ? 'en-US' : 'es-MX';
+
         const tbody = document.getElementById('transactionsBody');
         tbody.innerHTML = transactions.map(t => {
-            const date = new Date(t.created_at).toLocaleDateString('es-MX', {
+            const date = new Date(t.created_at).toLocaleDateString(locale, {
                 day: '2-digit',
                 month: 'short',
                 year: 'numeric'
@@ -229,14 +276,21 @@
                 'fallida': 'bg-red-100 text-red-800'
             };
 
+            const statusText = {
+                es: { completada: 'Completada', pendiente: 'Pendiente', fallida: 'Fallida' },
+                en: { completada: 'Completed', pendiente: 'Pending', fallida: 'Failed' }
+            };
+
+            const creditsText = lang === 'en' ? 'credits' : 'créditos';
+
             return `
                 <tr>
                     <td class="px-6 py-4 text-sm text-gray-900">${date}</td>
-                    <td class="px-6 py-4 text-sm text-gray-900">${t.creditos} créditos</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">${t.creditos} ${creditsText}</td>
                     <td class="px-6 py-4 text-sm text-gray-900">$${t.monto_mxn} MXN</td>
                     <td class="px-6 py-4">
                         <span class="px-2 py-1 text-xs font-medium rounded-full ${statusColors[t.estado] || 'bg-gray-100'}">
-                            ${t.estado.charAt(0).toUpperCase() + t.estado.slice(1)}
+                            ${statusText[lang][t.estado] || t.estado}
                         </span>
                     </td>
                 </tr>
@@ -256,10 +310,17 @@
     async function purchasePackage(packageId) {
         document.getElementById('loadingModal').classList.remove('hidden');
 
+        const currency = window.I18n ? I18n.currentCurrency : 'MXN';
+        const lang = window.I18n ? I18n.currentLang : 'es';
+
         try {
             const response = await apiFetch('/pagos/checkout', {
                 method: 'POST',
-                body: JSON.stringify({ paquete_id: packageId })
+                body: JSON.stringify({
+                    paquete_id: packageId,
+                    currency: currency,
+                    lang: lang
+                })
             });
 
             if (response.ok) {
@@ -268,11 +329,13 @@
                 window.location.href = data.checkout_url;
             } else {
                 const error = await response.json();
-                showNotification(error.detail || 'Error al procesar', 'error');
+                const errorMsg = lang === 'en' ? 'Error processing request' : 'Error al procesar';
+                showNotification(error.detail || errorMsg, 'error');
                 document.getElementById('loadingModal').classList.add('hidden');
             }
         } catch (error) {
-            showNotification('Error de conexión', 'error');
+            const errorMsg = lang === 'en' ? 'Connection error' : 'Error de conexión';
+            showNotification(errorMsg, 'error');
             document.getElementById('loadingModal').classList.add('hidden');
         }
     }

@@ -104,12 +104,53 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body class="bg-gray-50 min-h-screen">
+    <!-- Selector de Idioma/País (flotante) -->
+    <div id="langSelectorContainer" class="fixed top-4 right-4 z-40">
+        <div class="relative">
+            <button onclick="toggleLangMenu()" id="langToggle"
+                    class="flex items-center space-x-2 bg-white shadow-lg rounded-full px-4 py-2 hover:shadow-xl transition text-sm font-medium text-gray-700">
+                <span id="langDisplay">🇲🇽 ES</span>
+                <i class="fas fa-chevron-down text-xs"></i>
+            </button>
+            <div id="langMenu" class="hidden absolute right-0 mt-2 bg-white rounded-xl shadow-xl overflow-hidden min-w-[160px]">
+                <button onclick="I18n.setLanguage('es', 'MXN'); toggleLangMenu();"
+                        class="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 text-sm">
+                    <span>🇲🇽</span>
+                    <span>Español (MXN)</span>
+                </button>
+                <button onclick="I18n.setLanguage('en', 'USD'); toggleLangMenu();"
+                        class="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 text-sm border-t">
+                    <span>🇺🇸</span>
+                    <span>English (USD)</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     {% block content %}{% endblock %}
+
+    <!-- i18n Script -->
+    <script src="/viralpost/static/js/i18n.js"></script>
 
     <!-- Scripts globales -->
     <script>
         // Constantes de la API
         const API_BASE = '/viralpost/api';
+
+        // Toggle del menú de idioma
+        function toggleLangMenu() {
+            const menu = document.getElementById('langMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Cerrar menú al hacer clic fuera
+        document.addEventListener('click', (e) => {
+            const container = document.getElementById('langSelectorContainer');
+            const menu = document.getElementById('langMenu');
+            if (container && menu && !container.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
 
         // Helpers de autenticación
         const Auth = {
@@ -169,15 +210,19 @@
 
         // Formatear número
         function formatNumber(num) {
-            return new Intl.NumberFormat('es-MX').format(num);
+            const locale = window.I18n ? I18n.getRegionInfo().locale : 'es-MX';
+            return new Intl.NumberFormat(locale).format(num);
         }
 
-        // Formatear precio
-        function formatPrice(amount) {
+        // Formatear precio (usa i18n si está disponible)
+        function formatPrice(amountMXN) {
+            if (window.I18n) {
+                return I18n.formatPrice(amountMXN);
+            }
             return new Intl.NumberFormat('es-MX', {
                 style: 'currency',
                 currency: 'MXN'
-            }).format(amount);
+            }).format(amountMXN);
         }
 
         // Mostrar notificación
