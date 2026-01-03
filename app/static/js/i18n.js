@@ -97,15 +97,25 @@ const I18n = {
             'app.no_credits_desc': 'Compra más créditos para seguir generando imágenes virales.',
             'app.cancel': 'Cancelar',
 
-            // Estilos
-            'style.macro_explosion': 'Explosión Macro',
-            'style.liquid_metal': 'Metal Líquido',
-            'style.neon_noir': 'Neon Noir',
-            'style.botanical_luxury': 'Lujo Botánico',
-            'style.zero_gravity': 'Gravedad Cero',
-            'style.miniature_world': 'Mundo Miniatura',
-            'style.frozen_time': 'Tiempo Congelado',
-            'style.dark_luxury': 'Lujo Oscuro',
+            // Estilos - Nombres
+            'style.explosion_macro': 'Explosión Macro',
+            'style.metal_liquido': 'Metal Líquido',
+            'style.neon_noir': 'Neon Noir Cyberpunk',
+            'style.jardin_surrealista': 'Jardín Surrealista',
+            'style.gravedad_cero': 'Gravedad Cero',
+            'style.mundo_miniatura': 'Mundo Miniatura',
+            'style.tiempo_congelado': 'Tiempo Congelado',
+            'style.lujo_oscuro': 'Lujo Oscuro',
+            // Estilos - Descripciones
+            'style.explosion_macro_desc': 'Fotografía macro extrema donde el producto explota con ingredientes y partículas',
+            'style.metal_liquido_desc': 'Estética futurista con superficies cromadas y reflejos metálicos',
+            'style.neon_noir_desc': 'Atmósfera urbana nocturna con luces neón y lluvia',
+            'style.jardin_surrealista_desc': 'Naturaleza exuberante y flores exóticas en un jardín mágico',
+            'style.gravedad_cero_desc': 'Todo flota en un ambiente espacial de microgravedad',
+            'style.mundo_miniatura_desc': 'Perspectiva de diorama donde el producto es gigante',
+            'style.tiempo_congelado_desc': 'Captura el momento exacto de una acción congelada',
+            'style.lujo_oscuro_desc': 'Elegancia minimalista sobre fondo negro con acentos dorados',
+            'style.real_example': 'Ejemplo Real',
 
             // Resultados
             'result.title': 'Tu imagen viral',
@@ -301,15 +311,25 @@ const I18n = {
             'app.no_credits_desc': 'Buy more credits to keep generating viral images.',
             'app.cancel': 'Cancel',
 
-            // Styles
-            'style.macro_explosion': 'Macro Explosion',
-            'style.liquid_metal': 'Liquid Metal',
-            'style.neon_noir': 'Neon Noir',
-            'style.botanical_luxury': 'Botanical Luxury',
-            'style.zero_gravity': 'Zero Gravity',
-            'style.miniature_world': 'Miniature World',
-            'style.frozen_time': 'Frozen Time',
-            'style.dark_luxury': 'Dark Luxury',
+            // Styles - Names
+            'style.explosion_macro': 'Macro Explosion',
+            'style.metal_liquido': 'Liquid Metal',
+            'style.neon_noir': 'Neon Noir Cyberpunk',
+            'style.jardin_surrealista': 'Surreal Garden',
+            'style.gravedad_cero': 'Zero Gravity',
+            'style.mundo_miniatura': 'Miniature World',
+            'style.tiempo_congelado': 'Frozen Time',
+            'style.lujo_oscuro': 'Dark Luxury',
+            // Styles - Descriptions
+            'style.explosion_macro_desc': 'Extreme macro photography where the product explodes with ingredients and particles',
+            'style.metal_liquido_desc': 'Futuristic aesthetic with chrome surfaces and metallic reflections',
+            'style.neon_noir_desc': 'Urban night atmosphere with neon lights and rain',
+            'style.jardin_surrealista_desc': 'Lush nature and exotic flowers in a magical garden',
+            'style.gravedad_cero_desc': 'Everything floats in a microgravity space environment',
+            'style.mundo_miniatura_desc': 'Diorama perspective where the product is giant',
+            'style.tiempo_congelado_desc': 'Captures the exact moment of a frozen action',
+            'style.lujo_oscuro_desc': 'Minimalist elegance on black background with gold accents',
+            'style.real_example': 'Real Example',
 
             // Results
             'result.title': 'Your viral image',
