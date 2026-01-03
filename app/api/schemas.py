@@ -44,6 +44,14 @@ class UsuarioResponse(BaseModel):
 
 # ============ ESTILOS ============
 
+class CategoriaResponse(BaseModel):
+    """Respuesta de categoría de giro"""
+    id: str
+    nombre: str
+    icono: str
+    descripcion: str
+
+
 class EstiloResponse(BaseModel):
     """Respuesta de estilo viral"""
     id: str
@@ -52,6 +60,7 @@ class EstiloResponse(BaseModel):
     icono: str
     preview_color: str
     imagen_ejemplo: Optional[str] = None
+    categorias: Optional[List[str]] = None
 
 
 class ImagenesEstilosResponse(BaseModel):

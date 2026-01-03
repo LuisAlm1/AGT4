@@ -171,10 +171,16 @@
                 ? '<span class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">Completada</span>'
                 : '<span class="bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full">Error</span>';
 
+            // Escapar JSON para onclick
+            const gJson = JSON.stringify(g).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+
+            // Preparar texto para copiar
+            const fullCopyText = (g.copy_facebook || '') + '\\n\\n' + (g.hashtags_facebook || []).join(' ');
+
             return `
                 <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition cursor-pointer"
-                     onclick='showDetail(${JSON.stringify(g).replace(/'/g, "\\'")})'>
-                    <div class="aspect-square bg-gray-100 relative">
+                     onclick='showDetail(JSON.parse(this.dataset.gen))' data-gen="${gJson}">
+                    <div class="aspect-square bg-gray-100 relative group">
                         ${g.imagen_url
                             ? `<img src="${g.imagen_url}" class="w-full h-full object-cover">`
                             : `<div class="w-full h-full flex items-center justify-center">
@@ -184,10 +190,31 @@
                         <div class="absolute top-3 right-3">
                             ${statusBadge}
                         </div>
+                        ${g.imagen_url ? `
+                        <div class="absolute bottom-3 right-3 flex space-x-2 opacity-0 group-hover:opacity-100 transition">
+                            <button onclick="downloadImage('${g.imagen_url}', 'viralpost_${g.id}_${g.estilo}.png', event)"
+                                    class="bg-white/90 hover:bg-white text-gray-700 p-2 rounded-lg shadow-lg" title="Descargar">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                        ` : ''}
                     </div>
                     <div class="p-4">
-                        <p class="font-semibold text-gray-800 truncate">${g.estilo}</p>
-                        <p class="text-sm text-gray-500">${date}</p>
+                        <p class="font-semibold text-gray-800 truncate capitalize">${g.estilo.replace(/_/g, ' ')}</p>
+                        <p class="text-sm text-gray-500 mb-2">${date}</p>
+                        ${g.copy_facebook ? `
+                        <p class="text-xs text-gray-600 line-clamp-2 mb-2">${g.copy_facebook}</p>
+                        <div class="flex space-x-2">
+                            <button onclick="copyText(\`${g.copy_facebook.replace(/`/g, '\\`').replace(/\n/g, ' ')} ${(g.hashtags_facebook || []).join(' ')}\`, event)"
+                                    class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 px-2 py-1 rounded-lg">
+                                <i class="fas fa-copy mr-1"></i>FB
+                            </button>
+                            <button onclick="copyText(\`${(g.copy_instagram || '').replace(/`/g, '\\`').replace(/\n/g, ' ')} ${(g.hashtags_instagram || []).join(' ')}\`, event)"
+                                    class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 px-2 py-1 rounded-lg">
+                                <i class="fas fa-copy mr-1"></i>IG
+                            </button>
+                        </div>
+                        ` : ''}
                     </div>
                 </div>
             `;
@@ -234,7 +261,9 @@
 
         if (generation.imagen_url) {
             document.getElementById('modalImage').src = generation.imagen_url;
-            document.getElementById('modalDownload').href = generation.imagen_url;
+            const downloadLink = document.getElementById('modalDownload');
+            downloadLink.href = generation.imagen_url;
+            downloadLink.download = `viralpost_${generation.id}_${generation.estilo}.png`;
         }
 
         document.getElementById('modalFacebookCopy').textContent = generation.copy_facebook || 'No disponible';
@@ -243,6 +272,34 @@
         document.getElementById('modalInstagramHashtags').textContent = (generation.hashtags_instagram || []).join(' ');
 
         modal.classList.remove('hidden');
+    }
+
+    // Descargar imagen directamente
+    async function downloadImage(url, filename, event) {
+        event.stopPropagation();
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const blobUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(blobUrl);
+            showNotification('¡Imagen descargada!', 'success');
+        } catch (error) {
+            showNotification('Error al descargar', 'error');
+        }
+    }
+
+    // Copiar texto al portapapeles
+    function copyText(text, event) {
+        event.stopPropagation();
+        navigator.clipboard.writeText(text).then(() => {
+            showNotification('¡Copiado al portapapeles!', 'success');
+        });
     }
 
     function closeDetailModal() {

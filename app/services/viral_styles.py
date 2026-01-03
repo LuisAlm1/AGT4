@@ -3,6 +3,46 @@ Definición de estilos virales para generación de imágenes
 Basado en el sistema de KNIME proporcionado
 """
 
+# Categorías de giros de negocio
+CATEGORIAS_GIRO = {
+    "comida": {
+        "id": "comida",
+        "nombre": "Comida y Bebidas",
+        "icono": "🍕",
+        "descripcion": "Restaurantes, panaderías, cafeterías, productos alimenticios"
+    },
+    "moda": {
+        "id": "moda",
+        "nombre": "Moda y Accesorios",
+        "icono": "👗",
+        "descripcion": "Ropa, zapatos, bolsas, joyería, accesorios"
+    },
+    "tecnologia": {
+        "id": "tecnologia",
+        "nombre": "Tecnología y Gadgets",
+        "icono": "📱",
+        "descripcion": "Electrónicos, gadgets, software, apps"
+    },
+    "belleza": {
+        "id": "belleza",
+        "nombre": "Belleza y Cosmética",
+        "icono": "💄",
+        "descripcion": "Maquillaje, skincare, productos de belleza"
+    },
+    "hogar": {
+        "id": "hogar",
+        "nombre": "Hogar y Decoración",
+        "icono": "🏠",
+        "descripcion": "Muebles, decoración, artículos para el hogar"
+    },
+    "todos": {
+        "id": "todos",
+        "nombre": "Ver Todos",
+        "icono": "✨",
+        "descripcion": "Todos los estilos disponibles"
+    }
+}
+
 # Sistema de estilos virales (8 categorías únicas)
 VIRAL_STYLES = {
     "macro_explosion": {
@@ -12,6 +52,7 @@ VIRAL_STYLES = {
         "icono": "💥",
         "preview_color": "#FF6B35",
         "imagen_ejemplo": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop",
+        "categorias": ["comida", "tecnologia", "belleza"],
         "camera": "Extreme macro lens 100mm, f/1.4, focus stacking",
         "lighting": "Multiple rim lights creating product halo, dramatic shadows",
         "environment": "El producto EXPLOTA en sus componentes/ingredientes suspendidos en el aire como big bang culinario",
@@ -26,6 +67,7 @@ VIRAL_STYLES = {
         "icono": "🪞",
         "preview_color": "#C0C0C0",
         "imagen_ejemplo": "https://images.unsplash.com/photo-1635322966219-b75ed372eb01?w=400&h=400&fit=crop",
+        "categorias": ["tecnologia", "moda", "belleza"],
         "camera": "Medium shot, 50mm anamorphic, shallow DOF with lens flares",
         "lighting": "Single hard light source creating mercury-like reflections",
         "environment": "El producto emerge de un charco de metal líquido cromado que refleja un cielo dramático",
@@ -40,10 +82,11 @@ VIRAL_STYLES = {
         "icono": "🌃",
         "preview_color": "#FF00FF",
         "imagen_ejemplo": "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=400&h=400&fit=crop",
+        "categorias": ["tecnologia", "moda"],
         "camera": "Dutch angle 15°, 35mm wide, deep shadows",
-        "lighting": "Neon rosa/cyan como únicas fuentes, lluvia cayendo",
-        "environment": "Callejón de Blade Runner con el producto como elemento central iluminado",
-        "vfx": "Reflejos en charcos, humo volumétrico, rain streaks",
+        "lighting": "Neon rosa/cyan como únicas fuentes, ambiente interior futurista",
+        "environment": "Bar/lounge cyberpunk futurista con el producto exhibido elegantemente bajo luces neón",
+        "vfx": "Reflejos en superficies pulidas, humo volumétrico, destellos neón",
         "mood": "Misterioso, urbano, cinematográfico",
         "viral_hook": "Estética cyberpunk ultra-trendy"
     },
@@ -54,6 +97,7 @@ VIRAL_STYLES = {
         "icono": "🌺",
         "preview_color": "#228B22",
         "imagen_ejemplo": "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=400&h=400&fit=crop",
+        "categorias": ["comida", "belleza", "hogar"],
         "camera": "Overhead 45°, 85mm portrait lens, creamy bokeh",
         "lighting": "Golden hour natural light filtering through leaves",
         "environment": "El producto crece orgánicamente de plantas exóticas, flores imposibles, naturaleza fantástica",
@@ -68,6 +112,7 @@ VIRAL_STYLES = {
         "icono": "🚀",
         "preview_color": "#1E90FF",
         "imagen_ejemplo": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=400&h=400&fit=crop",
+        "categorias": ["tecnologia", "comida", "belleza"],
         "camera": "Low angle heroic shot, 24mm wide, everything floating",
         "lighting": "Soft wraparound light como estación espacial, rim light azul",
         "environment": "Interior de nave espacial con el producto y sus elementos flotando en microgravedad",
@@ -82,6 +127,7 @@ VIRAL_STYLES = {
         "icono": "🏙️",
         "preview_color": "#FFD700",
         "imagen_ejemplo": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop",
+        "categorias": ["comida", "tecnologia", "moda", "belleza", "hogar"],
         "camera": "Tilt-shift lens effect, producto gigante, perspectiva forzada",
         "lighting": "Soft diffused daylight, sombras suaves de escala real",
         "environment": "El producto es GIGANTE en una ciudad miniatura donde personas diminutas interactúan con él",
@@ -96,6 +142,7 @@ VIRAL_STYLES = {
         "icono": "⏱️",
         "preview_color": "#00CED1",
         "imagen_ejemplo": "https://images.unsplash.com/photo-1509773896068-7fd415d91e2e?w=400&h=400&fit=crop",
+        "categorias": ["comida", "belleza", "tecnologia"],
         "camera": "Bullet-time multi-angle, 200mm telephoto compression",
         "lighting": "Flash de alta velocidad, todo perfectamente nítido",
         "environment": "Momento exacto de acción CONGELADO: splash, impacto, derrame, caída",
@@ -110,6 +157,7 @@ VIRAL_STYLES = {
         "icono": "✨",
         "preview_color": "#1a1a1a",
         "imagen_ejemplo": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=400&fit=crop",
+        "categorias": ["moda", "belleza", "tecnologia", "comida"],
         "camera": "Straight-on symmetrical, 90mm macro, razor thin DOF",
         "lighting": "Single dramatic spotlight from above, rest in pure black",
         "environment": "Fondo negro absoluto, el producto flota en terciopelo de oscuridad con acentos dorados",
@@ -125,19 +173,42 @@ def obtener_estilo(estilo_id: str) -> dict:
     return VIRAL_STYLES.get(estilo_id, VIRAL_STYLES["macro_explosion"])
 
 
-def obtener_todos_estilos() -> list:
-    """Retorna lista de todos los estilos disponibles"""
+def obtener_categorias() -> list:
+    """Retorna lista de categorías de giro de negocio"""
     return [
         {
+            "id": cat["id"],
+            "nombre": cat["nombre"],
+            "icono": cat["icono"],
+            "descripcion": cat["descripcion"]
+        }
+        for cat in CATEGORIAS_GIRO.values()
+    ]
+
+
+def obtener_todos_estilos(categoria: str = None) -> list:
+    """
+    Retorna lista de todos los estilos disponibles.
+    Si se proporciona una categoría, filtra por ella.
+    """
+    estilos = []
+    for style in VIRAL_STYLES.values():
+        # Si hay categoría y no es "todos", filtrar
+        if categoria and categoria != "todos":
+            if categoria not in style.get("categorias", []):
+                continue
+
+        estilos.append({
             "id": style["id"],
             "nombre": style["nombre"],
             "descripcion": style["descripcion"],
             "icono": style["icono"],
             "preview_color": style["preview_color"],
-            "imagen_ejemplo": style.get("imagen_ejemplo", "")
-        }
-        for style in VIRAL_STYLES.values()
-    ]
+            "imagen_ejemplo": style.get("imagen_ejemplo", ""),
+            "categorias": style.get("categorias", [])
+        })
+
+    return estilos
 
 
 def construir_prompt_imagen(

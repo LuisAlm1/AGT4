@@ -14,9 +14,10 @@ from app.core.security import obtener_usuario_actual
 from app.core.config import settings
 from app.models.user import User
 from app.models.generation import Generation, EstadoGeneracion
-from app.services.viral_styles import obtener_todos_estilos, obtener_estilo
+from app.services.viral_styles import obtener_todos_estilos, obtener_estilo, obtener_categorias
 from app.services.generation import generation_service, guardar_imagen
 from app.api.schemas import (
+    CategoriaResponse,
     EstiloResponse,
     ImagenesEstilosResponse,
     GeneracionCompletaResponse,
@@ -28,12 +29,29 @@ from pathlib import Path
 router = APIRouter(prefix="/generacion", tags=["Generación"])
 
 
+@router.get("/categorias", response_model=list[CategoriaResponse])
+async def listar_categorias():
+    """
+    Lista todas las categorías de giro de negocio disponibles.
+    """
+    return [
+        CategoriaResponse(
+            id=c["id"],
+            nombre=c["nombre"],
+            icono=c["icono"],
+            descripcion=c["descripcion"]
+        )
+        for c in obtener_categorias()
+    ]
+
+
 @router.get("/estilos", response_model=list[EstiloResponse])
-async def listar_estilos():
+async def listar_estilos(categoria: Optional[str] = None):
     """
     Lista todos los estilos virales disponibles.
+    Opcionalmente filtra por categoría de giro.
     """
-    estilos = obtener_todos_estilos()
+    estilos = obtener_todos_estilos(categoria)
     return [
         EstiloResponse(
             id=e["id"],
@@ -41,7 +59,8 @@ async def listar_estilos():
             descripcion=e["descripcion"],
             icono=e["icono"],
             preview_color=e["preview_color"],
-            imagen_ejemplo=e.get("imagen_ejemplo")
+            imagen_ejemplo=e.get("imagen_ejemplo"),
+            categorias=e.get("categorias")
         )
         for e in estilos
     ]
