@@ -118,7 +118,7 @@ class StripeService:
 
         session = stripe.checkout.Session.create(
             customer=customer_id,
-            payment_method_types=["card"],
+            payment_method_types=["card", "oxxo"],
             line_items=[
                 {
                     "price_data": {
@@ -141,6 +141,11 @@ class StripeService:
                 "creditos": str(paquete["creditos"])
             },
             locale="es-419",  # Español latinoamericano
+            payment_method_options={
+                "oxxo": {
+                    "expires_after_days": 3  # El voucher expira en 3 días
+                }
+            }
         )
 
         return {
