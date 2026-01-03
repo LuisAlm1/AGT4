@@ -446,15 +446,38 @@ const I18n = {
 // Exportar para uso global inmediatamente
 window.I18n = I18n;
 
+// Función de inicialización robusta
+function initI18n() {
+    console.log('[i18n] Iniciando...');
+    console.log('[i18n] localStorage lang:', localStorage.getItem('viralpost_lang'));
+    console.log('[i18n] localStorage currency:', localStorage.getItem('viralpost_currency'));
+
+    I18n.init();
+
+    console.log('[i18n] Idioma actual:', I18n.currentLang);
+    console.log('[i18n] Moneda actual:', I18n.currentCurrency);
+
+    // Contar elementos traducidos
+    const elements = document.querySelectorAll('[data-i18n]');
+    console.log('[i18n] Elementos con data-i18n encontrados:', elements.length);
+}
+
 // Inicializar cuando el DOM esté listo
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        I18n.init();
-    });
+    document.addEventListener('DOMContentLoaded', initI18n);
 } else {
     // DOM ya está listo
-    I18n.init();
+    initI18n();
 }
+
+// Fallback: también inicializar en window.onload por si acaso
+window.addEventListener('load', () => {
+    // Re-aplicar traducciones después de que todo esté cargado
+    if (I18n.currentLang) {
+        I18n.applyTranslations();
+        I18n.updateSelector();
+    }
+});
 
 // También asegurarse de que funcione con clicks
 window.setLanguage = function(lang, currency) {
