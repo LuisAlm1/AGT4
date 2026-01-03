@@ -3,8 +3,16 @@
 {% block title %}ViralPost AI - Genera Imágenes Virales para Redes Sociales{% endblock %}
 
 {% block content %}
+<!-- Urgency Banner -->
+<div class="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 text-white py-2 px-4 text-center text-sm font-medium">
+    <span class="animate-pulse">🔥</span>
+    <span data-i18n="landing.urgency_banner">Oferta de lanzamiento: Regístrate hoy y obtén tu primer crédito GRATIS</span>
+    <span class="animate-pulse">🔥</span>
+    <a href="/viralpost/registro" class="ml-2 underline font-bold hover:no-underline" data-i18n="landing.urgency_cta">¡Aprovecha ahora!</a>
+</div>
+
 <!-- Navbar -->
-<nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+<nav class="fixed top-10 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
             <a href="/viralpost" class="flex items-center space-x-2">
@@ -22,11 +30,16 @@
 </nav>
 
 <!-- Hero Section -->
-<section class="pt-32 pb-20 px-4 gradient-bg text-white">
+<section class="pt-44 pb-20 px-4 gradient-bg text-white">
     <div class="max-w-6xl mx-auto text-center">
+        <!-- Social Proof Badge -->
         <div class="inline-flex items-center bg-white/20 rounded-full px-4 py-2 mb-8">
-            <span class="text-yellow-300 mr-2">✨</span>
-            <span class="text-sm font-medium" data-i18n="landing.ai_tech">Tecnología de Inteligencia Artificial Avanzada</span>
+            <div class="flex -space-x-2 mr-3">
+                <div class="w-6 h-6 rounded-full bg-green-400 border-2 border-white/30 flex items-center justify-center text-xs">👩</div>
+                <div class="w-6 h-6 rounded-full bg-blue-400 border-2 border-white/30 flex items-center justify-center text-xs">👨</div>
+                <div class="w-6 h-6 rounded-full bg-pink-400 border-2 border-white/30 flex items-center justify-center text-xs">👩</div>
+            </div>
+            <span class="text-sm font-medium" data-i18n="landing.social_proof">+500 emprendedores ya están creando contenido viral</span>
         </div>
 
         <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight" data-i18n="landing.hero_title">
@@ -40,30 +53,140 @@
         </p>
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a href="/viralpost/registro" class="bg-white text-purple-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition shadow-xl">
-                <i class="fas fa-magic mr-2"></i>
-                <span data-i18n="landing.try_free">Probar Gratis (1 Crédito)</span>
+            <a href="/viralpost/registro" class="bg-white text-purple-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition shadow-xl group">
+                <i class="fas fa-magic mr-2 group-hover:animate-pulse"></i>
+                <span data-i18n="landing.cta_create_first">Crear mi Primera Imagen Gratis</span>
             </a>
-            <a href="#como-funciona" class="border-2 border-white/50 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-white/10 transition">
-                <i class="fas fa-play-circle mr-2"></i>
-                <span data-i18n="landing.how_it_works">Ver Cómo Funciona</span>
+            <a href="#antes-despues" class="border-2 border-white/50 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-white/10 transition">
+                <i class="fas fa-images mr-2"></i>
+                <span data-i18n="landing.see_examples">Ver Ejemplos Reales</span>
             </a>
         </div>
 
         <!-- Stats -->
-        <div class="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto">
+        <div class="grid grid-cols-4 gap-6 mt-16 max-w-3xl mx-auto">
+            <div class="text-center">
+                <div class="text-3xl font-bold">500+</div>
+                <div class="text-white/70 text-sm" data-i18n="landing.stat_users">Usuarios Activos</div>
+            </div>
+            <div class="text-center">
+                <div class="text-3xl font-bold">2,500+</div>
+                <div class="text-white/70 text-sm" data-i18n="landing.stat_images">Imágenes Creadas</div>
+            </div>
             <div class="text-center">
                 <div class="text-3xl font-bold">8</div>
                 <div class="text-white/70 text-sm" data-i18n="landing.stat_styles">Estilos Virales</div>
             </div>
             <div class="text-center">
                 <div class="text-3xl font-bold">~30s</div>
-                <div class="text-white/70 text-sm" data-i18n="landing.stat_time">Por Generación</div>
+                <div class="text-white/70 text-sm" data-i18n="landing.stat_time">Por Imagen</div>
             </div>
-            <div class="text-center">
-                <div class="text-3xl font-bold">2</div>
-                <div class="text-white/70 text-sm" data-i18n="landing.stat_networks">Redes Sociales</div>
+        </div>
+    </div>
+</section>
+
+<!-- Before/After Section -->
+<section class="py-16 px-4 bg-gray-900" id="antes-despues">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4" data-i18n="landing.before_after_title">De foto simple a imagen viral</h2>
+            <p class="text-gray-400 text-lg" data-i18n="landing.before_after_subtitle">Mira la transformación con nuestros estilos de IA</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Example 1 -->
+            <div class="bg-gray-800 rounded-2xl overflow-hidden">
+                <div class="grid grid-cols-2">
+                    <div class="relative">
+                        <div class="aspect-square bg-gray-700 flex items-center justify-center">
+                            <div class="text-center p-4">
+                                <i class="fas fa-camera text-4xl text-gray-500 mb-2"></i>
+                                <p class="text-gray-400 text-sm" data-i18n="landing.before_label">ANTES</p>
+                                <p class="text-gray-500 text-xs" data-i18n="landing.before_desc">Foto con celular</p>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 left-2 bg-gray-600 text-white text-xs px-2 py-1 rounded">ANTES</div>
+                    </div>
+                    <div class="relative">
+                        <div class="aspect-square bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
+                            <div class="text-center p-4">
+                                <i class="fas fa-sparkles text-4xl text-white mb-2"></i>
+                                <p class="text-white text-sm font-bold" data-i18n="landing.after_label">DESPUÉS</p>
+                                <p class="text-white/70 text-xs" data-i18n="landing.after_desc">Explosión Macro</p>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded">DESPUÉS</div>
+                    </div>
+                </div>
+                <div class="p-4 text-center">
+                    <p class="text-white font-medium" data-i18n="landing.example_food">🍕 Comida y Bebidas</p>
+                </div>
             </div>
+
+            <!-- Example 2 -->
+            <div class="bg-gray-800 rounded-2xl overflow-hidden">
+                <div class="grid grid-cols-2">
+                    <div class="relative">
+                        <div class="aspect-square bg-gray-700 flex items-center justify-center">
+                            <div class="text-center p-4">
+                                <i class="fas fa-camera text-4xl text-gray-500 mb-2"></i>
+                                <p class="text-gray-400 text-sm">ANTES</p>
+                                <p class="text-gray-500 text-xs" data-i18n="landing.before_desc">Foto con celular</p>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 left-2 bg-gray-600 text-white text-xs px-2 py-1 rounded">ANTES</div>
+                    </div>
+                    <div class="relative">
+                        <div class="aspect-square bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+                            <div class="text-center p-4">
+                                <i class="fas fa-sparkles text-4xl text-white mb-2"></i>
+                                <p class="text-white text-sm font-bold">DESPUÉS</p>
+                                <p class="text-white/70 text-xs" data-i18n="landing.after_metal">Metal Líquido</p>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded">DESPUÉS</div>
+                    </div>
+                </div>
+                <div class="p-4 text-center">
+                    <p class="text-white font-medium" data-i18n="landing.example_tech">📱 Tecnología</p>
+                </div>
+            </div>
+
+            <!-- Example 3 -->
+            <div class="bg-gray-800 rounded-2xl overflow-hidden">
+                <div class="grid grid-cols-2">
+                    <div class="relative">
+                        <div class="aspect-square bg-gray-700 flex items-center justify-center">
+                            <div class="text-center p-4">
+                                <i class="fas fa-camera text-4xl text-gray-500 mb-2"></i>
+                                <p class="text-gray-400 text-sm">ANTES</p>
+                                <p class="text-gray-500 text-xs" data-i18n="landing.before_desc">Foto con celular</p>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 left-2 bg-gray-600 text-white text-xs px-2 py-1 rounded">ANTES</div>
+                    </div>
+                    <div class="relative">
+                        <div class="aspect-square bg-gradient-to-br from-yellow-500 to-amber-600 flex items-center justify-center">
+                            <div class="text-center p-4">
+                                <i class="fas fa-sparkles text-4xl text-white mb-2"></i>
+                                <p class="text-white text-sm font-bold">DESPUÉS</p>
+                                <p class="text-white/70 text-xs" data-i18n="landing.after_luxury">Lujo Oscuro</p>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded">DESPUÉS</div>
+                    </div>
+                </div>
+                <div class="p-4 text-center">
+                    <p class="text-white font-medium" data-i18n="landing.example_beauty">💄 Belleza</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-10">
+            <a href="/viralpost/registro" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:opacity-90 transition inline-block">
+                <i class="fas fa-magic mr-2"></i>
+                <span data-i18n="landing.cta_transform">Transformar Mi Producto Ahora</span>
+            </a>
         </div>
     </div>
 </section>
@@ -207,9 +330,92 @@
         </div>
 
         <div class="text-center mt-10">
-            <a href="/viralpost/registro" class="gradient-bg text-white px-8 py-4 rounded-full font-bold text-lg hover:opacity-90 transition inline-block" data-i18n="landing.start_1_free">
-                Comenzar con 1 Crédito Gratis
+            <a href="/viralpost/registro" class="gradient-bg text-white px-8 py-4 rounded-full font-bold text-lg hover:opacity-90 transition inline-block group">
+                <i class="fas fa-gift mr-2 group-hover:animate-bounce"></i>
+                <span data-i18n="landing.cta_claim_credit">Reclamar Mi Crédito Gratis</span>
             </a>
+            <p class="text-gray-500 text-sm mt-3" data-i18n="landing.no_card_required">No requiere tarjeta de crédito</p>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="py-20 px-4 bg-gray-50">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4" data-i18n="landing.testimonials_title">Lo que dicen nuestros usuarios</h2>
+            <p class="text-gray-600 text-lg" data-i18n="landing.testimonials_subtitle">Emprendedores reales, resultados reales</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Testimonial 1 -->
+            <div class="bg-white rounded-2xl p-6 shadow-lg">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-pink-400 to-purple-500 flex items-center justify-center text-white font-bold text-lg">
+                        MR
+                    </div>
+                    <div class="ml-3">
+                        <p class="font-bold text-gray-800">María R.</p>
+                        <p class="text-sm text-gray-500" data-i18n="landing.testimonial1_role">Dueña de Cafetería</p>
+                    </div>
+                </div>
+                <div class="flex text-yellow-400 mb-3">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="text-gray-600" data-i18n="landing.testimonial1_text">
+                    "Mis fotos de café ahora se ven increíbles. El engagement en Instagram subió un 300%. ¡No puedo creer que solo use mi celular!"
+                </p>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div class="bg-white rounded-2xl p-6 shadow-lg">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center text-white font-bold text-lg">
+                        CG
+                    </div>
+                    <div class="ml-3">
+                        <p class="font-bold text-gray-800">Carlos G.</p>
+                        <p class="text-sm text-gray-500" data-i18n="landing.testimonial2_role">Tienda de Tecnología</p>
+                    </div>
+                </div>
+                <div class="flex text-yellow-400 mb-3">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="text-gray-600" data-i18n="landing.testimonial2_text">
+                    "Antes pagaba $500 por foto con fotógrafo. Ahora genero contenido profesional en segundos. Me ahorré miles de pesos."
+                </p>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="bg-white rounded-2xl p-6 shadow-lg">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-white font-bold text-lg">
+                        LP
+                    </div>
+                    <div class="ml-3">
+                        <p class="font-bold text-gray-800">Laura P.</p>
+                        <p class="text-sm text-gray-500" data-i18n="landing.testimonial3_role">Cosméticos Artesanales</p>
+                    </div>
+                </div>
+                <div class="flex text-yellow-400 mb-3">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="text-gray-600" data-i18n="landing.testimonial3_text">
+                    "El estilo 'Lujo Oscuro' hace que mis productos se vean de alta gama. Mis ventas aumentaron 40% desde que uso ViralPost."
+                </p>
+            </div>
         </div>
     </div>
 </section>
@@ -221,12 +427,13 @@
             ¿Listo para crear contenido viral?
         </h2>
         <p class="text-xl text-white/80 mb-8" data-i18n="landing.cta_subtitle">
-            Únete ahora y recibe 1 crédito gratis para probar la plataforma.
+            Únete a +500 emprendedores que ya transforman sus productos en contenido viral.
         </p>
-        <a href="/viralpost/registro" class="bg-white text-purple-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition shadow-xl inline-block">
-            <i class="fas fa-rocket mr-2"></i>
-            <span data-i18n="landing.cta_btn">Crear Cuenta Gratis</span>
+        <a href="/viralpost/registro" class="bg-white text-purple-600 px-10 py-5 rounded-full font-bold text-xl hover:bg-gray-100 transition shadow-xl inline-block group">
+            <i class="fas fa-magic mr-2 group-hover:animate-spin"></i>
+            <span data-i18n="landing.cta_btn_final">Crear Mi Primera Imagen Gratis</span>
         </a>
+        <p class="text-white/60 text-sm mt-4" data-i18n="landing.cta_note">Sin tarjeta • Sin compromiso • Cancela cuando quieras</p>
     </div>
 </section>
 
