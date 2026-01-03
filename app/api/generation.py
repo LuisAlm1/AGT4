@@ -18,6 +18,7 @@ from app.services.viral_styles import obtener_todos_estilos, obtener_estilo
 from app.services.generation import generation_service, guardar_imagen
 from app.api.schemas import (
     EstiloResponse,
+    ImagenesEstilosResponse,
     GeneracionCompletaResponse,
     GeneracionResponse,
     HistorialResponse
@@ -32,7 +33,49 @@ async def listar_estilos():
     """
     Lista todos los estilos virales disponibles.
     """
-    return obtener_todos_estilos()
+    estilos = obtener_todos_estilos()
+    return [
+        EstiloResponse(
+            id=e["id"],
+            nombre=e["nombre"],
+            descripcion=e["descripcion"],
+            icono=e["icono"],
+            preview_color=e["preview_color"],
+            imagen_ejemplo=e.get("imagen_ejemplo")
+        )
+        for e in estilos
+    ]
+
+
+@router.get("/estilos/imagenes-dinamicas", response_model=ImagenesEstilosResponse)
+async def obtener_imagenes_dinamicas(db: AsyncSession = Depends(get_db)):
+    """
+    Obtiene la última imagen generada para cada estilo.
+    Endpoint público (no requiere autenticación) para mostrar previews dinámicos.
+    """
+    from sqlalchemy import func
+    from app.services.viral_styles import VIRAL_STYLES
+
+    imagenes = {}
+
+    # Para cada estilo, buscar la última generación completada
+    for estilo_id in VIRAL_STYLES.keys():
+        result = await db.execute(
+            select(Generation)
+            .where(
+                Generation.estilo == estilo_id,
+                Generation.estado == EstadoGeneracion.COMPLETADA.value,
+                Generation.imagen_generada_path.isnot(None)
+            )
+            .order_by(desc(Generation.completed_at))
+            .limit(1)
+        )
+        generacion = result.scalar_one_or_none()
+
+        if generacion and generacion.imagen_generada_path:
+            imagenes[estilo_id] = f"/viralpost/imagenes/{Path(generacion.imagen_generada_path).name}"
+
+    return ImagenesEstilosResponse(imagenes=imagenes)
 
 
 @router.get("/estilo/{estilo_id}", response_model=EstiloResponse)
@@ -51,7 +94,8 @@ async def obtener_detalle_estilo(estilo_id: str):
         nombre=estilo["nombre"],
         descripcion=estilo["descripcion"],
         icono=estilo["icono"],
-        preview_color=estilo["preview_color"]
+        preview_color=estilo["preview_color"],
+        imagen_ejemplo=estilo.get("imagen_ejemplo")
     )
 
 

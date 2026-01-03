@@ -77,6 +77,19 @@ class GenerationService:
 
             # Agregar contexto del estilo al prompt
             estilo = obtener_estilo(estilo_id)
+
+            # Instrucciones de logo para Gemini
+            logo_instructions = ""
+            if logo_b64:
+                logo_instructions = """
+IMPORTANT - LOGO INTEGRATION:
+A logo image is provided as the THIRD image. You MUST integrate this logo INTO the scene physically:
+- The logo should appear as if it's PART of the environment (engraved, printed, embroidered, neon sign, etc.)
+- It must look REAL and PHYSICAL, not digitally overlaid
+- Place it in a visible but natural location within the composition
+- Match the logo's integration style to the overall aesthetic
+"""
+
             prompt_completo = f"""
 Create a professional viral product photo with these specifications:
 
@@ -89,7 +102,9 @@ VFX: {estilo['vfx']}
 PRODUCT DETAILS:
 {prompt_imagen}
 
-The product shown in the reference image must be replicated EXACTLY with perfect fidelity to colors, shape, labels and proportions. Create a stunning, scroll-stopping image optimized for social media (1:1 aspect ratio).
+The product shown in the FIRST reference image must be replicated EXACTLY with perfect fidelity to colors, shape, labels and proportions.
+{logo_instructions}
+Create a stunning, scroll-stopping image optimized for social media (1:1 aspect ratio).
 """
 
             imagen_generada_b64 = await self._llamar_gemini(
