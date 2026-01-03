@@ -90,6 +90,18 @@ A logo image is provided as the THIRD image. You MUST integrate this logo INTO t
 - Match the logo's integration style to the overall aesthetic
 """
 
+            # Instrucciones para texto creativo con materiales
+            texto_creativo = f"""
+CREATIVE TYPOGRAPHY WITH MATERIALS:
+Create artistic text in the composition using the product's own materials, ingredients, or components:
+- Form the product name "{nombre_producto}" or brand name "{marca if marca else ''}" using DEFORMED materials
+- Examples: letters made of chocolate dripping, text formed by scattered ingredients, typography from smoke/steam, letters carved in the surface, neon tubes forming words
+- The text should be ORGANIC and NATURAL to the scene, not digitally overlaid
+- Make it visually striking and "Instagrammable" - the kind of creative text that makes people stop scrolling
+- The text can be partial, broken, or artistically incomplete for more visual interest
+- Materials forming letters should match the product's essence (food ingredients for food, metal particles for tech, etc.)
+"""
+
             prompt_completo = f"""
 Create a professional viral product photo with these specifications:
 
@@ -104,6 +116,7 @@ PRODUCT DETAILS:
 
 The product shown in the FIRST reference image must be replicated EXACTLY with perfect fidelity to colors, shape, labels and proportions.
 {logo_instructions}
+{texto_creativo}
 Create a stunning, scroll-stopping image optimized for social media (1:1 aspect ratio).
 """
 
