@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+
+{% block title %}Comprar Créditos{% endblock %}
+
+{% block extra_head %}
+<script src="https://js.stripe.com/v3/"></script>
+{% endblock %}
+
+{% block content %}
+<!-- Navbar -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <a href="/viralpost/app" class="flex items-center space-x-2">
+                <span class="text-2xl">🚀</span>
+                <span class="font-bold text-xl gradient-text">ViralPost AI</span>
+            </a>
+            <div class="flex items-center space-x-4">
+                <a href="/viralpost/app" class="text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-arrow-left mr-2"></i>Volver al Generador
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="pt-24 pb-12 px-4 bg-gray-50 min-h-screen">
+    <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center bg-purple-100 text-purple-600 px-4 py-2 rounded-full mb-4">
+                <i class="fas fa-coins mr-2"></i>
+                <span>Tu saldo: <strong id="currentCredits">0</strong> créditos</span>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold mb-4">Comprar Créditos</h1>
+            <p class="text-gray-600 text-lg">1 crédito = 1 imagen viral + copy para redes sociales</p>
+        </div>
+
+        <!-- Paquetes -->
+        <div class="grid md:grid-cols-4 gap-6 mb-12">
+            <!-- Pack 10 -->
+            <div class="package-card bg-white rounded-2xl p-6 border-2 border-gray-200 hover:border-purple-300 transition cursor-pointer"
+                 data-package="pack_10">
+                <h3 class="font-bold text-lg mb-2">10 Créditos</h3>
+                <div class="text-3xl font-bold mb-1">$90 <span class="text-lg font-normal text-gray-500">MXN</span></div>
+                <p class="text-gray-500 text-sm mb-4">$9.00 por imagen</p>
+                <ul class="text-sm text-gray-600 space-y-2 mb-6">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>10 generaciones</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Copy incluido</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sin expiración</li>
+                </ul>
+                <button class="w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-200 transition buy-btn">
+                    Seleccionar
+                </button>
+            </div>
+
+            <!-- Pack 25 - Popular -->
+            <div class="package-card bg-white rounded-2xl p-6 border-2 border-purple-400 relative cursor-pointer"
+                 data-package="pack_25">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                    POPULAR
+                </div>
+                <h3 class="font-bold text-lg mb-2">25 Créditos</h3>
+                <div class="text-3xl font-bold mb-1">$215 <span class="text-lg font-normal text-gray-500">MXN</span></div>
+                <p class="text-gray-500 text-sm mb-4">$8.60 por imagen</p>
+                <ul class="text-sm text-gray-600 space-y-2 mb-6">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>25 generaciones</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Copy incluido</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sin expiración</li>
+                </ul>
+                <button class="w-full gradient-bg text-white py-3 rounded-xl font-medium hover:opacity-90 transition buy-btn">
+                    Seleccionar
+                </button>
+            </div>
+
+            <!-- Pack 50 -->
+            <div class="package-card bg-white rounded-2xl p-6 border-2 border-gray-200 hover:border-purple-300 transition cursor-pointer"
+                 data-package="pack_50">
+                <h3 class="font-bold text-lg mb-2">50 Créditos</h3>
+                <div class="text-3xl font-bold mb-1">$425 <span class="text-lg font-normal text-gray-500">MXN</span></div>
+                <p class="text-gray-500 text-sm mb-4">$8.50 por imagen</p>
+                <ul class="text-sm text-gray-600 space-y-2 mb-6">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>50 generaciones</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Copy incluido</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sin expiración</li>
+                </ul>
+                <button class="w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-200 transition buy-btn">
+                    Seleccionar
+                </button>
+            </div>
+
+            <!-- Pack 100 - Mejor Valor -->
+            <div class="package-card bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl p-6 border-2 border-yellow-400 relative cursor-pointer"
+                 data-package="pack_100">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                    MEJOR VALOR
+                </div>
+                <h3 class="font-bold text-lg mb-2">100 Créditos</h3>
+                <div class="text-3xl font-bold mb-1">$829 <span class="text-lg font-normal text-gray-500">MXN</span></div>
+                <p class="text-gray-500 text-sm mb-4">$8.29 por imagen</p>
+                <ul class="text-sm text-gray-600 space-y-2 mb-6">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>100 generaciones</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Copy incluido</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sin expiración</li>
+                </ul>
+                <button class="w-full bg-yellow-500 text-white py-3 rounded-xl font-medium hover:bg-yellow-600 transition buy-btn">
+                    Seleccionar
+                </button>
+            </div>
+        </div>
+
+        <!-- Info adicional -->
+        <div class="bg-white rounded-2xl p-8 shadow-lg">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shield-alt text-green-600 text-xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-2">Pago Seguro</h3>
+                    <p class="text-gray-600 text-sm">Procesado con Stripe, el estándar de seguridad en pagos</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-infinity text-blue-600 text-xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-2">Sin Expiración</h3>
+                    <p class="text-gray-600 text-sm">Tus créditos nunca expiran, úsalos cuando quieras</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-bolt text-purple-600 text-xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-2">Créditos Inmediatos</h3>
+                    <p class="text-gray-600 text-sm">Tus créditos se agregan automáticamente al pagar</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Historial de compras -->
+        <div class="mt-12">
+            <h2 class="text-xl font-bold mb-4">Historial de Compras</h2>
+            <div id="transactionHistory" class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div class="p-8 text-center text-gray-500" id="noTransactions">
+                    <i class="fas fa-receipt text-4xl mb-4"></i>
+                    <p>Aún no tienes compras</p>
+                </div>
+                <table id="transactionsTable" class="hidden w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fecha</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Créditos</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Monto</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactionsBody" class="divide-y divide-gray-200">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Modal de carga -->
+<div id="loadingModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-2xl p-8 text-center">
+        <div class="loading-spinner mx-auto mb-4"></div>
+        <p class="text-gray-600">Redirigiendo a Stripe...</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Verificar autenticación
+    if (!Auth.isLoggedIn()) {
+        window.location.href = '/viralpost/login';
+    }
+
+    // Cargar datos
+    document.addEventListener('DOMContentLoaded', async () => {
+        await loadUserData();
+        await loadTransactions();
+        setupPackageCards();
+    });
+
+    async function loadUserData() {
+        try {
+            const response = await apiFetch('/auth/me');
+            if (response.ok) {
+                const user = await response.json();
+                document.getElementById('currentCredits').textContent = user.creditos;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    async function loadTransactions() {
+        try {
+            const response = await apiFetch('/pagos/historial');
+            if (response.ok) {
+                const transactions = await response.json();
+                if (transactions.length > 0) {
+                    renderTransactions(transactions);
+                }
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    function renderTransactions(transactions) {
+        document.getElementById('noTransactions').classList.add('hidden');
+        document.getElementById('transactionsTable').classList.remove('hidden');
+
+        const tbody = document.getElementById('transactionsBody');
+        tbody.innerHTML = transactions.map(t => {
+            const date = new Date(t.created_at).toLocaleDateString('es-MX', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+
+            const statusColors = {
+                'completada': 'bg-green-100 text-green-800',
+                'pendiente': 'bg-yellow-100 text-yellow-800',
+                'fallida': 'bg-red-100 text-red-800'
+            };
+
+            return `
+                <tr>
+                    <td class="px-6 py-4 text-sm text-gray-900">${date}</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">${t.creditos} créditos</td>
+                    <td class="px-6 py-4 text-sm text-gray-900">$${t.monto_mxn} MXN</td>
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full ${statusColors[t.estado] || 'bg-gray-100'}">
+                            ${t.estado.charAt(0).toUpperCase() + t.estado.slice(1)}
+                        </span>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function setupPackageCards() {
+        document.querySelectorAll('.package-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const packageId = card.dataset.package;
+                purchasePackage(packageId);
+            });
+        });
+    }
+
+    async function purchasePackage(packageId) {
+        document.getElementById('loadingModal').classList.remove('hidden');
+
+        try {
+            const response = await apiFetch('/pagos/checkout', {
+                method: 'POST',
+                body: JSON.stringify({ paquete_id: packageId })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                // Redirigir a Stripe Checkout
+                window.location.href = data.checkout_url;
+            } else {
+                const error = await response.json();
+                showNotification(error.detail || 'Error al procesar', 'error');
+                document.getElementById('loadingModal').classList.add('hidden');
+            }
+        } catch (error) {
+            showNotification('Error de conexión', 'error');
+            document.getElementById('loadingModal').classList.add('hidden');
+        }
+    }
+</script>
+{% endblock %}
