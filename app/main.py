@@ -16,6 +16,7 @@ from app.core.database import init_db, close_db
 from app.api.auth import router as auth_router
 from app.api.generation import router as generation_router
 from app.api.payments import router as payments_router
+from app.api.admin import router as admin_router
 
 
 @asynccontextmanager
@@ -70,6 +71,7 @@ templates = Jinja2Templates(directory=str(templates_path))
 app.include_router(auth_router, prefix="/viralpost/api")
 app.include_router(generation_router, prefix="/viralpost/api")
 app.include_router(payments_router, prefix="/viralpost/api")
+app.include_router(admin_router, prefix="/viralpost/api")
 
 
 # ============ RUTAS DE FRONTEND ============
@@ -149,6 +151,12 @@ async def pagina_privacidad(request: Request):
 async def pagina_contacto(request: Request):
     """Página de contacto"""
     return templates.TemplateResponse("contacto.html", {"request": request})
+
+
+@app.get("/viralpost/admin", response_class=HTMLResponse)
+async def pagina_admin(request: Request):
+    """Panel de administración"""
+    return templates.TemplateResponse("admin.html", {"request": request})
 
 
 # ============ RUTA DE IMÁGENES GENERADAS ============
