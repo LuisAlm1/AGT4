@@ -76,6 +76,7 @@ class GeneracionRequest(BaseModel):
     nombre_producto: str = Field(..., min_length=1, max_length=200)
     descripcion_producto: Optional[str] = Field(None, max_length=500)
     marca: Optional[str] = Field(None, max_length=100)
+    precio: Optional[str] = Field(None, max_length=50, description="Precio del producto ej: $199 MXN")
 
 
 class GeneracionResponse(BaseModel):

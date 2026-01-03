@@ -31,6 +31,7 @@ class GenerationService:
         descripcion_producto: str,
         marca: str,
         imagen_producto_b64: str,
+        precio: str = "",
         logo_b64: Optional[str] = None,
         imagen_mime: str = "image/jpeg",
         logo_mime: str = "image/png"
@@ -58,6 +59,7 @@ class GenerationService:
                 nombre_producto=nombre_producto,
                 descripcion_producto=descripcion_producto,
                 marca=marca,
+                precio=precio,
                 tiene_logo=logo_b64 is not None
             )
 
@@ -90,16 +92,49 @@ A logo image is provided as the THIRD image. You MUST integrate this logo INTO t
 - Match the logo's integration style to the overall aesthetic
 """
 
+            # Construir lista de textos a incluir
+            textos_producto = []
+            if nombre_producto:
+                textos_producto.append(f'Product name: "{nombre_producto}"')
+            if marca:
+                textos_producto.append(f'Brand: "{marca}"')
+            if precio:
+                textos_producto.append(f'Price: "{precio}"')
+
+            textos_a_mostrar = " | ".join(textos_producto) if textos_producto else nombre_producto
+
             # Instrucciones para texto creativo con materiales
             texto_creativo = f"""
-CREATIVE TYPOGRAPHY WITH MATERIALS:
-Create artistic text in the composition using the product's own materials, ingredients, or components:
-- Form the product name "{nombre_producto}" or brand name "{marca if marca else ''}" using DEFORMED materials
-- Examples: letters made of chocolate dripping, text formed by scattered ingredients, typography from smoke/steam, letters carved in the surface, neon tubes forming words
-- The text should be ORGANIC and NATURAL to the scene, not digitally overlaid
-- Make it visually striking and "Instagrammable" - the kind of creative text that makes people stop scrolling
-- The text can be partial, broken, or artistically incomplete for more visual interest
-- Materials forming letters should match the product's essence (food ingredients for food, metal particles for tech, etc.)
+### CREATIVE TYPOGRAPHY WITH PRODUCT MATERIALS
+
+**IMPORTANT: Include these product details as artistic text in the image:**
+{chr(10).join(f"- {t}" for t in textos_producto)}
+
+**TYPOGRAPHY INSTRUCTIONS:**
+Create stunning artistic text using the product's own materials, ingredients, or components. The text should be physically FORMED from real materials, NOT digitally overlaid.
+
+**WHAT TO SHOW (prioritize in this order):**
+1. **Product Name** ("{nombre_producto}") - ALWAYS include, make it prominent
+2. **Price** ("{precio if precio else 'N/A'}") - If provided, show as eye-catching element (e.g., "$199" formed from ingredients)
+3. **Brand** ("{marca if marca else 'N/A'}") - If provided, integrate elegantly
+
+**HOW TO CREATE THE TEXT:**
+- Letters made of chocolate dripping, cream swirls, sauce streams
+- Text formed by scattered ingredients, coffee beans, sugar crystals
+- Typography from smoke, steam, powder clouds
+- Letters carved, embossed, or etched into surfaces
+- Neon tubes, LED lights, or glowing elements forming words
+- Metal particles, liquid metal, or chrome forming text
+- Flowers, petals, leaves arranged to spell words
+- Ice crystals, water droplets, or frost forming letters
+
+**STYLE REQUIREMENTS:**
+- Text must be ORGANIC and NATURAL to the scene
+- Make it visually striking and "Instagrammable" - scroll-stopping typography
+- Text can be partial, broken, or artistically incomplete for visual interest
+- Materials forming letters MUST match the product's essence
+- The price (if shown) should look premium and desirable, not cheap
+- Consider 3D depth - letters can emerge from the scene, cast shadows, have reflections
 """
 
             # Obtener campos cinematográficos avanzados

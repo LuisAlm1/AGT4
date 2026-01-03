@@ -240,6 +240,7 @@ def construir_prompt_imagen(
     nombre_producto: str,
     descripcion_producto: str,
     marca: str = None,
+    precio: str = None,
     tiene_logo: bool = False
 ) -> str:
     """
@@ -268,8 +269,9 @@ def construir_prompt_imagen(
 - **Producto:** {nombre_producto}
 - **Descripción:** {descripcion_producto or 'No especificada'}
 - **Marca:** {marca or 'No especificada'}
+- **Precio:** {precio or 'No especificado'}
 
-REGLA DE ORO: Jamás inventar precios, promociones o información no proporcionada.
+REGLA DE ORO: Si se proporciona precio, inclúyelo en el image_prompt como texto creativo formado de materiales. Si NO se proporciona precio, NO inventes uno.
 
 --------------------------------------------------
 ### ESTILO VISUAL: {style['nombre'].upper()}
