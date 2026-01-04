@@ -422,6 +422,7 @@
         const beforeText = I18n.t('landing.before_label');
         const afterText = I18n.t('landing.after_label');
         const beforeDesc = I18n.t('landing.before_desc');
+        const realExampleText = I18n.t('landing.real_example');
 
         grid.innerHTML = ejemplos.map(ejemplo => {
             // Determinar qué mostrar en "antes" (imagen real o placeholder)
@@ -449,7 +450,7 @@
                              alt="Después"
                              class="aspect-square w-full object-cover group-hover:scale-105 transition duration-300">
                         <div class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded font-medium">${afterText}</div>
-                        <div class="absolute bottom-2 right-2 bg-purple-600 text-white text-xs px-2 py-1 rounded font-medium">Ejemplo Real ✨</div>
+                        <div class="absolute bottom-2 right-2 bg-purple-600 text-white text-xs px-2 py-1 rounded font-medium">${realExampleText} ✨</div>
                     </div>
                 </div>
                 <div class="p-4 text-center">
