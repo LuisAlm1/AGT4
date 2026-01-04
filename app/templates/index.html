@@ -399,9 +399,14 @@
             if (ejemplosResponse.ok) {
                 const ejemplosData = await ejemplosResponse.json();
                 renderBeforeAfterExamples(ejemplosData.ejemplos);
+            } else {
+                // Si falla el API, mostrar placeholders
+                renderBeforeAfterExamples([]);
             }
         } catch (error) {
             console.error('Error cargando contenido:', error);
+            // En caso de error, mostrar placeholders
+            renderBeforeAfterExamples([]);
         }
     });
 
