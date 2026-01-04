@@ -102,6 +102,7 @@ async def obtener_ejemplos_landing(db: AsyncSession = Depends(get_db)):
     """
     Obtiene ejemplos reales de antes/después para mostrar en el landing page.
     Retorna las últimas generaciones completadas con sus imágenes originales y generadas.
+    Si no hay imagen original, usa un placeholder.
     """
     from app.services.viral_styles import VIRAL_STYLES
 
@@ -110,6 +111,7 @@ async def obtener_ejemplos_landing(db: AsyncSession = Depends(get_db)):
     ejemplos = []
 
     for estilo_id in estilos_destacados:
+        # Primero intentar con imagen original
         result = await db.execute(
             select(Generation)
             .where(
@@ -123,13 +125,35 @@ async def obtener_ejemplos_landing(db: AsyncSession = Depends(get_db)):
         )
         generacion = result.scalar_one_or_none()
 
+        # Si no hay con imagen original, buscar solo con imagen generada
+        if not generacion:
+            result = await db.execute(
+                select(Generation)
+                .where(
+                    Generation.estilo == estilo_id,
+                    Generation.estado == EstadoGeneracion.COMPLETADA.value,
+                    Generation.imagen_generada_path.isnot(None)
+                )
+                .order_by(desc(Generation.completed_at))
+                .limit(1)
+            )
+            generacion = result.scalar_one_or_none()
+
         if generacion:
             estilo_info = VIRAL_STYLES.get(estilo_id, {})
+
+            # Determinar imagen "antes" (original o placeholder)
+            if generacion.imagen_producto_path:
+                imagen_antes = f"/viralpost/imagenes/{Path(generacion.imagen_producto_path).name}"
+            else:
+                # Usar placeholder cuando no hay imagen original
+                imagen_antes = None
+
             ejemplos.append({
                 "estilo_id": estilo_id,
                 "estilo_nombre": estilo_info.get("nombre", estilo_id),
                 "estilo_icono": estilo_info.get("icono", "✨"),
-                "imagen_antes": f"/viralpost/imagenes/{Path(generacion.imagen_producto_path).name}",
+                "imagen_antes": imagen_antes,
                 "imagen_despues": f"/viralpost/imagenes/{Path(generacion.imagen_generada_path).name}",
                 "nombre_producto": generacion.nombre_producto,
                 "categoria": estilo_info.get("categoria", "general")
@@ -238,6 +262,12 @@ async def crear_generacion(
         db.add(generacion)
         await db.commit()
         await db.refresh(generacion)
+
+        # Guardar imagen original del producto
+        nombre_archivo_original = f"{generacion.id}_original_{uuid.uuid4().hex[:8]}.png"
+        ruta_imagen_original = guardar_imagen(imagen_b64, nombre_archivo_original)
+        generacion.imagen_producto_path = ruta_imagen_original
+        await db.commit()
 
         # Usar crédito
         usuario.usar_credito()
