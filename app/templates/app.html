@@ -650,8 +650,10 @@
                 // Actualizar créditos
                 document.getElementById('creditCount').textContent = data.creditos_restantes;
                 const user = Auth.getUser();
-                user.creditos = data.creditos_restantes;
-                Auth.setUser(user);
+                if (user) {
+                    user.creditos = data.creditos_restantes;
+                    Auth.setUser(user);
+                }
 
                 showNotification('¡Imagen generada exitosamente!', 'success');
             } else {
@@ -660,6 +662,7 @@
                 document.getElementById('resultPlaceholder').classList.remove('hidden');
             }
         } catch (error) {
+            console.error('Error en generación:', error);
             showNotification('Error de conexión', 'error');
             document.getElementById('resultLoading').classList.add('hidden');
             document.getElementById('resultPlaceholder').classList.remove('hidden');
