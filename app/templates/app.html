@@ -679,7 +679,6 @@
         // Imagen
         const imgSrc = `data:image/png;base64,${data.imagen_base64}`;
         document.getElementById('generatedImage').src = imgSrc;
-        document.getElementById('downloadBtn').href = imgSrc;
 
         // Copy
         document.getElementById('facebookCopy').textContent = data.copy_facebook || '';
