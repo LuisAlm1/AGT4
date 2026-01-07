@@ -147,7 +147,7 @@ async def pagina_privacidad(request: Request):
     return templates.TemplateResponse("privacidad.html", {"request": request})
 
 
-@app.get("/camila/privacidad", response_class=HTMLResponse)
+@app.get("/viralpost/camila/privacidad", response_class=HTMLResponse)
 async def pagina_privacidad_camila(request: Request):
     """Página de política de privacidad de Camila"""
     return templates.TemplateResponse("privacidad_camila.html", {"request": request})
