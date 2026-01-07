@@ -173,70 +173,86 @@
             </div>
 
             <!-- ViralPost AI Card -->
-            <div class="max-w-4xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <!-- ViralPost AI -->
                 <div class="bg-gradient-to-br from-[#1a1a3e] to-[#0f0f23] rounded-3xl overflow-hidden border border-white/10 card-hover">
-                    <div class="grid md:grid-cols-2">
-                        <div class="p-10 md:p-12">
-                            <div class="flex items-center space-x-3 mb-6">
-                                <img src="/viralpost/static/images/logo.png" alt="ViralPost AI" class="h-12 w-12 object-contain">
-                                <div>
-                                    <h3 class="font-display text-2xl font-bold">ViralPost AI</h3>
-                                    <span class="text-green-400 text-sm font-medium">Disponible ahora</span>
-                                </div>
-                            </div>
-
-                            <p class="text-gray-400 text-lg mb-8 leading-relaxed">
-                                Transforma fotos simples de tus productos en imágenes virales profesionales
-                                con copy optimizado para redes sociales. <strong class="text-white">En segundos.</strong>
-                            </p>
-
-                            <ul class="space-y-4 mb-10">
-                                <li class="flex items-center text-gray-300">
-                                    <i class="fas fa-check-circle text-green-400 mr-3"></i>
-                                    8 estilos virales únicos
-                                </li>
-                                <li class="flex items-center text-gray-300">
-                                    <i class="fas fa-check-circle text-green-400 mr-3"></i>
-                                    Copy para Facebook e Instagram
-                                </li>
-                                <li class="flex items-center text-gray-300">
-                                    <i class="fas fa-check-circle text-green-400 mr-3"></i>
-                                    Integración de logo automática
-                                </li>
-                                <li class="flex items-center text-gray-300">
-                                    <i class="fas fa-check-circle text-green-400 mr-3"></i>
-                                    Resultados en ~30 segundos
-                                </li>
-                            </ul>
-
-                            <a href="/viralpost" class="gradient-bg text-white px-8 py-4 rounded-full font-semibold hover:opacity-90 transition inline-flex items-center">
-                                Probar Gratis
-                                <i class="fas fa-arrow-right ml-2"></i>
-                            </a>
-                        </div>
-
-                        <div class="relative bg-gradient-to-br from-purple-600/10 to-pink-600/10 p-8 flex items-center justify-center">
-                            <div class="grid grid-cols-2 gap-3 transform rotate-3">
-                                <div class="bg-white/10 rounded-xl aspect-square w-32"></div>
-                                <div class="bg-white/10 rounded-xl aspect-square w-32 translate-y-4"></div>
-                                <div class="bg-white/10 rounded-xl aspect-square w-32 -translate-y-2"></div>
-                                <div class="bg-white/10 rounded-xl aspect-square w-32 translate-y-2"></div>
-                            </div>
-                            <div class="absolute inset-0 flex items-center justify-center">
-                                <span class="text-8xl opacity-20">🎨</span>
+                    <div class="p-8 md:p-10">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <img src="/viralpost/static/images/logo.png" alt="ViralPost AI" class="h-12 w-12 object-contain">
+                            <div>
+                                <h3 class="font-display text-2xl font-bold">ViralPost AI</h3>
+                                <span class="text-green-400 text-sm font-medium">Disponible ahora</span>
                             </div>
                         </div>
+
+                        <p class="text-gray-400 text-lg mb-6 leading-relaxed">
+                            Transforma fotos simples de tus productos en <strong class="text-white">imágenes virales</strong> profesionales
+                            con copy optimizado para redes sociales.
+                        </p>
+
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center text-gray-300 text-sm">
+                                <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                                8 estilos virales únicos
+                            </li>
+                            <li class="flex items-center text-gray-300 text-sm">
+                                <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                                Copy para Facebook e Instagram
+                            </li>
+                            <li class="flex items-center text-gray-300 text-sm">
+                                <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                                Resultados en ~30 segundos
+                            </li>
+                        </ul>
+
+                        <a href="/viralpost" class="gradient-bg text-white px-6 py-3 rounded-full font-semibold hover:opacity-90 transition inline-flex items-center">
+                            Probar Gratis
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Camila AI -->
+                <div class="bg-gradient-to-br from-[#1a3e2a] to-[#0f2318] rounded-3xl overflow-hidden border border-white/10 card-hover">
+                    <div class="p-8 md:p-10">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="h-12 w-12 bg-green-500 rounded-full flex items-center justify-center">
+                                <i class="fab fa-whatsapp text-2xl text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-display text-2xl font-bold">Camila</h3>
+                                <span class="text-green-400 text-sm font-medium">Asistente WhatsApp</span>
+                            </div>
+                        </div>
+
+                        <p class="text-gray-400 text-lg mb-6 leading-relaxed">
+                            Asistente conversacional con <strong class="text-white">inteligencia artificial</strong> para
+                            atender a tus clientes en WhatsApp 24/7.
+                        </p>
+
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center text-gray-300 text-sm">
+                                <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                                Respuestas instantáneas 24/7
+                            </li>
+                            <li class="flex items-center text-gray-300 text-sm">
+                                <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                                Integración con WhatsApp Business
+                            </li>
+                            <li class="flex items-center text-gray-300 text-sm">
+                                <i class="fas fa-check-circle text-green-400 mr-3"></i>
+                                Personalizable para tu negocio
+                            </li>
+                        </ul>
+
+                        <a href="mailto:contacto@agathoscreative.com?subject=Interesado en Camila" class="bg-green-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-600 transition inline-flex items-center">
+                            Solicitar Info
+                            <i class="fas fa-envelope ml-2"></i>
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <!-- Coming Soon -->
-            <div class="mt-12 text-center">
-                <p class="text-gray-500">
-                    <i class="fas fa-flask mr-2"></i>
-                    Más productos en desarrollo...
-                </p>
-            </div>
         </div>
     </section>
 
@@ -406,6 +422,7 @@
                     <h4 class="font-semibold mb-4">Productos</h4>
                     <ul class="space-y-3 text-gray-500">
                         <li><a href="/viralpost" class="hover:text-white transition">ViralPost AI</a></li>
+                        <li><a href="mailto:contacto@agathoscreative.com?subject=Interesado en Camila" class="hover:text-white transition">Camila (WhatsApp AI)</a></li>
                     </ul>
                 </div>
 
