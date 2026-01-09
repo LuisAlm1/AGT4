@@ -7,7 +7,7 @@
 <div id="loginSection" class="min-h-screen flex items-center justify-center bg-gray-100">
     <div class="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
         <h1 class="text-2xl font-bold text-center mb-6">
-            <span class="gradient-text">ViralPost AI</span> Admin
+            <span class="gradient-text">ViralPost</span> + <span class="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">SoundAI</span> Admin
         </h1>
         <form onsubmit="adminLogin(event)">
             <div class="mb-4">
@@ -57,8 +57,8 @@
 
         <!-- Stats Content -->
         <div id="statsContent" class="hidden">
-            <!-- Cards de resumen -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Cards de resumen - Fila 1 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
                 <!-- Usuarios -->
                 <div class="bg-white rounded-2xl shadow p-6">
                     <div class="flex items-center justify-between mb-4">
@@ -98,7 +98,7 @@
                     <p class="text-xs text-gray-400 mt-1"><span id="ingresos7dias">$0</span> últimos 7 días</p>
                 </div>
 
-                <!-- Generaciones -->
+                <!-- Generaciones ViralPost -->
                 <div class="bg-white rounded-2xl shadow p-6">
                     <div class="flex items-center justify-between mb-4">
                         <div class="bg-orange-100 text-orange-600 p-3 rounded-xl">
@@ -107,9 +107,42 @@
                         <span class="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded-full" id="generacionesHoy">+0 hoy</span>
                     </div>
                     <h3 class="text-3xl font-bold text-gray-800" id="totalGeneraciones">0</h3>
-                    <p class="text-gray-500 text-sm">Imágenes generadas</p>
+                    <p class="text-gray-500 text-sm">Imágenes (ViralPost)</p>
                     <p class="text-xs text-gray-400 mt-1"><span id="tasaExito">0%</span> tasa de éxito</p>
                 </div>
+            </div>
+
+            <!-- Cards de resumen - Fila 2: SoundAI -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <!-- Canciones SoundAI -->
+                <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow p-6 border border-purple-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-3 rounded-xl">
+                            <i class="fas fa-music text-xl"></i>
+                        </div>
+                        <span class="text-xs bg-pink-100 text-pink-600 px-2 py-1 rounded-full" id="musicaHoy">+0 hoy</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800" id="totalMusica">0</h3>
+                    <p class="text-gray-500 text-sm">Canciones (SoundAI)</p>
+                    <p class="text-xs text-gray-400 mt-1"><span id="tasaExitoMusica">0%</span> tasa de éxito</p>
+                </div>
+
+                <!-- Canciones Completadas -->
+                <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow p-6 border border-purple-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="bg-gradient-to-r from-purple-500 to-pink-500 text-white p-3 rounded-xl">
+                            <i class="fas fa-check-circle text-xl"></i>
+                        </div>
+                        <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full" id="musica7dias">0 / 7d</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800" id="musicaCompletadas">0</h3>
+                    <p class="text-gray-500 text-sm">Canciones completadas</p>
+                    <p class="text-xs text-gray-400 mt-1">SoundAI</p>
+                </div>
+
+                <!-- Placeholder para mantener grid -->
+                <div class="hidden lg:block"></div>
+                <div class="hidden lg:block"></div>
             </div>
 
             <!-- Segunda fila -->
@@ -136,13 +169,48 @@
                     </div>
                 </div>
 
-                <!-- Estilos Populares -->
+                <!-- Estilos Populares ViralPost -->
                 <div class="bg-white rounded-2xl shadow p-6">
                     <h3 class="font-bold text-lg mb-4 flex items-center">
-                        <i class="fas fa-star text-purple-500 mr-2"></i>
-                        Estilos Populares
+                        <i class="fas fa-image text-orange-500 mr-2"></i>
+                        Estilos ViralPost
                     </h3>
                     <div id="estilosPopulares" class="space-y-3">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tercera fila: SoundAI -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Géneros Música Populares -->
+                <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow p-6 border border-purple-100">
+                    <h3 class="font-bold text-lg mb-4 flex items-center">
+                        <i class="fas fa-music text-pink-500 mr-2"></i>
+                        Géneros SoundAI
+                    </h3>
+                    <div id="estilosMusica" class="space-y-3">
+                    </div>
+                </div>
+
+                <!-- Canciones Recientes -->
+                <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl shadow p-6 border border-purple-100">
+                    <h3 class="font-bold text-lg mb-4 flex items-center">
+                        <i class="fas fa-history text-purple-500 mr-2"></i>
+                        Canciones Recientes
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="text-left text-xs text-gray-500 border-b">
+                                    <th class="pb-3">ID</th>
+                                    <th class="pb-3">Usuario</th>
+                                    <th class="pb-3">Título</th>
+                                    <th class="pb-3">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="musicaRecienteBody">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -251,10 +319,19 @@
         document.getElementById('creditosVendidos').textContent = formatNumber(data.ingresos.creditos_vendidos);
         document.getElementById('totalTransacciones').textContent = `${data.ingresos.total_transacciones} ventas`;
 
-        // Generaciones
+        // Generaciones ViralPost
         document.getElementById('totalGeneraciones').textContent = formatNumber(data.generaciones.total);
         document.getElementById('generacionesHoy').textContent = `+${data.generaciones.hoy} hoy`;
         document.getElementById('tasaExito').textContent = `${data.generaciones.tasa_exito}%`;
+
+        // Música SoundAI
+        if (data.musica) {
+            document.getElementById('totalMusica').textContent = formatNumber(data.musica.total);
+            document.getElementById('musicaHoy').textContent = `+${data.musica.hoy} hoy`;
+            document.getElementById('tasaExitoMusica').textContent = `${data.musica.tasa_exito}%`;
+            document.getElementById('musicaCompletadas').textContent = formatNumber(data.musica.completadas);
+            document.getElementById('musica7dias').textContent = `${data.musica.ultimos_7_dias} / 7d`;
+        }
 
         // Top usuarios
         const topBody = document.getElementById('topUsuariosBody');
@@ -270,7 +347,7 @@
             </tr>
         `).join('');
 
-        // Estilos populares
+        // Estilos populares ViralPost
         const maxEstilo = Math.max(...data.estilos_populares.map(e => e.count), 1);
         document.getElementById('estilosPopulares').innerHTML = data.estilos_populares.slice(0, 8).map(e => `
             <div class="flex items-center">
@@ -281,6 +358,43 @@
                 <div class="text-sm font-medium text-gray-800 w-10 text-right">${e.count}</div>
             </div>
         `).join('');
+
+        // Estilos música SoundAI
+        if (data.estilos_musica && data.estilos_musica.length > 0) {
+            const maxEstiloMusica = Math.max(...data.estilos_musica.map(e => e.count), 1);
+            document.getElementById('estilosMusica').innerHTML = data.estilos_musica.slice(0, 8).map(e => `
+                <div class="flex items-center">
+                    <div class="w-32 text-sm text-gray-600 capitalize truncate">${e.estilo.replace(/_/g, ' ')}</div>
+                    <div class="flex-1 mx-3 bg-purple-100 rounded-full h-4">
+                        <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-4 rounded-full" style="width: ${(e.count / maxEstiloMusica) * 100}%"></div>
+                    </div>
+                    <div class="text-sm font-medium text-gray-800 w-10 text-right">${e.count}</div>
+                </div>
+            `).join('');
+        } else {
+            document.getElementById('estilosMusica').innerHTML = '<p class="text-gray-400 text-sm">Sin datos aún</p>';
+        }
+
+        // Canciones recientes SoundAI
+        if (data.musica_reciente && data.musica_reciente.length > 0) {
+            const musicaBody = document.getElementById('musicaRecienteBody');
+            musicaBody.innerHTML = data.musica_reciente.map(m => `
+                <tr class="border-b border-gray-50">
+                    <td class="py-3 text-gray-400">#${m.id}</td>
+                    <td class="py-3 truncate max-w-[120px] text-sm">${m.email}</td>
+                    <td class="py-3 truncate max-w-[150px] font-medium">${m.titulo}</td>
+                    <td class="py-3">
+                        <span class="text-xs px-2 py-1 rounded-full ${
+                            m.estado === 'completada' ? 'bg-green-100 text-green-600' :
+                            m.estado === 'error' ? 'bg-red-100 text-red-600' :
+                            'bg-yellow-100 text-yellow-600'
+                        }">${m.estado}</span>
+                    </td>
+                </tr>
+            `).join('');
+        } else {
+            document.getElementById('musicaRecienteBody').innerHTML = '<tr><td colspan="4" class="py-4 text-center text-gray-400 text-sm">Sin canciones aún</td></tr>';
+        }
 
         // Transacciones recientes
         const transBody = document.getElementById('transaccionesBody');
