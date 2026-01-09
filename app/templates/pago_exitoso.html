@@ -24,9 +24,9 @@
             </p>
         </div>
 
-        <a href="/viralpost/app" class="block w-full gradient-bg text-white py-3 rounded-xl font-semibold hover:opacity-90 transition">
+        <a id="goToAppBtn" href="/viralpost/app" class="block w-full gradient-bg text-white py-3 rounded-xl font-semibold hover:opacity-90 transition">
             <i class="fas fa-magic mr-2"></i>
-            Ir a Generar
+            <span id="goToAppText">Ir a Generar</span>
         </a>
     </div>
 
@@ -62,9 +62,9 @@
             </p>
         </div>
 
-        <a href="/viralpost/app" class="block w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200 transition">
+        <a id="backToAppBtn" href="/viralpost/app" class="block w-full bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200 transition">
             <i class="fas fa-arrow-left mr-2"></i>
-            Volver a la App
+            <span id="backToAppText">Volver a la App</span>
         </a>
     </div>
 
@@ -83,11 +83,25 @@
         window.location.href = '/viralpost/login';
     }
 
+    // Obtener parámetros de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const fromApp = urlParams.get('from') || 'viralpost';
+
+    // Configurar URLs y textos según la app de origen
+    const appUrl = fromApp === 'soundai' ? '/viralpost/soundai/app' : '/viralpost/app';
+    const appName = fromApp === 'soundai' ? 'SoundAI' : 'ViralPost';
+    const generateText = fromApp === 'soundai' ? 'Ir a Generar Música' : 'Ir a Generar';
+    const backText = fromApp === 'soundai' ? 'Volver a SoundAI' : 'Volver a la App';
+
+    // Actualizar enlaces y textos
+    document.getElementById('goToAppBtn').href = appUrl;
+    document.getElementById('goToAppText').textContent = generateText;
+    document.getElementById('backToAppBtn').href = appUrl;
+    document.getElementById('backToAppText').textContent = backText;
+
     // Cargar créditos y verificar tipo de pago
     document.addEventListener('DOMContentLoaded', async () => {
         try {
-            // Obtener el session_id de la URL
-            const urlParams = new URLSearchParams(window.location.search);
             const sessionId = urlParams.get('session_id');
 
             // Obtener créditos anteriores del usuario guardado
