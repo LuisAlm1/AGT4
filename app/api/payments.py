@@ -83,12 +83,16 @@ async def crear_checkout(
             usuario.stripe_customer_id = customer_id
             await db.commit()
 
+        # Determinar URLs basadas en la app de origen
+        from_param = f"&from={datos.from_app}" if datos.from_app == "soundai" else ""
+        cancel_from = f"?from={datos.from_app}" if datos.from_app == "soundai" else ""
+
         # Crear sesión de checkout
         resultado = await stripe_service.crear_checkout_session(
             user=usuario,
             paquete_id=datos.paquete_id,
-            success_url=f"{settings.BASE_URL}/pago-exitoso?session_id={{CHECKOUT_SESSION_ID}}",
-            cancel_url=f"{settings.BASE_URL}/creditos",
+            success_url=f"{settings.BASE_URL}/pago-exitoso?session_id={{CHECKOUT_SESSION_ID}}{from_param}",
+            cancel_url=f"{settings.BASE_URL}/creditos{cancel_from}",
             currency=datos.currency,
             lang=datos.lang
         )

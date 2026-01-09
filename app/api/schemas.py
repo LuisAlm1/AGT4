@@ -130,6 +130,7 @@ class CheckoutRequest(BaseModel):
     paquete_id: str
     currency: str = Field(default="MXN", pattern="^(MXN|USD)$", description="Moneda: MXN o USD")
     lang: str = Field(default="es", pattern="^(es|en)$", description="Idioma: es o en")
+    from_app: str = Field(default="viralpost", description="App de origen: viralpost o soundai")
 
 
 class CheckoutResponse(BaseModel):
