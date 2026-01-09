@@ -38,6 +38,7 @@ class User(Base):
     # Relaciones
     generaciones = relationship("Generation", back_populates="user")
     transacciones = relationship("Transaction", back_populates="user")
+    music_generaciones = relationship("MusicGeneration", back_populates="user")
 
     def tiene_creditos(self, cantidad: int = 1) -> bool:
         """Verifica si el usuario tiene suficientes créditos"""

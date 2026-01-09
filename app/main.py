@@ -17,6 +17,7 @@ from app.api.auth import router as auth_router
 from app.api.generation import router as generation_router
 from app.api.payments import router as payments_router
 from app.api.admin import router as admin_router
+from app.api.music import router as music_router
 
 
 @asynccontextmanager
@@ -28,6 +29,7 @@ async def lifespan(app: FastAPI):
     # Crear directorios necesarios
     os.makedirs(settings.UPLOAD_DIR, exist_ok=True)
     os.makedirs(settings.GENERATED_DIR, exist_ok=True)
+    os.makedirs(os.path.join(settings.GENERATED_DIR, "music"), exist_ok=True)
 
     yield
 
@@ -72,6 +74,7 @@ app.include_router(auth_router, prefix="/viralpost/api")
 app.include_router(generation_router, prefix="/viralpost/api")
 app.include_router(payments_router, prefix="/viralpost/api")
 app.include_router(admin_router, prefix="/viralpost/api")
+app.include_router(music_router, prefix="/viralpost/api")
 
 
 # ============ RUTAS DE FRONTEND ============
@@ -174,6 +177,31 @@ async def servir_imagen_generada(filename: str):
     if ruta.exists():
         return FileResponse(str(ruta))
     return {"error": "Imagen no encontrada"}
+
+
+# ============ RUTA DE MÚSICA GENERADA ============
+
+@app.get("/viralpost/music/{filename}")
+async def servir_musica_generada(filename: str):
+    """Sirve los archivos de música generados"""
+    ruta = Path(settings.GENERATED_DIR) / "music" / filename
+    if ruta.exists():
+        return FileResponse(str(ruta), media_type="audio/mpeg")
+    return {"error": "Archivo de música no encontrado"}
+
+
+# ============ SOUNDAI - APP DE GENERACIÓN DE MÚSICA ============
+
+@app.get("/viralpost/soundai", response_class=HTMLResponse)
+async def pagina_soundai(request: Request):
+    """Página principal de SoundAI"""
+    return templates.TemplateResponse("soundai_app.html", {"request": request})
+
+
+@app.get("/viralpost/soundai/historial", response_class=HTMLResponse)
+async def pagina_soundai_historial(request: Request):
+    """Página de historial de SoundAI"""
+    return templates.TemplateResponse("soundai_historial.html", {"request": request})
 
 
 # ============ HEALTH CHECK ============

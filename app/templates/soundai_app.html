@@ -1,0 +1,369 @@
+{% extends "base.html" %}
+
+{% block title %}SoundAI - Genera Música con IA{% endblock %}
+
+{% block content %}
+<!-- Navbar -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <a href="/viralpost/soundai" class="flex items-center space-x-2">
+                <div class="h-8 w-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-music text-white"></i>
+                </div>
+                <span class="font-bold text-xl bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">SoundAI</span>
+            </a>
+            <div class="flex items-center space-x-4">
+                <a href="/viralpost/soundai/historial" class="text-gray-600 hover:text-gray-900 font-medium">
+                    <i class="fas fa-history mr-1"></i> Historial
+                </a>
+                <a href="/viralpost/creditos" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-coins text-yellow-500"></i>
+                    <span id="creditCount" class="font-medium">0</span>
+                </a>
+                <a href="/viralpost/app" class="text-gray-500 hover:text-purple-600" title="ViralPost AI">
+                    <i class="fas fa-image"></i>
+                </a>
+                <button onclick="Auth.logout()" class="text-gray-400 hover:text-red-500" title="Cerrar sesión">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="pt-24 pb-12 px-4 min-h-screen bg-gradient-to-br from-gray-50 to-purple-50">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-bold mb-3">
+                Genera <span class="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Música con IA</span>
+            </h1>
+            <p class="text-gray-600 text-lg">Crea jingles, música de fondo y canciones personalizadas para tu negocio</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Formulario -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                <h2 class="text-xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-wand-magic-sparkles text-purple-500 mr-2"></i>
+                    Configurar tu Canción
+                </h2>
+
+                <form id="musicForm" class="space-y-5">
+                    <!-- Título -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="music.title_label">
+                            Título de la Canción
+                        </label>
+                        <input type="text" id="titulo" required maxlength="200"
+                               class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                               placeholder="Ej: Jingle para Pizzería Don Mario">
+                    </div>
+
+                    <!-- Descripción / Brief -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="music.description_label">
+                            Descripción del Producto/Servicio
+                        </label>
+                        <textarea id="descripcion" required rows="4" maxlength="2000"
+                                  class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                                  placeholder="Describe tu producto, servicio o marca. ¿Qué quieres transmitir? ¿Cuál es tu público objetivo?"></textarea>
+                        <p class="text-xs text-gray-400 mt-1">Entre más detalles, mejor será la música generada</p>
+                    </div>
+
+                    <!-- Estilo Musical -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Estilo Musical (opcional)
+                        </label>
+                        <select id="genero" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            <option value="">Automático (IA decide)</option>
+                            <option value="jingle_comercial">🎵 Jingle Comercial</option>
+                            <option value="latin_pop">💃 Latin Pop</option>
+                            <option value="reggaeton">🔥 Reggaeton</option>
+                            <option value="electronica">⚡ Electrónica</option>
+                            <option value="acustico">🎸 Acústico</option>
+                            <option value="hip_hop">🎤 Hip Hop</option>
+                            <option value="cinematic">🎬 Cinemático</option>
+                            <option value="lofi">☕ Lo-Fi</option>
+                        </select>
+                    </div>
+
+                    <!-- Mood -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Mood / Atmósfera (opcional)
+                        </label>
+                        <select id="mood" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            <option value="">Automático (IA decide)</option>
+                            <option value="energetic">⚡ Energético</option>
+                            <option value="happy">😊 Alegre</option>
+                            <option value="chill">😌 Relajado</option>
+                            <option value="epic">🦸 Épico</option>
+                            <option value="romantic">💕 Romántico</option>
+                            <option value="fun">🎉 Divertido</option>
+                            <option value="professional">💼 Profesional</option>
+                            <option value="mysterious">🌙 Misterioso</option>
+                        </select>
+                    </div>
+
+                    <!-- Duración -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Duración
+                        </label>
+                        <select id="duracion" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            <option value="15">15 segundos (Stories)</option>
+                            <option value="30" selected>30 segundos (Reels/TikTok)</option>
+                            <option value="60">60 segundos</option>
+                            <option value="90">90 segundos</option>
+                            <option value="120">2 minutos</option>
+                        </select>
+                    </div>
+
+                    <!-- Instrumental -->
+                    <div class="flex items-center space-x-3">
+                        <input type="checkbox" id="instrumental" class="w-5 h-5 text-purple-600 rounded focus:ring-purple-500">
+                        <label for="instrumental" class="text-sm text-gray-700">
+                            Solo instrumental (sin voces)
+                        </label>
+                    </div>
+
+                    <!-- Botón Generar -->
+                    <button type="submit" id="generateBtn"
+                            class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-4 rounded-xl font-bold text-lg hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fas fa-music mr-2"></i>
+                        Generar Música (1 crédito)
+                    </button>
+                </form>
+            </div>
+
+            <!-- Resultado -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                <h2 class="text-xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-headphones text-purple-500 mr-2"></i>
+                    Tu Canción
+                </h2>
+
+                <!-- Estado inicial -->
+                <div id="resultPlaceholder" class="text-center py-12">
+                    <div class="w-24 h-24 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-music text-4xl text-purple-300"></i>
+                    </div>
+                    <p class="text-gray-500">Tu música aparecerá aquí</p>
+                    <p class="text-gray-400 text-sm mt-1">Completa el formulario y genera</p>
+                </div>
+
+                <!-- Estado cargando -->
+                <div id="resultLoading" class="hidden text-center py-12">
+                    <div class="w-24 h-24 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                        <i class="fas fa-compact-disc text-4xl text-purple-500 animate-spin"></i>
+                    </div>
+                    <p class="text-gray-600 font-medium">Generando tu música...</p>
+                    <p class="text-gray-400 text-sm mt-1" id="loadingStatus">Esto puede tomar hasta 2 minutos</p>
+                    <div class="mt-4">
+                        <div class="w-48 h-2 bg-gray-200 rounded-full mx-auto overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-purple-600 to-pink-600 rounded-full animate-pulse" style="width: 60%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resultado -->
+                <div id="resultContent" class="hidden space-y-6">
+                    <!-- Reproductor -->
+                    <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6">
+                        <div class="flex items-center justify-center mb-4">
+                            <div class="w-20 h-20 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center shadow-lg">
+                                <i class="fas fa-music text-3xl text-white"></i>
+                            </div>
+                        </div>
+                        <h3 id="songTitle" class="text-center text-lg font-bold text-gray-800 mb-4">Tu Canción</h3>
+                        <audio id="audioPlayer" controls class="w-full">
+                            Tu navegador no soporta el elemento de audio.
+                        </audio>
+                    </div>
+
+                    <!-- Info generación -->
+                    <div class="bg-gray-50 rounded-xl p-4 space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Género:</span>
+                            <span id="infoGenre" class="font-medium text-gray-800">-</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Mood:</span>
+                            <span id="infoMood" class="font-medium text-gray-800">-</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Tema:</span>
+                            <span id="infoTheme" class="font-medium text-gray-800">-</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Tiempo:</span>
+                            <span id="infoTime" class="font-medium text-gray-800">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Botones de acción -->
+                    <div class="flex space-x-4">
+                        <a id="downloadBtn" href="#" download class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 rounded-xl font-medium text-center hover:opacity-90 transition">
+                            <i class="fas fa-download mr-2"></i>Descargar MP3
+                        </a>
+                        <button onclick="resetForm()" class="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-200 transition">
+                            <i class="fas fa-redo mr-2"></i>Nueva
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info adicional -->
+        <div class="mt-12 text-center text-gray-500 text-sm">
+            <p>SoundAI genera música original con inteligencia artificial.</p>
+            <p class="mt-1">Los créditos son compartidos con ViralPost AI.</p>
+            <p class="mt-2">
+                <a href="/viralpost/app" class="text-purple-600 hover:text-purple-800">
+                    <i class="fas fa-arrow-left mr-1"></i>Ir a ViralPost AI (Imágenes)
+                </a>
+            </p>
+        </div>
+    </div>
+</main>
+
+<!-- Modal Sin Créditos -->
+<div id="noCreditsModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+    <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center">
+        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-coins text-3xl text-yellow-500"></i>
+        </div>
+        <h3 class="text-2xl font-bold mb-2">¡Te quedaste sin créditos!</h3>
+        <p class="text-gray-600 mb-6">Compra más créditos para seguir generando música.</p>
+        <div class="flex space-x-4">
+            <button onclick="document.getElementById('noCreditsModal').classList.add('hidden')"
+                    class="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-200 transition">
+                Cerrar
+            </button>
+            <a href="/viralpost/creditos"
+               class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 rounded-xl font-medium hover:opacity-90 transition text-center">
+                Comprar Créditos
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Verificar autenticación
+    if (!Auth.isLoggedIn()) {
+        window.location.href = '/viralpost/login';
+    }
+
+    // Cargar datos del usuario
+    async function loadUserData() {
+        try {
+            const response = await apiFetch('/auth/me');
+            if (response.ok) {
+                const user = await response.json();
+                Auth.setUser(user);
+                document.getElementById('creditCount').textContent = user.creditos;
+            }
+        } catch (error) {
+            console.error('Error cargando usuario:', error);
+        }
+    }
+
+    loadUserData();
+
+    // Manejar envío del formulario
+    document.getElementById('musicForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const btn = document.getElementById('generateBtn');
+        btn.disabled = true;
+
+        // Verificar créditos
+        const user = Auth.getUser();
+        if (!user || user.creditos < 1) {
+            document.getElementById('noCreditsModal').classList.remove('hidden');
+            btn.disabled = false;
+            return;
+        }
+
+        // Mostrar loading
+        document.getElementById('resultPlaceholder').classList.add('hidden');
+        document.getElementById('resultContent').classList.add('hidden');
+        document.getElementById('resultLoading').classList.remove('hidden');
+
+        const payload = {
+            titulo: document.getElementById('titulo').value,
+            descripcion: document.getElementById('descripcion').value,
+            duracion_segundos: parseInt(document.getElementById('duracion').value),
+            es_instrumental: document.getElementById('instrumental').checked,
+            genero: document.getElementById('genero').value || null,
+            mood: document.getElementById('mood').value || null
+        };
+
+        try {
+            const response = await apiFetch('/music/generar', {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.exito) {
+                showResult(data);
+
+                // Actualizar créditos
+                document.getElementById('creditCount').textContent = data.creditos_restantes;
+                if (user) {
+                    user.creditos = data.creditos_restantes;
+                    Auth.setUser(user);
+                }
+
+                showNotification('¡Música generada exitosamente!', 'success');
+            } else {
+                showNotification(data.detail || data.mensaje || 'Error al generar', 'error');
+                document.getElementById('resultLoading').classList.add('hidden');
+                document.getElementById('resultPlaceholder').classList.remove('hidden');
+            }
+        } catch (error) {
+            console.error('Error en generación:', error);
+            showNotification('Error de conexión', 'error');
+            document.getElementById('resultLoading').classList.add('hidden');
+            document.getElementById('resultPlaceholder').classList.remove('hidden');
+        } finally {
+            btn.disabled = false;
+        }
+    });
+
+    // Mostrar resultado
+    function showResult(data) {
+        document.getElementById('resultLoading').classList.add('hidden');
+        document.getElementById('resultContent').classList.remove('hidden');
+
+        // Audio
+        const audioPlayer = document.getElementById('audioPlayer');
+        audioPlayer.src = data.audio_url;
+
+        // Título
+        document.getElementById('songTitle').textContent = document.getElementById('titulo').value;
+
+        // Info
+        document.getElementById('infoGenre').textContent = data.genre || 'Auto';
+        document.getElementById('infoMood').textContent = data.mood || 'Auto';
+        document.getElementById('infoTheme').textContent = data.lyrics_theme || '-';
+        document.getElementById('infoTime').textContent = data.tiempo_ms ? `${(data.tiempo_ms / 1000).toFixed(1)}s` : '-';
+
+        // Botón descargar
+        document.getElementById('downloadBtn').href = data.audio_url;
+        document.getElementById('downloadBtn').download = `${document.getElementById('titulo').value.replace(/[^a-z0-9]/gi, '_')}.mp3`;
+    }
+
+    // Resetear formulario
+    function resetForm() {
+        document.getElementById('musicForm').reset();
+        document.getElementById('resultContent').classList.add('hidden');
+        document.getElementById('resultPlaceholder').classList.remove('hidden');
+    }
+</script>
+{% endblock %}
