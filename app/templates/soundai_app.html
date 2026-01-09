@@ -277,6 +277,9 @@
 
     loadUserData();
 
+    let pollingInterval = null;
+    let currentGenerationId = null;
+
     // Manejar envío del formulario
     document.getElementById('musicForm').addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -296,6 +299,7 @@
         document.getElementById('resultPlaceholder').classList.add('hidden');
         document.getElementById('resultContent').classList.add('hidden');
         document.getElementById('resultLoading').classList.remove('hidden');
+        updateLoadingStatus('Iniciando generación...');
 
         const payload = {
             titulo: document.getElementById('titulo').value,
@@ -313,31 +317,102 @@
 
             const data = await response.json();
 
-            if (response.ok && data.exito) {
-                showResult(data);
-
-                // Actualizar créditos
+            if (response.ok && data.exito && data.generacion_id) {
+                // Actualizar créditos inmediatamente
                 document.getElementById('creditCount').textContent = data.creditos_restantes;
                 if (user) {
                     user.creditos = data.creditos_restantes;
                     Auth.setUser(user);
                 }
 
-                showNotification('¡Música generada exitosamente!', 'success');
+                // Iniciar polling para el estado
+                currentGenerationId = data.generacion_id;
+                startPolling(data.generacion_id);
             } else {
-                showNotification(data.detail || data.mensaje || 'Error al generar', 'error');
-                document.getElementById('resultLoading').classList.add('hidden');
-                document.getElementById('resultPlaceholder').classList.remove('hidden');
+                showNotification(data.detail || data.mensaje || 'Error al iniciar generación', 'error');
+                hideLoading();
+                btn.disabled = false;
             }
         } catch (error) {
             console.error('Error en generación:', error);
             showNotification('Error de conexión', 'error');
-            document.getElementById('resultLoading').classList.add('hidden');
-            document.getElementById('resultPlaceholder').classList.remove('hidden');
-        } finally {
+            hideLoading();
             btn.disabled = false;
         }
     });
+
+    // Actualizar mensaje de estado
+    function updateLoadingStatus(message) {
+        document.getElementById('loadingStatus').textContent = message;
+    }
+
+    // Ocultar loading
+    function hideLoading() {
+        document.getElementById('resultLoading').classList.add('hidden');
+        document.getElementById('resultPlaceholder').classList.remove('hidden');
+    }
+
+    // Iniciar polling del estado
+    function startPolling(generacionId) {
+        let pollCount = 0;
+        const maxPolls = 90; // 3 minutos máximo (90 * 2s)
+
+        updateLoadingStatus('Generando prompt musical...');
+
+        pollingInterval = setInterval(async () => {
+            pollCount++;
+
+            try {
+                const response = await apiFetch(`/music/generacion/${generacionId}`);
+
+                if (response.ok) {
+                    const data = await response.json();
+
+                    // Actualizar mensaje según estado
+                    if (data.estado === 'generando_prompt') {
+                        updateLoadingStatus('Generando prompt musical...');
+                    } else if (data.estado === 'generando_musica') {
+                        updateLoadingStatus('Componiendo música con IA... (puede tomar hasta 2 minutos)');
+                    } else if (data.estado === 'completada') {
+                        // ¡Éxito!
+                        stopPolling();
+                        showResult(data);
+                        showNotification('¡Música generada exitosamente!', 'success');
+                        document.getElementById('generateBtn').disabled = false;
+                        return;
+                    } else if (data.estado === 'error') {
+                        // Error
+                        stopPolling();
+                        showNotification(data.error_mensaje || 'Error al generar música', 'error');
+                        hideLoading();
+                        document.getElementById('generateBtn').disabled = false;
+                        // Recargar créditos (el backend debería haberlos devuelto)
+                        loadUserData();
+                        return;
+                    }
+                }
+            } catch (error) {
+                console.error('Error en polling:', error);
+            }
+
+            // Timeout
+            if (pollCount >= maxPolls) {
+                stopPolling();
+                showNotification('La generación está tardando demasiado. Revisa el historial más tarde.', 'warning');
+                hideLoading();
+                document.getElementById('generateBtn').disabled = false;
+            }
+        }, 2000); // Poll cada 2 segundos
+    }
+
+    // Detener polling
+    function stopPolling() {
+        if (pollingInterval) {
+            clearInterval(pollingInterval);
+            pollingInterval = null;
+        }
+        currentGenerationId = null;
+    }
 
     // Mostrar resultado
     function showResult(data) {
@@ -349,28 +424,31 @@
         audioPlayer.src = data.audio_url;
 
         // Título
-        document.getElementById('songTitle').textContent = document.getElementById('titulo').value;
+        document.getElementById('songTitle').textContent = data.titulo || document.getElementById('titulo').value;
 
         // Info
-        document.getElementById('infoGenre').textContent = data.genre || 'Auto';
+        document.getElementById('infoGenre').textContent = data.genero || 'Auto';
         document.getElementById('infoMood').textContent = data.mood || 'Auto';
-        document.getElementById('infoTheme').textContent = data.lyrics_theme || '-';
-        document.getElementById('infoTime').textContent = data.tiempo_ms ? `${(data.tiempo_ms / 1000).toFixed(1)}s` : '-';
+        document.getElementById('infoTheme').textContent = data.prompt_musicgpt ? data.prompt_musicgpt.substring(0, 50) + '...' : '-';
+        document.getElementById('infoTime').textContent = data.tiempo_procesamiento_ms ? `${(data.tiempo_procesamiento_ms / 1000).toFixed(1)}s` : '-';
 
         // Botón descargar
         document.getElementById('downloadBtn').href = data.audio_url;
-        document.getElementById('downloadBtn').download = `${document.getElementById('titulo').value.replace(/[^a-z0-9]/gi, '_')}.mp3`;
+        document.getElementById('downloadBtn').download = `${(data.titulo || 'cancion').replace(/[^a-z0-9]/gi, '_')}.mp3`;
     }
 
     // Resetear formulario
     function resetForm() {
+        stopPolling();
         document.getElementById('musicForm').reset();
         document.getElementById('resultContent').classList.add('hidden');
         document.getElementById('resultPlaceholder').classList.remove('hidden');
+        document.getElementById('generateBtn').disabled = false;
     }
 
     // Logout específico para SoundAI
     function logoutSoundAI() {
+        stopPolling();
         Auth.removeToken();
         window.location.href = '/viralpost/soundai';
     }
