@@ -13,10 +13,16 @@
         <div class="flex justify-between items-center h-16">
             <a href="/viralpost/app" class="flex items-center space-x-2">
                 <img src="/viralpost/static/images/logo.png" alt="ViralPost AI" class="h-8 w-8 object-contain">
-                <span class="font-bold text-xl gradient-text">ViralPost AI</span>
+                <span class="font-bold text-xl gradient-text">Créditos</span>
             </a>
-            <div class="flex items-center space-x-4">
-                <a href="/viralpost/app" class="text-gray-600 hover:text-gray-900">
+            <div class="flex items-center space-x-6">
+                <a href="/viralpost/app" class="text-gray-600 hover:text-purple-600 flex items-center">
+                    <i class="fas fa-image mr-2"></i>ViralPost
+                </a>
+                <a href="/viralpost/soundai" class="text-gray-600 hover:text-pink-600 flex items-center">
+                    <i class="fas fa-music mr-2"></i>SoundAI
+                </a>
+                <a id="backBtn" href="/viralpost/app" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200">
                     <i class="fas fa-arrow-left mr-2"></i><span data-i18n="nav.app">Volver</span>
                 </a>
             </div>
@@ -34,7 +40,7 @@
                 <span><span data-i18n="credits.balance">Tu saldo</span>: <strong id="currentCredits">0</strong> <span data-i18n="credits.pack">créditos</span></span>
             </div>
             <h1 class="text-3xl md:text-4xl font-bold mb-4" data-i18n="credits.title">Comprar Créditos</h1>
-            <p class="text-gray-600 text-lg" id="creditsSubtitle">1 crédito = 1 imagen viral + copy para redes sociales</p>
+            <p class="text-gray-600 text-lg" id="creditsSubtitle">1 crédito = 1 imagen viral o 1 canción generada con IA</p>
         </div>
 
         <!-- Paquetes (dinámico) -->
@@ -117,9 +123,22 @@
 
 {% block extra_scripts %}
 <script>
+    // Obtener parámetro 'from' para saber de dónde viene el usuario
+    const urlParams = new URLSearchParams(window.location.search);
+    const fromPage = urlParams.get('from') || 'viralpost';
+
+    // Configurar botón de regreso
+    const backBtn = document.getElementById('backBtn');
+    if (fromPage === 'soundai') {
+        backBtn.href = '/viralpost/soundai';
+    } else {
+        backBtn.href = '/viralpost/app';
+    }
+
     // Verificar autenticación
     if (!Auth.isLoggedIn()) {
-        window.location.href = '/viralpost/login';
+        const redirect = fromPage === 'soundai' ? '/viralpost/soundai' : '/viralpost/app';
+        window.location.href = `/viralpost/login?redirect=${encodeURIComponent(redirect)}`;
     }
 
     let packagesData = [];
@@ -142,8 +161,8 @@
         const subtitle = document.getElementById('creditsSubtitle');
         if (window.I18n) {
             subtitle.textContent = I18n.currentLang === 'en'
-                ? '1 credit = 1 viral image + social media copy'
-                : '1 crédito = 1 imagen viral + copy para redes sociales';
+                ? '1 credit = 1 viral image or 1 AI-generated song'
+                : '1 crédito = 1 imagen viral o 1 canción generada con IA';
         }
 
         // Mostrar/ocultar nota de OXXO según moneda

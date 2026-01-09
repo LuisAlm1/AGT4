@@ -90,13 +90,16 @@
 
 {% block extra_scripts %}
 <script>
+    // Obtener parámetro de redirección
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectUrl = urlParams.get('redirect') || '/viralpost/app';
+
     // Redirigir si ya está logueado
     if (Auth.isLoggedIn()) {
-        window.location.href = '/viralpost/app';
+        window.location.href = redirectUrl;
     }
 
     // Mostrar error de Google si existe
-    const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('error') === 'google_auth_failed') {
         const errorMsg = document.getElementById('errorMsg');
         errorMsg.textContent = 'Error al iniciar sesión con Google. Intenta de nuevo.';
@@ -127,7 +130,7 @@
             if (response.ok) {
                 Auth.setToken(data.access_token);
                 Auth.setUser(data.usuario);
-                window.location.href = '/viralpost/app';
+                window.location.href = redirectUrl;
             } else {
                 errorMsg.textContent = data.detail || 'Error al iniciar sesión';
                 errorMsg.classList.remove('hidden');
