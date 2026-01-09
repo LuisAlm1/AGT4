@@ -123,9 +123,25 @@
 
 {% block extra_scripts %}
 <script>
+    // Obtener redirect URL del parámetro
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectUrl = urlParams.get('redirect') || '/viralpost/app';
+
     // Redirigir si ya está logueado
     if (Auth.isLoggedIn()) {
-        window.location.href = '/viralpost/app';
+        window.location.href = redirectUrl;
+    }
+
+    // Actualizar link de Google OAuth con redirect
+    const googleBtn = document.querySelector('a[href*="google/login"]');
+    if (googleBtn) {
+        googleBtn.href = `/viralpost/api/auth/google/login?redirect=${encodeURIComponent(redirectUrl)}`;
+    }
+
+    // Actualizar link de "Inicia sesión" con redirect
+    const loginLink = document.querySelector('a[href="/viralpost/login"]');
+    if (loginLink) {
+        loginLink.href = `/viralpost/login?redirect=${encodeURIComponent(redirectUrl)}`;
     }
 
     document.getElementById('registroForm').addEventListener('submit', async (e) => {
@@ -161,7 +177,7 @@
             if (response.ok) {
                 Auth.setToken(data.access_token);
                 Auth.setUser(data.usuario);
-                window.location.href = '/viralpost/app';
+                window.location.href = redirectUrl;
             } else {
                 errorMsg.textContent = data.detail || 'Error al crear la cuenta';
                 errorMsg.classList.remove('hidden');
