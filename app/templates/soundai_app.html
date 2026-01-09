@@ -17,7 +17,7 @@
                 <a href="/viralpost/soundai/historial" class="text-gray-600 hover:text-gray-900 font-medium">
                     <i class="fas fa-history mr-1"></i> Historial
                 </a>
-                <a href="/viralpost/creditos" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900">
+                <a href="/viralpost/creditos?from=soundai" class="flex items-center space-x-2 text-gray-600 hover:text-gray-900">
                     <i class="fas fa-coins text-yellow-500"></i>
                     <span id="creditCount" class="font-medium">0</span>
                 </a>
@@ -243,7 +243,7 @@
                     class="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-200 transition">
                 Cerrar
             </button>
-            <a href="/viralpost/creditos"
+            <a href="/viralpost/creditos?from=soundai"
                class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 rounded-xl font-medium hover:opacity-90 transition text-center">
                 Comprar Créditos
             </a>
@@ -257,7 +257,7 @@
 <script>
     // Verificar autenticación
     if (!Auth.isLoggedIn()) {
-        window.location.href = '/viralpost/login';
+        window.location.href = '/viralpost/login?redirect=/viralpost/soundai';
     }
 
     // Cargar datos del usuario
