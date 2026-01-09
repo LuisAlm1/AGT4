@@ -45,6 +45,10 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str = ""
     GEMINI_MODEL: str = "gemini-3-pro-image-preview"  # Nano Banana Pro
 
+    # MusicGPT (para generación de música)
+    MUSICGPT_API_KEY: str = ""
+    MUSICGPT_API_URL: str = "https://api.musicgpt.com/api/public/v1"
+
     # Dominio
     DOMAIN: str = "agathoscreative.com"
     BASE_URL: str = "https://agathoscreative.com/viralpost"
