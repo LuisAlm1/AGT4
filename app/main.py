@@ -193,8 +193,16 @@ async def servir_musica_generada(filename: str):
 # ============ SOUNDAI - APP DE GENERACIÓN DE MÚSICA ============
 
 @app.get("/viralpost/soundai", response_class=HTMLResponse)
-async def pagina_soundai(request: Request):
-    """Página principal de SoundAI"""
+@app.get("/viralpost/soundai/", response_class=HTMLResponse)
+async def pagina_soundai_landing(request: Request):
+    """Landing page de SoundAI (para usuarios no logueados)"""
+    return templates.TemplateResponse("soundai_landing.html", {"request": request})
+
+
+@app.get("/viralpost/soundai/app", response_class=HTMLResponse)
+@app.get("/viralpost/soundai/app/", response_class=HTMLResponse)
+async def pagina_soundai_app(request: Request):
+    """Aplicación de SoundAI (requiere login)"""
     return templates.TemplateResponse("soundai_app.html", {"request": request})
 
 
