@@ -1,0 +1,378 @@
+{% extends "base.html" %}
+
+{% block title %}SoundAI - Genera Música con Inteligencia Artificial{% endblock %}
+
+{% block content %}
+<!-- Urgency Banner -->
+<div class="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 text-white py-2 px-4 text-center text-sm font-medium">
+    <span class="animate-pulse">🎵</span>
+    <span>Oferta de lanzamiento: Regístrate hoy y obtén tu primer crédito GRATIS</span>
+    <span class="animate-pulse">🎵</span>
+    <a href="/viralpost/registro" class="ml-2 underline font-bold hover:no-underline">¡Aprovecha ahora!</a>
+</div>
+
+<!-- Navbar -->
+<nav class="fixed top-10 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+            <div class="flex items-center space-x-4">
+                <a href="https://agathoscreative.com" class="flex items-center" title="Agathos Creative">
+                    <img src="/viralpost/static/images/logo.png" alt="Agathos" class="h-8 w-8 object-contain opacity-60 hover:opacity-100 transition">
+                </a>
+                <a href="/viralpost/soundai" class="flex items-center space-x-2">
+                    <div class="h-8 w-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-music text-white"></i>
+                    </div>
+                    <span class="font-bold text-xl bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">SoundAI</span>
+                </a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="/viralpost/login?redirect=/viralpost/soundai/app" class="text-gray-600 hover:text-gray-900 font-medium">Iniciar Sesión</a>
+                <a href="/viralpost/registro" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-5 py-2 rounded-full font-medium hover:opacity-90 transition">
+                    Comenzar Gratis
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="pt-44 pb-20 px-4 bg-gradient-to-br from-purple-600 via-pink-600 to-purple-700 text-white">
+    <div class="max-w-6xl mx-auto text-center">
+        <!-- Social Proof Badge -->
+        <div class="inline-flex items-center bg-white/20 rounded-full px-4 py-2 mb-8">
+            <div class="flex -space-x-2 mr-3">
+                <div class="w-6 h-6 rounded-full bg-green-400 border-2 border-white/30 flex items-center justify-center text-xs">🎵</div>
+                <div class="w-6 h-6 rounded-full bg-blue-400 border-2 border-white/30 flex items-center justify-center text-xs">🎤</div>
+                <div class="w-6 h-6 rounded-full bg-pink-400 border-2 border-white/30 flex items-center justify-center text-xs">🎸</div>
+            </div>
+            <span class="text-sm font-medium">Cientos de canciones ya generadas con IA</span>
+        </div>
+
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+            Crea <span class="text-yellow-300">música original</span><br>
+            con Inteligencia Artificial
+        </h1>
+
+        <p class="text-xl md:text-2xl text-white/80 mb-10 max-w-3xl mx-auto">
+            Genera canciones de amor, jingles comerciales, música para videos y más.
+            Solo describe lo que quieres y la IA compone para ti. <strong>En minutos.</strong>
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="/viralpost/registro" class="bg-white text-purple-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition shadow-xl group">
+                <i class="fas fa-magic mr-2 group-hover:animate-pulse"></i>
+                Crear Mi Primera Canción Gratis
+            </a>
+            <a href="#como-funciona" class="border-2 border-white/50 text-white px-8 py-4 rounded-full font-medium text-lg hover:bg-white/10 transition">
+                <i class="fas fa-play-circle mr-2"></i>
+                Ver Cómo Funciona
+            </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-6 mt-16 max-w-2xl mx-auto">
+            <div class="text-center">
+                <div class="text-3xl font-bold">9+</div>
+                <div class="text-white/70 text-sm">Estilos Musicales</div>
+            </div>
+            <div class="text-center">
+                <div class="text-3xl font-bold">~2min</div>
+                <div class="text-white/70 text-sm">Por Canción</div>
+            </div>
+            <div class="text-center">
+                <div class="text-3xl font-bold">100%</div>
+                <div class="text-white/70 text-sm">Original</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Estilos de Música -->
+<section class="py-20 px-4 bg-white" id="estilos">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">9 Estilos Musicales Únicos</h2>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                Desde baladas románticas hasta jingles comerciales.
+                Elige tu estilo o deja que la IA decida por ti.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+            <!-- Balada Romántica -->
+            <div class="bg-gradient-to-br from-pink-100 to-red-100 rounded-2xl p-6 hover:shadow-lg transition cursor-pointer group">
+                <div class="text-4xl mb-3">💕</div>
+                <h3 class="font-bold text-lg mb-1">Balada Romántica</h3>
+                <p class="text-gray-600 text-sm">Canciones de amor y sentimientos profundos</p>
+            </div>
+
+            <!-- Latin Pop -->
+            <div class="bg-gradient-to-br from-orange-100 to-yellow-100 rounded-2xl p-6 hover:shadow-lg transition cursor-pointer group">
+                <div class="text-4xl mb-3">💃</div>
+                <h3 class="font-bold text-lg mb-1">Latin Pop</h3>
+                <p class="text-gray-600 text-sm">Ritmos bailables y pegajosos</p>
+            </div>
+
+            <!-- Reggaeton -->
+            <div class="bg-gradient-to-br from-red-100 to-orange-100 rounded-2xl p-6 hover:shadow-lg transition cursor-pointer group">
+                <div class="text-4xl mb-3">🔥</div>
+                <h3 class="font-bold text-lg mb-1">Reggaeton</h3>
+                <p class="text-gray-600 text-sm">Beats urbanos latinos</p>
+            </div>
+
+            <!-- Jingle Comercial -->
+            <div class="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl p-6 hover:shadow-lg transition cursor-pointer group">
+                <div class="text-4xl mb-3">🎵</div>
+                <h3 class="font-bold text-lg mb-1">Jingle Comercial</h3>
+                <p class="text-gray-600 text-sm">Música pegajosa para tu negocio</p>
+            </div>
+
+            <!-- Acústico -->
+            <div class="bg-gradient-to-br from-amber-100 to-yellow-100 rounded-2xl p-6 hover:shadow-lg transition cursor-pointer group">
+                <div class="text-4xl mb-3">🎸</div>
+                <h3 class="font-bold text-lg mb-1">Acústico</h3>
+                <p class="text-gray-600 text-sm">Sonido orgánico y cálido</p>
+            </div>
+
+            <!-- Electrónica -->
+            <div class="bg-gradient-to-br from-cyan-100 to-blue-100 rounded-2xl p-6 hover:shadow-lg transition cursor-pointer group">
+                <div class="text-4xl mb-3">⚡</div>
+                <h3 class="font-bold text-lg mb-1">Electrónica</h3>
+                <p class="text-gray-600 text-sm">EDM y beats electrónicos</p>
+            </div>
+
+            <!-- Hip Hop -->
+            <div class="bg-gradient-to-br from-gray-100 to-slate-200 rounded-2xl p-6 hover:shadow-lg transition cursor-pointer group">
+                <div class="text-4xl mb-3">🎤</div>
+                <h3 class="font-bold text-lg mb-1">Hip Hop</h3>
+                <p class="text-gray-600 text-sm">Beats de rap y hip hop</p>
+            </div>
+
+            <!-- Cinemático -->
+            <div class="bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl p-6 hover:shadow-lg transition cursor-pointer group">
+                <div class="text-4xl mb-3">🎬</div>
+                <h3 class="font-bold text-lg mb-1">Cinemático</h3>
+                <p class="text-gray-600 text-sm">Música épica para videos</p>
+            </div>
+
+            <!-- Lo-Fi -->
+            <div class="bg-gradient-to-br from-emerald-100 to-teal-100 rounded-2xl p-6 hover:shadow-lg transition cursor-pointer group">
+                <div class="text-4xl mb-3">☕</div>
+                <h3 class="font-bold text-lg mb-1">Lo-Fi</h3>
+                <p class="text-gray-600 text-sm">Chill beats relajantes</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Cómo Funciona -->
+<section class="py-20 px-4 bg-gray-50" id="como-funciona">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">3 Pasos Simples</h2>
+            <p class="text-gray-600 text-lg">De idea a canción en menos de 3 minutos</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Paso 1 -->
+            <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center text-white text-2xl font-bold mb-6">
+                    1
+                </div>
+                <h3 class="text-xl font-bold mb-3">Describe tu canción</h3>
+                <p class="text-gray-600">
+                    Cuéntanos de qué quieres que trate. Una canción de amor, un jingle para tu negocio, música de cumpleaños...
+                </p>
+            </div>
+
+            <!-- Paso 2 -->
+            <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center text-white text-2xl font-bold mb-6">
+                    2
+                </div>
+                <h3 class="text-xl font-bold mb-3">Elige tu estilo</h3>
+                <p class="text-gray-600">
+                    Selecciona entre 9 estilos musicales o deja que la IA elija el mejor para tu descripción.
+                </p>
+            </div>
+
+            <!-- Paso 3 -->
+            <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center text-white text-2xl font-bold mb-6">
+                    3
+                </div>
+                <h3 class="text-xl font-bold mb-3">Descarga tu música</h3>
+                <p class="text-gray-600">
+                    Recibe tu canción original en MP3. Úsala en videos, redes sociales, comerciales o como quieras.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Casos de Uso -->
+<section class="py-20 px-4 bg-white">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">¿Para qué puedes usar SoundAI?</h2>
+            <p class="text-gray-600 text-lg">Música original para cualquier ocasión</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="text-center p-6">
+                <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-heart text-2xl text-pink-500"></i>
+                </div>
+                <h3 class="font-bold mb-2">Canciones de Amor</h3>
+                <p class="text-gray-500 text-sm">Sorprende a tu pareja con una canción personalizada</p>
+            </div>
+
+            <div class="text-center p-6">
+                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-store text-2xl text-purple-500"></i>
+                </div>
+                <h3 class="font-bold mb-2">Jingles de Negocio</h3>
+                <p class="text-gray-500 text-sm">Crea música pegajosa para tu marca</p>
+            </div>
+
+            <div class="text-center p-6">
+                <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-birthday-cake text-2xl text-yellow-500"></i>
+                </div>
+                <h3 class="font-bold mb-2">Cumpleaños</h3>
+                <p class="text-gray-500 text-sm">Canciones únicas para celebraciones</p>
+            </div>
+
+            <div class="text-center p-6">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-video text-2xl text-blue-500"></i>
+                </div>
+                <h3 class="font-bold mb-2">Videos y Contenido</h3>
+                <p class="text-gray-500 text-sm">Música de fondo para TikTok, YouTube, etc.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Precios -->
+<section class="py-20 px-4 bg-gray-50" id="precios">
+    <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Precios Simples</h2>
+            <p class="text-gray-600 text-lg">Sin suscripciones. Compra créditos y úsalos cuando quieras.</p>
+            <p class="text-purple-600 font-medium mt-2">1 crédito = 1 canción generada con IA</p>
+        </div>
+
+        <div class="grid md:grid-cols-4 gap-6">
+            <!-- Pack 10 -->
+            <div class="bg-white rounded-2xl p-6 border border-gray-200 hover:border-purple-300 transition">
+                <h3 class="font-bold text-lg mb-2">10 Créditos</h3>
+                <div class="text-3xl font-bold mb-1">$150 <span class="text-lg font-normal text-gray-500">MXN</span></div>
+                <p class="text-gray-500 text-sm mb-4">$15 por canción</p>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>10 canciones</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Todos los estilos</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sin expiración</li>
+                </ul>
+            </div>
+
+            <!-- Pack 25 - Popular -->
+            <div class="bg-purple-50 rounded-2xl p-6 border-2 border-purple-400 relative">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                    POPULAR
+                </div>
+                <h3 class="font-bold text-lg mb-2">25 Créditos</h3>
+                <div class="text-3xl font-bold mb-1">$350 <span class="text-lg font-normal text-gray-500">MXN</span></div>
+                <p class="text-gray-500 text-sm mb-4">$14 por canción</p>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>25 canciones</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Todos los estilos</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sin expiración</li>
+                </ul>
+            </div>
+
+            <!-- Pack 50 -->
+            <div class="bg-white rounded-2xl p-6 border border-gray-200 hover:border-purple-300 transition">
+                <h3 class="font-bold text-lg mb-2">50 Créditos</h3>
+                <div class="text-3xl font-bold mb-1">$680 <span class="text-lg font-normal text-gray-500">MXN</span></div>
+                <p class="text-gray-500 text-sm mb-4">$13.60 por canción</p>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>50 canciones</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Todos los estilos</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sin expiración</li>
+                </ul>
+            </div>
+
+            <!-- Pack 100 - Mejor Valor -->
+            <div class="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl p-6 border-2 border-yellow-400 relative">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                    MEJOR VALOR
+                </div>
+                <h3 class="font-bold text-lg mb-2">100 Créditos</h3>
+                <div class="text-3xl font-bold mb-1">$1,290 <span class="text-lg font-normal text-gray-500">MXN</span></div>
+                <p class="text-gray-500 text-sm mb-4">$12.90 por canción</p>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>100 canciones</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Todos los estilos</li>
+                    <li><i class="fas fa-check text-green-500 mr-2"></i>Sin expiración</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="text-center mt-10">
+            <a href="/viralpost/registro" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:opacity-90 transition inline-block group">
+                <i class="fas fa-gift mr-2 group-hover:animate-bounce"></i>
+                Reclamar Mi Crédito Gratis
+            </a>
+            <p class="text-gray-500 text-sm mt-3">No requiere tarjeta de crédito</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Final -->
+<section class="py-20 px-4 bg-gradient-to-br from-purple-600 via-pink-600 to-purple-700 text-white">
+    <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">
+            ¿Listo para crear tu primera canción?
+        </h2>
+        <p class="text-xl text-white/80 mb-8">
+            Únete y genera música original con inteligencia artificial. Es gratis empezar.
+        </p>
+        <a href="/viralpost/registro" class="bg-white text-purple-600 px-10 py-5 rounded-full font-bold text-xl hover:bg-gray-100 transition shadow-xl inline-block group">
+            <i class="fas fa-music mr-2 group-hover:animate-bounce"></i>
+            Crear Mi Primera Canción Gratis
+        </a>
+        <p class="text-white/60 text-sm mt-4">Sin tarjeta • Sin compromiso • Cancela cuando quieras</p>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-gray-400 py-12 px-4">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                <a href="https://agathoscreative.com" class="flex items-center space-x-2">
+                    <img src="/viralpost/static/images/logo.png" alt="Agathos" class="h-8 w-8 object-contain">
+                </a>
+                <a href="/viralpost/soundai" class="flex items-center space-x-2">
+                    <div class="h-6 w-6 bg-gradient-to-br from-purple-600 to-pink-600 rounded flex items-center justify-center">
+                        <i class="fas fa-music text-white text-xs"></i>
+                    </div>
+                    <span class="font-bold text-white">SoundAI</span>
+                </a>
+            </div>
+            <div class="flex space-x-6">
+                <a href="/viralpost/app" class="hover:text-white transition">ViralPost AI</a>
+                <a href="/viralpost/terminos" class="hover:text-white transition">Términos</a>
+                <a href="/viralpost/privacidad" class="hover:text-white transition">Privacidad</a>
+                <a href="/viralpost/contacto" class="hover:text-white transition">Contacto</a>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
+            <p>© 2024 SoundAI - <a href="https://agathoscreative.com" class="hover:text-white">Agathoscreative.com</a>. Todos los derechos reservados.</p>
+            <p class="mt-2">Pagos seguros con Stripe</p>
+        </div>
+    </div>
+</footer>
+{% endblock %}

@@ -19,7 +19,7 @@
                 <a href="/viralpost/app" class="text-gray-600 hover:text-purple-600 flex items-center">
                     <i class="fas fa-image mr-2"></i>ViralPost
                 </a>
-                <a href="/viralpost/soundai" class="text-gray-600 hover:text-pink-600 flex items-center">
+                <a href="/viralpost/soundai/app" class="text-gray-600 hover:text-pink-600 flex items-center">
                     <i class="fas fa-music mr-2"></i>SoundAI
                 </a>
                 <a id="backBtn" href="/viralpost/app" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200">
@@ -130,14 +130,14 @@
     // Configurar botón de regreso
     const backBtn = document.getElementById('backBtn');
     if (fromPage === 'soundai') {
-        backBtn.href = '/viralpost/soundai';
+        backBtn.href = '/viralpost/soundai/app';
     } else {
         backBtn.href = '/viralpost/app';
     }
 
     // Verificar autenticación
     if (!Auth.isLoggedIn()) {
-        const redirect = fromPage === 'soundai' ? '/viralpost/soundai' : '/viralpost/app';
+        const redirect = fromPage === 'soundai' ? '/viralpost/soundai/app' : '/viralpost/app';
         window.location.href = `/viralpost/login?redirect=${encodeURIComponent(redirect)}`;
     }
 
