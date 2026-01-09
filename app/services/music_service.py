@@ -61,11 +61,11 @@ REGLAS:
 2. Incluir: género, mood, tempo, instrumentos
 3. CRÍTICO: Especificar "vocals singing in Mexican Spanish"
 4. Las lyrics deben reflejar el tema que pide el usuario
-5. MÁXIMO 250 CARACTERES el prompt (esto es MUY IMPORTANTE, MusicGPT falla si es más largo)
+5. MÁXIMO 300 CARACTERES el prompt (esto es MUY IMPORTANTE, MusicGPT falla si es más largo)
 
 OUTPUT JSON:
 {
-    "music_prompt": "Prompt CORTO de max 250 caracteres con 'vocals singing in Mexican Spanish'",
+    "music_prompt": "Prompt CORTO de max 300 caracteres con 'vocals singing in Mexican Spanish'",
     "music_style": "Estilo para MusicGPT (ej: Romantic Ballad, Latin Pop, Commercial Jingle)",
     "mood": "Estado de ánimo",
     "genre": "Género musical",
@@ -109,8 +109,8 @@ OUTPUT JSON:
                     data = json.loads(content)
 
                     # Truncar prompt si es necesario
-                    if len(data.get("music_prompt", "")) > 295:
-                        data["music_prompt"] = data["music_prompt"][:292] + "..."
+                    if len(data.get("music_prompt", "")) > 300:
+                        data["music_prompt"] = data["music_prompt"][:297] + "..."
 
                     return data
 
@@ -146,9 +146,9 @@ OUTPUT JSON:
         if not self.musicgpt_key:
             return {"exito": False, "error": "No hay API key de MusicGPT configurada"}
 
-        # Truncar prompt a 295 caracteres (límite de MusicGPT es 300)
-        if len(prompt) > 295:
-            prompt = prompt[:292] + "..."
+        # Truncar prompt a 300 caracteres (límite de MusicGPT)
+        if len(prompt) > 300:
+            prompt = prompt[:297] + "..."
 
         # Asegurar formato del header
         if self.musicgpt_key.startswith("Bearer"):
@@ -164,8 +164,7 @@ OUTPUT JSON:
         payload = {
             "prompt": prompt,
             "music_style": music_style,
-            "make_instrumental": es_instrumental,
-            "duration": duracion
+            "make_instrumental": es_instrumental
         }
 
         try:
