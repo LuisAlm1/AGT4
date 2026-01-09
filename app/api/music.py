@@ -13,9 +13,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, desc
 
 from app.core.database import get_db
+from app.core.security import obtener_usuario_actual
 from app.models.user import User
 from app.models.music_generation import MusicGeneration, EstadoMusicGeneration
-from app.api.auth import get_current_user
 from app.services.music_service import music_service
 from app.core.config import settings
 
@@ -139,7 +139,7 @@ async def obtener_estilos():
 async def generar_musica(
     request: MusicGenerationRequest,
     db: AsyncSession = Depends(get_db),
-    usuario: User = Depends(get_current_user)
+    usuario: User = Depends(obtener_usuario_actual)
 ):
     """
     Genera una canción con IA.
@@ -260,7 +260,7 @@ async def obtener_historial(
     limit: int = 20,
     offset: int = 0,
     db: AsyncSession = Depends(get_db),
-    usuario: User = Depends(get_current_user)
+    usuario: User = Depends(obtener_usuario_actual)
 ):
     """Obtiene el historial de generaciones de música del usuario"""
     result = await db.execute(
@@ -296,7 +296,7 @@ async def obtener_historial(
 async def obtener_generacion(
     generacion_id: int,
     db: AsyncSession = Depends(get_db),
-    usuario: User = Depends(get_current_user)
+    usuario: User = Depends(obtener_usuario_actual)
 ):
     """Obtiene los detalles de una generación específica"""
     result = await db.execute(
