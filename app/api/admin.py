@@ -11,6 +11,7 @@ from app.core.config import settings
 from app.models.user import User
 from app.models.transaction import Transaction, EstadoTransaccion
 from app.models.generation import Generation, EstadoGeneracion
+from app.models.music_generation import MusicGeneration, EstadoMusicGeneration
 
 router = APIRouter(prefix="/admin", tags=["Admin"])
 
@@ -128,6 +129,62 @@ async def obtener_estadisticas(
         select(func.count(Generation.id)).where(Generation.created_at >= inicio_hoy)
     )
 
+    # ========== MÚSICA (SOUNDAI) ==========
+    # Total canciones generadas
+    total_musica = await db.scalar(select(func.count(MusicGeneration.id)))
+
+    # Canciones completadas
+    musica_completadas = await db.scalar(
+        select(func.count(MusicGeneration.id)).where(
+            MusicGeneration.estado == EstadoMusicGeneration.COMPLETADA.value
+        )
+    )
+
+    # Canciones últimos 7 días
+    musica_7_dias = await db.scalar(
+        select(func.count(MusicGeneration.id)).where(MusicGeneration.created_at >= hace_7_dias)
+    )
+
+    # Canciones hoy
+    musica_hoy = await db.scalar(
+        select(func.count(MusicGeneration.id)).where(MusicGeneration.created_at >= inicio_hoy)
+    )
+
+    # Estilos de música populares
+    estilos_musica_query = await db.execute(
+        select(
+            MusicGeneration.genero,
+            func.count(MusicGeneration.id).label('count')
+        )
+        .where(MusicGeneration.genero.isnot(None))
+        .group_by(MusicGeneration.genero)
+        .order_by(func.count(MusicGeneration.id).desc())
+        .limit(10)
+    )
+    estilos_musica = [
+        {"estilo": e.genero or "Sin género", "count": e.count}
+        for e in estilos_musica_query.all()
+    ]
+
+    # Canciones recientes
+    musica_reciente_query = await db.execute(
+        select(MusicGeneration, User.email)
+        .join(User, MusicGeneration.user_id == User.id)
+        .order_by(MusicGeneration.created_at.desc())
+        .limit(10)
+    )
+    musica_reciente = [
+        {
+            "id": m.MusicGeneration.id,
+            "email": m.email,
+            "titulo": m.MusicGeneration.titulo,
+            "genero": m.MusicGeneration.genero or "Auto",
+            "estado": m.MusicGeneration.estado,
+            "fecha": m.MusicGeneration.created_at.isoformat() if m.MusicGeneration.created_at else None
+        }
+        for m in musica_reciente_query.all()
+    ]
+
     # ========== TOP USUARIOS ==========
     # Usuarios con más créditos usados
     top_usuarios_query = await db.execute(
@@ -199,8 +256,17 @@ async def obtener_estadisticas(
             "hoy": generaciones_hoy or 0,
             "tasa_exito": round((generaciones_completadas or 0) / max(total_generaciones or 1, 1) * 100, 1)
         },
+        "musica": {
+            "total": total_musica or 0,
+            "completadas": musica_completadas or 0,
+            "ultimos_7_dias": musica_7_dias or 0,
+            "hoy": musica_hoy or 0,
+            "tasa_exito": round((musica_completadas or 0) / max(total_musica or 1, 1) * 100, 1)
+        },
         "top_usuarios": top_usuarios,
         "estilos_populares": estilos_populares,
+        "estilos_musica": estilos_musica,
+        "musica_reciente": musica_reciente,
         "transacciones_recientes": transacciones_recientes,
         "generado_en": ahora.isoformat()
     }
