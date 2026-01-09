@@ -39,7 +39,7 @@
             <h1 class="text-3xl md:text-4xl font-bold mb-3">
                 Genera <span class="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Música con IA</span>
             </h1>
-            <p class="text-gray-600 text-lg">Crea jingles, música de fondo y canciones personalizadas para tu negocio</p>
+            <p class="text-gray-600 text-lg">Crea canciones originales, jingles, música romántica y mucho más</p>
         </div>
 
         <div class="grid md:grid-cols-2 gap-8">
@@ -53,22 +53,22 @@
                 <form id="musicForm" class="space-y-5">
                     <!-- Título -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="music.title_label">
-                            Título de la Canción
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Nombre de tu Canción
                         </label>
                         <input type="text" id="titulo" required maxlength="200"
                                class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                               placeholder="Ej: Jingle para Pizzería Don Mario">
+                               placeholder="Ej: Para Mi Amor, Jingle de Mi Negocio, etc.">
                     </div>
 
                     <!-- Descripción / Brief -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2" data-i18n="music.description_label">
-                            Descripción del Producto/Servicio
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            ¿De qué trata tu canción?
                         </label>
                         <textarea id="descripcion" required rows="4" maxlength="2000"
                                   class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
-                                  placeholder="Describe tu producto, servicio o marca. ¿Qué quieres transmitir? ¿Cuál es tu público objetivo?"></textarea>
+                                  placeholder="Describe de qué quieres que hable la canción. Puede ser una canción de amor, un jingle para tu negocio, música para un video, una canción de cumpleaños... ¡lo que quieras!"></textarea>
                         <p class="text-xs text-gray-400 mt-1">Entre más detalles, mejor será la música generada</p>
                     </div>
 
@@ -79,11 +79,12 @@
                         </label>
                         <select id="genero" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                             <option value="">Automático (IA decide)</option>
-                            <option value="jingle_comercial">🎵 Jingle Comercial</option>
+                            <option value="balada">💕 Balada Romántica</option>
                             <option value="latin_pop">💃 Latin Pop</option>
                             <option value="reggaeton">🔥 Reggaeton</option>
-                            <option value="electronica">⚡ Electrónica</option>
                             <option value="acustico">🎸 Acústico</option>
+                            <option value="jingle_comercial">🎵 Jingle Comercial</option>
+                            <option value="electronica">⚡ Electrónica</option>
                             <option value="hip_hop">🎤 Hip Hop</option>
                             <option value="cinematic">🎬 Cinemático</option>
                             <option value="lofi">☕ Lo-Fi</option>
@@ -255,6 +256,15 @@
 
 {% block extra_scripts %}
 <script>
+    // Manejar token de Google OAuth desde URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenFromUrl = urlParams.get('token');
+    if (tokenFromUrl) {
+        Auth.setToken(tokenFromUrl);
+        // Limpiar URL para quitar el token
+        window.history.replaceState({}, document.title, '/viralpost/soundai');
+    }
+
     // Verificar autenticación
     if (!Auth.isLoggedIn()) {
         window.location.href = '/viralpost/login?redirect=/viralpost/soundai';

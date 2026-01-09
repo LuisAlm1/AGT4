@@ -51,20 +51,22 @@ class MusicService:
                 "lyrics_theme": "promoción del producto"
             }
 
-        system_prompt = """Eres un Director Musical experto en publicidad y jingles comerciales.
-Analiza el brief y genera un prompt musical CON LETRA EN ESPAÑOL MEXICANO para MusicGPT.
+        system_prompt = """Eres un Director Musical experto en composición de canciones.
+Analiza la descripción del usuario y genera un prompt musical CON LETRA EN ESPAÑOL MEXICANO para MusicGPT.
+
+El usuario puede pedir cualquier tipo de canción: romántica, de amor, jingle comercial, cumpleaños, motivacional, etc.
 
 REGLAS:
 1. Prompt en INGLÉS (MusicGPT entiende mejor instrucciones en inglés)
 2. Incluir: género, mood, tempo, instrumentos
 3. CRÍTICO: Especificar "vocals singing in Mexican Spanish"
-4. Las lyrics deben ser pegajosas y mencionar el producto/servicio
+4. Las lyrics deben reflejar el tema que pide el usuario
 5. MÁXIMO 250 CARACTERES el prompt (esto es MUY IMPORTANTE, MusicGPT falla si es más largo)
 
 OUTPUT JSON:
 {
     "music_prompt": "Prompt CORTO de max 250 caracteres con 'vocals singing in Mexican Spanish'",
-    "music_style": "Estilo para MusicGPT (ej: Commercial Jingle, Latin Pop)",
+    "music_style": "Estilo para MusicGPT (ej: Romantic Ballad, Latin Pop, Commercial Jingle)",
     "mood": "Estado de ánimo",
     "genre": "Género musical",
     "lyrics_theme": "Tema de la letra"
@@ -117,11 +119,11 @@ OUTPUT JSON:
 
         # Fallback
         return {
-            "music_prompt": "Upbeat pop jingle, vocals in Mexican Spanish, catchy commercial tune, energetic beat",
-            "music_style": "Commercial Jingle, Latin Pop, Catchy Spanish Vocals",
-            "mood": "energetic",
-            "genre": "pop jingle",
-            "lyrics_theme": "beneficios del producto"
+            "music_prompt": "Catchy latin pop song, vocals singing in Mexican Spanish, upbeat and fun melody",
+            "music_style": "Latin Pop, Catchy Spanish Vocals",
+            "mood": "happy",
+            "genre": "latin pop",
+            "lyrics_theme": "tema del usuario"
         }
 
     async def generar_musica(
