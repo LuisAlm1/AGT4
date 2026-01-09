@@ -128,7 +128,8 @@ OUTPUT JSON:
         self,
         prompt: str,
         music_style: str = "Commercial Jingle, Latin Pop",
-        es_instrumental: bool = False
+        es_instrumental: bool = False,
+        duracion: int = 30
     ) -> Dict[str, Any]:
         """
         Genera música usando MusicGPT API.
@@ -161,7 +162,8 @@ OUTPUT JSON:
         payload = {
             "prompt": prompt,
             "music_style": music_style,
-            "make_instrumental": es_instrumental
+            "make_instrumental": es_instrumental,
+            "duration": duracion
         }
 
         try:
@@ -328,7 +330,8 @@ OUTPUT JSON:
             gen_result = await self.generar_musica(
                 prompt=music_prompt,
                 music_style=music_style,
-                es_instrumental=es_instrumental
+                es_instrumental=es_instrumental,
+                duracion=duracion
             )
 
             if not gen_result.get("exito"):
