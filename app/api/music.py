@@ -3,16 +3,17 @@ API de generación de música con IA
 """
 import os
 import uuid
+import asyncio
 from datetime import datetime
 from typing import Optional
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
 from pydantic import BaseModel, Field
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, desc
 
-from app.core.database import get_db
+from app.core.database import get_db, async_session_maker
 from app.core.security import obtener_usuario_actual
 from app.models.user import User
 from app.models.music_generation import MusicGeneration, EstadoMusicGeneration
@@ -125,6 +126,108 @@ MUSIC_STYLES = {
 }
 
 
+# ============ BACKGROUND TASK ============
+
+async def procesar_generacion_musica(
+    generacion_id: int,
+    user_id: int,
+    titulo: str,
+    descripcion: str,
+    duracion: int,
+    genero: Optional[str],
+    mood: Optional[str],
+    es_instrumental: bool
+):
+    """
+    Procesa la generación de música en background.
+    """
+    async with async_session_maker() as db:
+        try:
+            # Obtener la generación
+            result = await db.execute(
+                select(MusicGeneration).where(MusicGeneration.id == generacion_id)
+            )
+            generacion = result.scalar_one_or_none()
+            if not generacion:
+                return
+
+            # Actualizar estado
+            generacion.estado = EstadoMusicGeneration.GENERANDO_MUSICA.value
+            await db.commit()
+
+            # Generar música
+            resultado = await music_service.generar_cancion_completa(
+                titulo=titulo,
+                descripcion=descripcion,
+                duracion=duracion,
+                genero=genero,
+                mood=mood,
+                es_instrumental=es_instrumental
+            )
+
+            if resultado.get("exito"):
+                # Guardar audio localmente
+                audio_url = resultado.get("audio_url")
+                nombre_archivo = f"music_{generacion.id}_{uuid.uuid4().hex[:8]}.mp3"
+                ruta_local = os.path.join(settings.GENERATED_DIR, "music", nombre_archivo)
+
+                # Descargar y guardar
+                descargado = await music_service.descargar_audio(audio_url, ruta_local)
+
+                if descargado:
+                    generacion.audio_path = ruta_local
+                    generacion.audio_url = f"/viralpost/music/{nombre_archivo}"
+                else:
+                    generacion.audio_url = audio_url
+
+                # Actualizar generación
+                generacion.estado = EstadoMusicGeneration.COMPLETADA.value
+                generacion.prompt_musicgpt = resultado.get("prompt_usado")
+                generacion.music_style = resultado.get("music_style")
+                generacion.mood = resultado.get("mood")
+                generacion.genero = resultado.get("genre")
+                generacion.musicgpt_conversion_id = resultado.get("conversion_id")
+                generacion.tiempo_procesamiento_ms = resultado.get("tiempo_ms")
+                generacion.completed_at = datetime.utcnow()
+            else:
+                # Error - devolver crédito
+                result = await db.execute(
+                    select(User).where(User.id == user_id)
+                )
+                usuario = result.scalar_one_or_none()
+                if usuario:
+                    usuario.creditos += 1
+                    usuario.creditos_usados -= 1
+
+                generacion.estado = EstadoMusicGeneration.ERROR.value
+                generacion.error_mensaje = resultado.get("error", "Error desconocido")
+
+            await db.commit()
+
+        except Exception as e:
+            # Error inesperado - devolver crédito
+            try:
+                result = await db.execute(
+                    select(User).where(User.id == user_id)
+                )
+                usuario = result.scalar_one_or_none()
+                if usuario:
+                    usuario.creditos += 1
+                    usuario.creditos_usados -= 1
+
+                result = await db.execute(
+                    select(MusicGeneration).where(MusicGeneration.id == generacion_id)
+                )
+                generacion = result.scalar_one_or_none()
+                if generacion:
+                    generacion.estado = EstadoMusicGeneration.ERROR.value
+                    generacion.error_mensaje = str(e)
+
+                await db.commit()
+            except:
+                pass
+
+
 # ============ ENDPOINTS ============
 
 @router.get("/estilos")
@@ -144,12 +247,14 @@ async def obtener_estilos():
 @router.post("/generar", response_model=MusicGenerationResponse)
 async def generar_musica(
     request: MusicGenerationRequest,
+    background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
     usuario: User = Depends(obtener_usuario_actual)
 ):
     """
-    Genera una canción con IA.
+    Inicia la generación de una canción con IA en background.
     Consume 1 crédito.
+    Retorna inmediatamente con el ID de generación para polling.
     """
     # Verificar créditos
     if not usuario.tiene_creditos(1):
@@ -178,86 +283,32 @@ async def generar_musica(
         usuario.usar_credito()
         await db.commit()
 
-        # Generar música
-        generacion.estado = EstadoMusicGeneration.GENERANDO_MUSICA.value
-        await db.commit()
-
-        resultado = await music_service.generar_cancion_completa(
+        # Iniciar generación en background
+        asyncio.create_task(procesar_generacion_musica(
+            generacion_id=generacion.id,
+            user_id=usuario.id,
             titulo=request.titulo,
             descripcion=request.descripcion,
             duracion=request.duracion_segundos,
             genero=request.genero,
             mood=request.mood,
             es_instrumental=request.es_instrumental
+        ))
+
+        # Retornar inmediatamente con el ID para polling
+        return MusicGenerationResponse(
+            exito=True,
+            mensaje="Generación iniciada. Usa el ID para consultar el estado.",
+            generacion_id=generacion.id,
+            creditos_restantes=usuario.creditos
         )
-
-        if resultado.get("exito"):
-            # Guardar audio localmente
-            audio_url = resultado.get("audio_url")
-            nombre_archivo = f"music_{generacion.id}_{uuid.uuid4().hex[:8]}.mp3"
-            ruta_local = os.path.join(settings.GENERATED_DIR, "music", nombre_archivo)
-
-            # Descargar y guardar
-            descargado = await music_service.descargar_audio(audio_url, ruta_local)
-
-            if descargado:
-                generacion.audio_path = ruta_local
-                generacion.audio_url = f"/viralpost/music/{nombre_archivo}"
-            else:
-                # Si no se pudo descargar, usar URL directa
-                generacion.audio_url = audio_url
-
-            # Actualizar generación
-            generacion.estado = EstadoMusicGeneration.COMPLETADA.value
-            generacion.prompt_musicgpt = resultado.get("prompt_usado")
-            generacion.music_style = resultado.get("music_style")
-            generacion.mood = resultado.get("mood")
-            generacion.genero = resultado.get("genre")
-            generacion.musicgpt_conversion_id = resultado.get("conversion_id")
-            generacion.tiempo_procesamiento_ms = resultado.get("tiempo_ms")
-            generacion.completed_at = datetime.utcnow()
-
-            await db.commit()
-
-            return MusicGenerationResponse(
-                exito=True,
-                mensaje="¡Canción generada exitosamente!",
-                generacion_id=generacion.id,
-                audio_url=generacion.audio_url,
-                prompt_usado=resultado.get("prompt_usado"),
-                mood=resultado.get("mood"),
-                genre=resultado.get("genre"),
-                lyrics_theme=resultado.get("lyrics_theme"),
-                creditos_restantes=usuario.creditos,
-                tiempo_ms=resultado.get("tiempo_ms")
-            )
-        else:
-            # Error en generación - devolver crédito
-            usuario.creditos += 1
-            usuario.creditos_usados -= 1
-            generacion.estado = EstadoMusicGeneration.ERROR.value
-            generacion.error_mensaje = resultado.get("error", "Error desconocido")
-            await db.commit()
-
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"Error al generar música: {resultado.get('error')}"
-            )
 
     except HTTPException:
         raise
     except Exception as e:
-        # Error inesperado - devolver crédito
-        usuario.creditos += 1
-        usuario.creditos_usados -= 1
-        if generacion:
-            generacion.estado = EstadoMusicGeneration.ERROR.value
-            generacion.error_mensaje = str(e)
-        await db.commit()
-
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error interno: {str(e)}"
+            detail=f"Error al iniciar generación: {str(e)}"
         )
 
 
@@ -332,6 +383,7 @@ async def obtener_generacion(
         "music_style": generacion.music_style,
         "audio_url": generacion.audio_url,
         "estado": generacion.estado,
+        "error_mensaje": generacion.error_mensaje,
         "tiempo_procesamiento_ms": generacion.tiempo_procesamiento_ms,
         "created_at": generacion.created_at.isoformat() if generacion.created_at else None,
         "completed_at": generacion.completed_at.isoformat() if generacion.completed_at else None
