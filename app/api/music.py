@@ -68,17 +68,23 @@ class MusicHistoryItem(BaseModel):
 # ============ ESTILOS DE MÚSICA ============
 
 MUSIC_STYLES = {
-    "jingle_comercial": {
-        "nombre": "Jingle Comercial",
-        "descripcion": "Música pegajosa para anuncios y comerciales",
-        "icono": "🎵",
-        "prompt_hint": "catchy commercial jingle"
+    "balada": {
+        "nombre": "Balada Romántica",
+        "descripcion": "Canciones de amor y sentimientos",
+        "icono": "💕",
+        "prompt_hint": "romantic ballad emotional love song"
     },
     "latin_pop": {
         "nombre": "Latin Pop",
         "descripcion": "Pop latino con ritmos bailables",
         "icono": "💃",
         "prompt_hint": "latin pop upbeat"
+    },
+    "jingle_comercial": {
+        "nombre": "Jingle Comercial",
+        "descripcion": "Música pegajosa para anuncios y comerciales",
+        "icono": "🎵",
+        "prompt_hint": "catchy commercial jingle"
     },
     "reggaeton": {
         "nombre": "Reggaeton",

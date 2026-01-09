@@ -64,6 +64,7 @@
 
         <!-- Botón Google -->
         <a
+            id="googleLoginBtn"
             href="/viralpost/api/auth/google/login"
             class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 py-3 rounded-xl font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition"
         >
@@ -93,6 +94,10 @@
     // Obtener parámetro de redirección
     const urlParams = new URLSearchParams(window.location.search);
     const redirectUrl = urlParams.get('redirect') || '/viralpost/app';
+
+    // Actualizar enlace de Google con el redirect
+    const googleBtn = document.getElementById('googleLoginBtn');
+    googleBtn.href = `/viralpost/api/auth/google/login?redirect=${encodeURIComponent(redirectUrl)}`;
 
     // Redirigir si ya está logueado
     if (Auth.isLoggedIn()) {

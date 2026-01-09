@@ -149,8 +149,14 @@ async def google_login(request: Request):
     """
     Inicia el flujo de login con Google.
     Redirige al usuario a la página de autenticación de Google.
+    Acepta ?redirect= para saber a dónde redirigir después del login.
     """
     redirect_uri = f"{settings.BASE_URL}/api/auth/google/callback"
+
+    # Guardar la URL de redirección en la sesión
+    final_redirect = request.query_params.get('redirect', '/viralpost/app')
+    request.session['oauth_redirect'] = final_redirect
+
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
 
@@ -213,10 +219,15 @@ async def google_callback(request: Request, db: AsyncSession = Depends(get_db)):
         # Crear token JWT
         access_token = crear_token_acceso({"sub": usuario.id})
 
+        # Obtener URL de redirección de la sesión
+        final_redirect = request.session.pop('oauth_redirect', '/viralpost/app')
+
         # Redirigir al frontend con el token
-        redirect_url = f"/viralpost/app?token={access_token}"
+        redirect_url = f"{final_redirect}?token={access_token}"
         return RedirectResponse(url=redirect_url)
 
     except Exception as e:
+        # Obtener redirect de la sesión para el error también
+        final_redirect = request.session.pop('oauth_redirect', '/viralpost/app')
         # En caso de error, redirigir al login con mensaje de error
-        return RedirectResponse(url="/viralpost/login?error=google_auth_failed")
+        return RedirectResponse(url=f"/viralpost/login?error=google_auth_failed&redirect={final_redirect}")
